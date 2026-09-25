@@ -139,6 +139,11 @@ add_shortcode( 'sc_profiles', 'sc_render_profiles' );
  * Cards, copy and PDF URLs are editable in Sound Creations -> Settings.
  */
 function sc_render_profiles( $atts = array() ) {
+	// Company Profile is the only downloadable profile (2026-09-25 owner
+	// request). The Acoustic Profile card was removed; its copy and PDF-URL
+	// settings were retired with it. Kept as an array so a second profile can
+	// be reinstated later without reworking the markup -- the grid below is
+	// auto-fit, so one card fills the row and two split it.
 	$cards = array(
 		array(
 			'title' => 'Company Profile',
@@ -146,16 +151,9 @@ function sc_render_profiles( $atts = array() ) {
 			'url'   => sc_setting( 'company_profile_url', '' ),
 			'icon'  => 'building',
 		),
-		array(
-			'title' => 'Acoustic Profile',
-			'desc'  => sc_setting( 'acoustic_profile_desc' ),
-			'url'   => sc_setting( 'acoustic_profile_url', '' ),
-			'icon'  => 'wave',
-		),
 	);
 	$icons = array(
 		'building' => '<path d="M3 21h18"/><path d="M6 21V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v17"/><path d="M14 21V9h3a1 1 0 0 1 1 1v11"/><path d="M9 7h2"/><path d="M9 11h2"/><path d="M9 15h2"/>',
-		'wave'     => '<path d="M2 12h3l2-6 3 13 3-16 2 9h5"/>',
 	);
 	ob_start();
 	?>

@@ -127,8 +127,6 @@ function sc_core_settings_fields() {
 			'profiles_intro'       => array( 'Profiles: intro', 'wysiwyg' ),
 			'company_profile_url'  => array( 'Company Profile: PDF URL (upload to Media, paste link)', 'image' ),
 			'company_profile_desc' => array( 'Company Profile: description', 'wysiwyg' ),
-			'acoustic_profile_url' => array( 'Acoustic Profile: PDF URL (upload to Media, paste link)', 'image' ),
-			'acoustic_profile_desc'=> array( 'Acoustic Profile: description', 'wysiwyg' ),
 
 			'__sec_solutions'      => array( 'Solutions page content', 'heading' ),
 			'sol_hero_title'       => array( 'Solutions hero: headline', 'text' ),
