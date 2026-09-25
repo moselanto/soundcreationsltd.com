@@ -1,7 +1,9 @@
 <?php
 /**
- * Footer template. Four editable columns:
- *   1. About + social   2. Explore   3. Solutions   4. Contact (head office).
+ * Footer template. Three editable columns:
+ *   1. About + social   2. Open Hours   3. Contact (head office).
+ * Explore and Solutions were removed on 2026-09-25 (owner request) and Open
+ * Hours was promoted out of Contact to take the slot Solutions held.
  * Every value is editable in wp-admin: Sound Creations -> Settings (Footer section).
  *
  * @package SoundCreations
@@ -10,8 +12,6 @@
 if ( defined( 'ABSPATH' ) === false ) {
 	exit;
 }
-$sc_explore = sc_split_lines( sc_setting( 'footer_explore' ), 2 );
-$sc_fsol    = sc_split_lines( sc_setting( 'footer_solutions' ), 2 );
 $sc_addr    = sc_split_lines( sc_setting( 'footer_address' ), 1 );
 $sc_hours   = sc_split_lines( sc_setting( 'footer_hours' ), 1 );
 $sc_phone   = sc_setting( 'phone' );
@@ -39,39 +39,21 @@ $sc_email   = sc_setting( 'email' );
 
 			<div class="sc-foot-nav">
 
-			<div class="sc-foot-col">
-				<h2><?php esc_html_e( 'Explore', 'soundcreations' ); ?></h2>
+			<?php if ( count( $sc_hours ) > 0 ) : ?>
+			<div class="sc-foot-col sc-foot-col--hours">
+				<h2><?php echo esc_html( sc_setting( 'footer_hours_label', 'Open Hours' ) ); ?></h2>
 				<ul>
 					<?php
-					foreach ( $sc_explore as $sc_row ) {
-						$sc_lbl = isset( $sc_row[0] ) ? $sc_row[0] : '';
-						$sc_url = isset( $sc_row[1] ) ? $sc_row[1] : '';
-						if ( '' === $sc_lbl ) {
+					foreach ( $sc_hours as $sc_row ) {
+						if ( '' === $sc_row[0] ) {
 							continue;
 						}
-						$sc_href = ( 0 === strpos( $sc_url, 'http' ) ) ? $sc_url : home_url( $sc_url );
-						echo '<li><a href="' . esc_url( $sc_href ) . '">' . esc_html( $sc_lbl ) . '</a></li>';
+						echo '<li>' . esc_html( $sc_row[0] ) . '</li>';
 					}
 					?>
 				</ul>
 			</div>
-
-			<div class="sc-foot-col">
-				<h2><?php esc_html_e( 'Solutions', 'soundcreations' ); ?></h2>
-				<ul>
-					<?php
-					foreach ( $sc_fsol as $sc_row ) {
-						$sc_lbl = isset( $sc_row[0] ) ? $sc_row[0] : '';
-						$sc_url = isset( $sc_row[1] ) ? $sc_row[1] : '';
-						if ( '' === $sc_lbl ) {
-							continue;
-						}
-						$sc_href = ( 0 === strpos( $sc_url, 'http' ) ) ? $sc_url : home_url( $sc_url );
-						echo '<li><a href="' . esc_url( $sc_href ) . '">' . esc_html( $sc_lbl ) . '</a></li>';
-					}
-					?>
-				</ul>
-			</div>
+			<?php endif; ?>
 
 			<div class="sc-foot-contact">
 				<h2><?php esc_html_e( 'Contact', 'soundcreations' ); ?></h2>
@@ -99,21 +81,6 @@ $sc_email   = sc_setting( 'email' );
 				<?php if ( $sc_email ) : ?>
 					<a href="mailto:<?php echo esc_attr( $sc_email ); ?>"><?php echo esc_html( $sc_email ); ?></a>
 				<?php endif; ?>
-				<?php if ( count( $sc_hours ) > 0 ) : ?>
-					<div class="sc-foot-hours">
-						<span class="sc-foot-hours__label"><?php echo esc_html( sc_setting( 'footer_hours_label', 'Open Hours' ) ); ?></span>
-						<ul>
-							<?php
-							foreach ( $sc_hours as $sc_row ) {
-								if ( '' === $sc_row[0] ) {
-									continue;
-								}
-								echo '<li>' . esc_html( $sc_row[0] ) . '</li>';
-							}
-							?>
-						</ul>
-					</div>
-				<?php endif; ?>
 			</div>
 
 			</div>
@@ -124,7 +91,6 @@ $sc_email   = sc_setting( 'email' );
 			<div class="sc-footer__legal">
 				<a href="<?php echo esc_url( home_url( '/privacy-policy/' ) ); ?>"><?php esc_html_e( 'Privacy Policy', 'soundcreations' ); ?></a>
 				<a href="<?php echo esc_url( home_url( '/terms/' ) ); ?>"><?php esc_html_e( 'Terms & Conditions', 'soundcreations' ); ?></a>
-				<a href="<?php echo esc_url( home_url( '/warranty/' ) ); ?>"><?php esc_html_e( 'Warranty', 'soundcreations' ); ?></a>
 			</div>
 		</div>
 	</div>
