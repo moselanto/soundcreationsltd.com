@@ -2391,3 +2391,91 @@ h1.sc-contactpage-hero__title { font-size: 30px; }
 .entry-content h1,
 .wp-block-post-content h1,
 .elementor h1 { font-size: 30px; }
+
+
+/* ============================================================
+   FANE page polish (2026-09-25)
+
+   Two problems, both created by recent changes to this page.
+
+   1. The dealer band. tokens.css sets the colour law for this site:
+      PURPLE is brand and structure, RED is "action only, kept
+      deliberately scarce ... scarcity is what makes red read as
+      premium rather than shouty". The band was painting a near-solid
+      red wash edge to edge (rgba(120,16,24,.90) at both ends), which
+      is the single largest block of red on the site. That is why it
+      reads as a slab bolted onto the page rather than part of it --
+      and moving it directly under the hero made it louder still.
+      The fix keeps the photo, drops the wash to a dark base so the
+      image is legible, and lets red return to where it belongs: the
+      CTA button, plus one hairline accent.
+
+   2. Hero hierarchy. With H1 now at 30px site-wide, .sc-fane-mark at
+      2rem/800 was physically LARGER than the headline beneath it, so
+      "Fane Africa" was outshouting "Engineering sound since 1958."
+      It is restyled as a kicker, which also fills the role the
+      removed eyebrow used to play.
+   ============================================================ */
+
+/* --- 1. Dealer band: blend into the page -------------------- */
+
+/* #id beats the .sc-cta-band--photo rules earlier in this file and the
+   max-width:640px override, so this is the band's final appearance on
+   the FANE page only. The homepage band is untouched. */
+#fane-catalogue .sc-cta-band--photo {
+	border-color: rgba(255, 255, 255, .09);
+	background-position: center;
+	box-shadow: 0 26px 64px rgba(0, 0, 0, .40);
+}
+
+/* Dark base first so white text keeps its contrast, then a soft red
+   bloom from the left only. The photo now reads through the middle
+   instead of being flattened under solid red. */
+#fane-catalogue .sc-cta-band--photo::before {
+	background:
+		linear-gradient(180deg, rgba(11, 11, 15, .90) 0%, rgba(11, 11, 15, .66) 42%, rgba(11, 11, 15, .88) 100%),
+		linear-gradient(100deg, rgba(var(--sc-red-rgb), .42) 0%, rgba(var(--sc-red-rgb), .10) 46%, rgba(var(--sc-red-rgb), 0) 72%);
+}
+
+/* One hairline of brand red along the top edge. Carries the brand
+   without the slab, and visually stitches the band to the hero above. */
+#fane-catalogue .sc-cta-band--photo::after {
+	content: "";
+	position: absolute;
+	inset: 0 0 auto 0;
+	height: 2px;
+	background: linear-gradient(90deg, transparent, rgba(var(--sc-red-rgb), .85) 35%, rgba(var(--sc-red-rgb), .85) 65%, transparent);
+	z-index: 2;
+}
+
+/* Lead was #F3DEDE (a pink tint that only made sense on solid red). */
+#fane-catalogue .sc-cta-band--photo .sc-lead {
+	color: rgba(245, 245, 247, .82);
+	max-width: 62ch;
+}
+#fane-catalogue .sc-cta-band__inner { max-width: 760px; }
+#fane-catalogue .sc-fane-cta__btns { justify-content: center; margin-top: .25rem; }
+
+/* --- 2. Hero: let the headline lead ------------------------- */
+.sc-fane-mark {
+	font-size: 1rem;
+	font-weight: 700;
+	letter-spacing: .2em;
+	text-transform: uppercase;
+	color: var(--sc-text);
+	margin-bottom: .85rem;
+	opacity: .92;
+}
+.sc-fane-mark__bar { height: 1.05rem; width: 4px; }
+
+/* The eyebrow that used to sit between mark and headline is gone, so
+   the headline no longer needs to reserve space above itself. */
+.sc-fane-hero__title { margin-top: 0; }
+.sc-fane-hero { padding-block: clamp(2rem, 1.5rem + 2vw, 3rem) clamp(1.75rem, 1.4rem + 1.8vw, 2.5rem); }
+
+/* --- 3. Consistent media treatment -------------------------- */
+/* Heritage and difference images sat at 14px while every other card on
+   the page uses the --sc-radius-lg token. */
+.sc-fane-heritage__img img,
+.sc-fane-diff__media img { border-radius: var(--sc-radius-lg); }
+.sc-fane-heritage__img img { box-shadow: 0 18px 44px rgba(0, 0, 0, .28); }
