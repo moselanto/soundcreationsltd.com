@@ -2325,3 +2325,46 @@ a.sc-workproc__item:focus-visible { outline: 2px solid var(--sc-red); outline-of
    it: that one is .sc-btn--ghost and stays uppercase, so the two now differ.
    Extend the selector to .sc-fane-cta__btns .sc-btn if both should match. */
 .sc-fane-cta__btns .sc-btn--primary { text-transform: none; letter-spacing: normal; }
+
+
+/* ============================================================
+   Global H1 size (2026-09-25)
+   Every <h1> on the site renders at 30px.
+
+   A bare `h1` rule is not enough on its own. The hero and page
+   headings are targeted by class, and two of them by a parent +
+   class pair, so they outrank a plain element selector. Each one
+   is therefore repeated below with an `h1` prefix, which wins on
+   specificity rather than on \!important.
+
+   The `h1` prefix matters for a second reason: classes such as
+   .sc-case__title and .sc-support-hero__title are reused on H2s
+   and H3s elsewhere in the site, and those must keep their own
+   sizes. Prefixing with h1 limits this override to real <h1>
+   elements only.
+
+   Appended last so it is the final word in the cascade.
+   ============================================================ */
+h1 { font-size: 30px; }
+
+/* Hero and page headings carrying a class-based size (0,1,1). */
+h1.sc-hero__title,
+h1.sc-projhero__title,
+h1.sc-support-hero__title,
+h1.sc-about-hero__title,
+h1.sc-fane-hero__title,
+h1.sc-pagehero__title,
+h1.sc-case__title,
+h1.sc-svc-hero__title,
+h1.sc-consult-hero__title,
+h1.sc-contact-hero__title,
+h1.sc-contactpage-hero__title { font-size: 30px; }
+
+/* Scoped by a parent class as well, so match that weight (0,2,1). */
+.sc-hero--video h1.sc-hero__title,
+.sc-solutions-hero h1.sc-support-hero__title { font-size: 30px; }
+
+/* Editor / builder content areas. */
+.entry-content h1,
+.wp-block-post-content h1,
+.elementor h1 { font-size: 30px; }
