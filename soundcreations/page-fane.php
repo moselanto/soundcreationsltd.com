@@ -54,21 +54,6 @@ $sc_apps = array(
 	array( 'Custom Design', $sc_img . '/app-custom.jpg' ),
 );
 
-// name, spec, power label, front img, data-app, data-type, data-power(num), data-size, back img
-//
-// Every image below is a real FANE product photograph supplied by the owner
-// (2026-09-22), replacing the previous renders. Each of the five components has
-// a face and a rear shot, so the card shows the face by default and reveals the
-// rear on hover or keyboard focus. The rear shot is the one that carries the
-// FANE badge and the printed model/power legend, which is why it is worth
-// showing rather than discarding.
-$sc_prod = array(
-	array( 'FANE Colossus 18XB', '18" High Power Bass Driver', '2000W Program', $sc_img . '/prod-colossus18xb.webp', 'live-sound touring', 'bass', '2000', '18', $sc_img . '/prod-colossus18xb-back.webp' ),
-	array( 'FANE Imperium 18XL', '18" High Power Bass Driver', '2600W Program', $sc_img . '/prod-imperium18xl.webp', 'live-sound touring', 'bass', '2600', '18', $sc_img . '/prod-imperium18xl-back.webp' ),
-	array( 'FANE Sovereign 15-600', '15" Mid Bass Driver', '1200W Program', $sc_img . '/prod-sovereign15.webp', 'installed-audio worship', 'mid-bass', '1200', '15', $sc_img . '/prod-sovereign15-back.webp' ),
-	array( 'FANE Sovereign 12-250TC', '12" Midrange Driver', '500W Program', $sc_img . '/prod-sovereign12.webp', 'installed-audio studio', 'midrange', '500', '12', $sc_img . '/prod-sovereign12-back.webp' ),
-	array( 'FANE CD140', '1.4" Compression Driver', '40W AES', $sc_img . '/prod-cd140.webp', 'live-sound studio', 'compression', '40', '1.4', $sc_img . '/prod-cd140-back.webp' ),
-);
 
 $sc_why = array(
 	array( 'Heritage', 'Decades of loudspeaker engineering experience.', '<circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>' ),
@@ -94,7 +79,7 @@ $sc_arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-w
 			<h1 class="sc-fane-hero__title"><?php echo esc_html( sc_setting( 'fane_title', 'Engineering sound since 1958.' ) ); ?></h1>
 			<p class="sc-lead sc-fane-hero__lead"><?php echo sc_rich_e( sc_setting( 'fane_lead', 'Precision-engineered loudspeaker components built for demanding professional applications, trusted by sound professionals around the world.' ) ); ?></p>
 			<div class="sc-fane-hero__cta">
-				<a class="sc-btn sc-btn--primary" href="#fane-products"><?php esc_html_e( 'Explore FANE Products', 'soundcreations' ); ?> <?php echo $sc_arrow; ?></a>
+				<a class="sc-btn sc-btn--primary" href="<?php echo esc_url( $sc_products_url ); ?>"><?php esc_html_e( 'Explore FANE Products', 'soundcreations' ); ?> <?php echo $sc_arrow; ?></a>
 			</div>
 		</div>
 		<div class="sc-fane-hero__media">
@@ -147,7 +132,7 @@ $sc_arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-w
 			<p class="sc-eyebrow"><?php esc_html_e( 'The FANE difference', 'soundcreations' ); ?></p>
 			<h2><?php echo esc_html( sc_setting( 'fane_diff_title', 'Built from the inside out.' ) ); ?></h2>
 			<p class="sc-support-sub"><?php echo sc_rich_e( sc_setting( 'fane_diff_body', 'Every FANE component is designed and engineered to work in perfect harmony - delivering the performance, reliability and consistency professionals depend on.' ) ); ?></p>
-			<a class="sc-btn sc-btn--ghost" href="#fane-products"><?php esc_html_e( 'Discover Our Technology', 'soundcreations' ); ?> <?php echo $sc_arrow; ?></a>
+			<a class="sc-btn sc-btn--ghost" href="https://www.fane-international.com/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Discover Our Technology', 'soundcreations' ); ?> <?php echo $sc_arrow; ?></a>
 		</div>
 		<div class="sc-fane-diff__media">
 			<img src="<?php echo esc_url( $sc_img . '/fane-exploded.jpg' ); ?>" alt="<?php esc_attr_e( 'Exploded view of a FANE loudspeaker driver', 'soundcreations' ); ?>" loading="lazy">
@@ -160,40 +145,6 @@ $sc_arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-w
 	</div>
 </section>
 
-<section class="sc-section sc-fane-alt" id="fane-products">
-	<div class="sc-container">
-		<div class="sc-res-head">
-			<div>
-				<p class="sc-eyebrow"><?php esc_html_e( 'Product explorer', 'soundcreations' ); ?></p>
-				<h2 style="margin:.15rem 0 0;"><?php echo esc_html( sc_setting( 'fane_products_title', 'The FANE component range.' ) ); ?></h2>
-			</div>
-			<a class="sc-linkbtn" href="https://www.fane-international.com/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Visit FANE Website', 'soundcreations' ); ?> <span aria-hidden="true">&rarr;</span></a>
-		</div>
-		<div class="sc-prod-carousel">
-			<button type="button" class="sc-prod-nav sc-prod-nav--prev" data-sc-scroll="prev" aria-label="Scroll left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
-			<div class="sc-prod-track" data-sc-scroller>
-				<?php foreach ( $sc_prod as $pr ) : ?>
-					<div class="sc-prod-card" data-app="<?php echo esc_attr( $pr[4] ); ?>" data-type="<?php echo esc_attr( $pr[5] ); ?>" data-power="<?php echo esc_attr( $pr[6] ); ?>" data-size="<?php echo esc_attr( $pr[7] ); ?>">
-						<div class="sc-prod-card__media<?php echo ( isset( $pr[8] ) && '' !== $pr[8] ) ? ' sc-prod-card__media--flip' : ''; ?>" tabindex="0">
-							<img class="sc-prod-card__face" src="<?php echo esc_url( $pr[3] ); ?>" alt="<?php echo esc_attr( $pr[0] ); ?>" loading="lazy" decoding="async" width="700" height="700">
-							<?php if ( isset( $pr[8] ) && '' !== $pr[8] ) : ?>
-								<img class="sc-prod-card__rear" src="<?php echo esc_url( $pr[8] ); ?>" alt="<?php echo esc_attr( $pr[0] . ' - rear view' ); ?>" loading="lazy" decoding="async" width="700" height="700">
-								<span class="sc-prod-card__flip-hint" aria-hidden="true">Rear view</span>
-							<?php endif; ?>
-						</div>
-						<div class="sc-prod-card__body">
-							<h3 class="sc-prod-card__name"><?php echo esc_html( $pr[0] ); ?></h3>
-							<p class="sc-prod-card__spec"><?php echo esc_html( $pr[1] ); ?></p>
-							<p class="sc-prod-card__power"><?php echo esc_html( $pr[2] ); ?></p>
-						</div>
-					</div>
-				<?php endforeach; ?>
-			</div>
-			<button type="button" class="sc-prod-nav sc-prod-nav--next" data-sc-scroll="next" aria-label="Scroll right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
-		</div>
-		<p class="sc-prod-note">A selection of the FANE range. For the complete lineup and full specifications, <a href="https://www.fane-international.com/" target="_blank" rel="noopener noreferrer">visit the FANE website</a> or <a href="#fane-catalogue">download the catalogue above</a>.</p>
-	</div>
-</section>
 
 
 <?php
