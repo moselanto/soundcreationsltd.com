@@ -2331,6 +2331,25 @@ a.sc-workproc__item:focus-visible { outline: 2px solid var(--sc-red); outline-of
 .sc-fane-cta__btns .sc-btn--primary { text-transform: none; letter-spacing: normal; }
 
 
+
+/* ============================================================
+   FANE dealer CTA directly beneath the hero (2026-09-25)
+
+   The "Become a FANE Dealer" band was moved from the foot of the
+   page to sit immediately under .sc-fane-hero. A full .sc-section
+   top pad stacked on top of the hero's own 3rem bottom pad left an
+   obvious trench between the two, so the top is tightened while the
+   bottom keeps normal section spacing to separate it from Heritage.
+
+   .sc-section--tight is deliberately NOT used here: .sc-section is
+   redefined later in this file, and with equal specificity the later
+   rule wins on source order, so the tight padding would be ignored.
+   Pairing both classes gives the weight this needs.
+   ============================================================ */
+.sc-section.sc-fane-dealer {
+	padding-block: clamp(.5rem, .3rem + .8vw, 1.25rem) clamp(2.25rem, 1.5rem + 3vw, 4rem);
+}
+
 /* ============================================================
    Global H1 size (2026-09-25)
    Every <h1> on the site renders at 30px.
