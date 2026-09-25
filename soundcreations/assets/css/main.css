@@ -2484,37 +2484,53 @@ h1.sc-contactpage-hero__title { font-size: 30px; }
 /* ============================================================
    Footer rebalance (2026-09-25)
 
-   The Explore and Solutions link columns were removed and Open Hours
-   was promoted out of Contact into the slot Solutions held, so the
-   footer went from four columns to three: brand | Open Hours | Contact.
+   The footer went from four columns to three -- brand | Open Hours |
+   Contact -- when the Explore and Solutions link columns were removed
+   and Open Hours was promoted out of Contact.
 
-   Two consequences to fix:
-     - .sc-foot-nav was a three-column grid (1fr 1fr 1.25fr) holding
-       two children, which left a dead third column and pushed Contact
-       off to the right.
-     - The outer grid gave the nav group 2.25fr against the brand's
-       1fr. That split was sized for three link columns; with two it
-       stranded the brand block in a narrow well.
+   Three things had to change:
 
-   These rules are appended last, which means they also sit AFTER the
-   footer's existing @media blocks. Equal specificity plus later source
-   order would let them win inside those breakpoints too, so the
-   breakpoints are restated below rather than left to be overridden.
+   1. .sc-foot-nav was a three-column grid (1fr 1fr 1.25fr) holding two
+      children, leaving a dead third track that pushed Contact right.
+
+   2. .sc-foot-about was capped at max-width: 360px while its grid
+      track was far wider, so the brand block ended well short of the
+      nav group and opened a ~220px trench across the middle of the
+      footer. The cap is raised and the track proportions redrawn so
+      the brand block actually fills its column.
+
+   3. The slogan is the footer's only piece of brand voice and must
+      read as ONE continuous line, not break across two. It is given
+      white-space: nowrap with a fluid size that stays inside the
+      widened column at every desktop width, and the ch-based cap that
+      was forcing the break is removed. nowrap is released below 900px,
+      where the column is narrower than the sentence and wrapping is
+      the correct behaviour.
+
+   Appended last, which means these rules also sit AFTER the footer's
+   existing @media blocks. Equal specificity plus later source order
+   would let them win inside those breakpoints, so the breakpoints are
+   restated here rather than left to be silently overridden.
    ============================================================ */
 
 .sc-footer .sc-footer__grid {
-	grid-template-columns: minmax(270px, 1.05fr) minmax(0, 1.55fr);
-	gap: clamp(2.25rem, 4vw, 4rem);
+	grid-template-columns: minmax(0, 1.25fr) minmax(0, 1.4fr);
+	gap: clamp(2rem, 3.5vw, 3.5rem);
+	align-items: start;
 }
-.sc-foot-nav { grid-template-columns: 1fr 1.15fr; }
+.sc-foot-nav { grid-template-columns: 1fr 1.2fr; }
 
-/* Brand lockup: the slogan is the footer's only piece of voice, and with
-   two link columns gone there is room to let it carry real weight. */
+/* Brand block fills its track instead of stopping at 360px. */
+.sc-foot-about { max-width: 540px; }
+
+/* One continuous line. The 20ch cap previously here is what broke
+   "If it sounds good, it's Sound Creations" across two lines. */
 .sc-foot-about p.sc-foot-tagline {
-	font-size: clamp(1.2rem, 1.05rem + .75vw, 1.6rem);
-	line-height: 1.32;
-	max-width: 20ch;
-	margin: .35rem 0 1.4rem;
+	max-width: none;
+	white-space: nowrap;
+	font-size: clamp(1rem, .8rem + .62vw, 1.3rem);
+	line-height: 1.35;
+	margin: .45rem 0 1.5rem;
 }
 
 /* Open Hours reuses .sc-foot-col, whose <li> styling was written for
@@ -2527,10 +2543,16 @@ h1.sc-contactpage-hero__title { font-size: 30px; }
 }
 .sc-foot-col--hours li:last-child { margin-bottom: 0; }
 
+/* Align the three column tops: the logo has its own leading, so the
+   nav headings need a nudge to sit on the same optical line. */
+.sc-foot-nav { padding-top: .35rem; }
+
 @media (max-width: 900px) {
 	.sc-footer .sc-footer__grid { grid-template-columns: 1fr; gap: 2.5rem; }
-	.sc-foot-nav { grid-template-columns: 1fr 1.15fr; }
-	.sc-foot-about p.sc-foot-tagline { max-width: 28ch; }
+	.sc-foot-nav { grid-template-columns: 1fr 1.2fr; padding-top: 0; }
+	.sc-foot-about { max-width: none; }
+	/* Narrower than the sentence here, so let it wrap again. */
+	.sc-foot-about p.sc-foot-tagline { white-space: normal; max-width: 34ch; }
 }
 @media (max-width: 560px) {
 	.sc-foot-nav { grid-template-columns: 1fr; gap: 1.9rem; }
