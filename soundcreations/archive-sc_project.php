@@ -165,33 +165,49 @@ if ( $sc_q->have_posts() ) {
 	</div>
 </section>
 
+<?php
+// Projects proof stats. These numbers were hardcoded here AND on the homepage,
+// which is how the site ended up advertising two different project counts.
+// They now render from the "Projects stats" field in Sound Creations ->
+// Settings (proj_stats), one stat per line as: Number | Label | Sub-note.
+$sc_pstat_icons = array(
+	0 => '<span class="sc-stat__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="m12 6.4 1.13 2.29 2.53.37-1.83 1.78.43 2.52L12 12.06l-2.26 1.19.43-2.52-1.83-1.78 2.53-.37z"/><path d="M9 14.4 7.5 21l4.5-2.6L16.5 21 15 14.4"/></svg></span>',
+	1 => '<span class="sc-stat__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.5 4 5.6 4 9s-1.4 6.5-4 9c-2.6-2.5-4-5.6-4-9s1.4-6.5 4-9z"/></svg></span>',
+	2 => '<span class="sc-stat__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4.5h6a1 1 0 0 1 1 1V6a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-.5a1 1 0 0 1 1-1z"/><path d="M8 5.5H6a2 2 0 0 0-2 2V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5a2 2 0 0 0-2-2h-2"/><path d="m8.5 13.5 2.2 2.2 4.3-4.3"/></svg></span>',
+	3 => '<span class="sc-stat__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M16 19v-1.5a3.5 3.5 0 0 0-3.5-3.5h-5A3.5 3.5 0 0 0 4 17.5V19"/><circle cx="10" cy="8" r="3.2"/><path d="M20 19v-1.5a3.5 3.5 0 0 0-2.6-3.4"/><path d="M15.4 5a3.2 3.2 0 0 1 0 6"/></svg></span>',
+);
+$sc_pstat_raw = (string) sc_setting( 'proj_stats', '' );
+$sc_pstats    = array();
+foreach ( preg_split( '/\r\n|\r|\n/', $sc_pstat_raw ) as $sc_line ) {
+	$sc_line = trim( $sc_line );
+	if ( '' === $sc_line ) {
+		continue;
+	}
+	$sc_bits = array_map( 'trim', explode( '|', $sc_line ) );
+	$sc_pstats[] = array(
+		'num'   => isset( $sc_bits[0] ) ? $sc_bits[0] : '',
+		'label' => isset( $sc_bits[1] ) ? $sc_bits[1] : '',
+		'note'  => isset( $sc_bits[2] ) ? $sc_bits[2] : '',
+	);
+}
+if ( count( $sc_pstats ) > 0 ) :
+	?>
 <section class="sc-stats sc-stats--proof">
 	<div class="sc-container">
 		<div class="sc-stats__grid">
+			<?php foreach ( $sc_pstats as $sc_pi => $sc_ps ) : ?>
 			<div class="sc-stat">
-				<span class="sc-stat__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="m12 6.4 1.13 2.29 2.53.37-1.83 1.78.43 2.52L12 12.06l-2.26 1.19.43-2.52-1.83-1.78 2.53-.37z"/><path d="M9 14.4 7.5 21l4.5-2.6L16.5 21 15 14.4"/></svg></span>
+				<?php echo $sc_pstat_icons[ $sc_pi % count( $sc_pstat_icons ) ]; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- trusted inline SVG ?>
 				<div class="sc-stat__body">
-					<div class="sc-stat__head sc-stat__head--num">22+</div>
-					<div class="sc-stat__sub">Years Experience</div>
+					<div class="sc-stat__head sc-stat__head--num"><?php echo esc_html( $sc_ps['num'] ); ?></div>
+					<div class="sc-stat__sub"><?php echo esc_html( $sc_ps['label'] ); ?><?php if ( '' !== $sc_ps['note'] ) : ?><span class="sc-stat__note"><?php echo esc_html( $sc_ps['note'] ); ?></span><?php endif; ?></div>
 				</div>
 			</div>
-			<div class="sc-stat">
-				<span class="sc-stat__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.5 4 5.6 4 9s-1.4 6.5-4 9c-2.6-2.5-4-5.6-4-9s1.4-6.5 4-9z"/></svg></span>
-				<div class="sc-stat__body">
-					<div class="sc-stat__head sc-stat__head--num">4</div>
-					<div class="sc-stat__sub">Regional Locations<span class="sc-stat__note">Kenya | Rwanda | DRC Congo | UAE</span></div>
-				</div>
-			</div>
-			<div class="sc-stat">
-				<span class="sc-stat__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4.5h6a1 1 0 0 1 1 1V6a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-.5a1 1 0 0 1 1-1z"/><path d="M8 5.5H6a2 2 0 0 0-2 2V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5a2 2 0 0 0-2-2h-2"/><path d="m8.5 13.5 2.2 2.2 4.3-4.3"/></svg></span>
-				<div class="sc-stat__body">
-					<div class="sc-stat__head sc-stat__head--num">850+</div>
-					<div class="sc-stat__sub">Projects Completed</div>
-				</div>
-			</div>
+			<?php endforeach; ?>
 		</div>
 	</div>
 </section>
+<?php endif; ?>
 
 <section class="sc-section">
 	<div class="sc-container">
