@@ -127,7 +127,7 @@ function sc_default_settings() {
 		'fane_lead' => 'Precision-engineered loudspeaker components built for demanding professional applications, trusted by sound professionals around the world.', // page-fane.php
 		'fane_products_title' => 'The FANE component range.', // page-fane.php
 		'fane_social_text' => 'See FANE loudspeakers, live demos and installations on the channels we use to bring the brand to East and Central Africa.', // page-fane.php
-		'fane_social_title' => 'Follow FANE with Sound Creations', // page-fane.php
+		'fane_social_title' => 'Follow FANE Africa\'s account', // page-fane.php
 		'fane_title' => 'Engineering sound since 1958.', // page-fane.php
 		'resources_cta_text' => 'Our technical team can point you to the right video, manual or datasheet for your system.', // archive-sc_resource.php
 		'resources_cta_title' => 'Looking for something specific?', // archive-sc_resource.php

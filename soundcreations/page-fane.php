@@ -179,7 +179,7 @@ foreach ( $sc_fane_soc as $sc_s ) {
 	<div class="sc-container">
 		<div class="sc-fane-social">
 			<div class="sc-fane-social__intro">
-				<p class="sc-eyebrow"><?php echo esc_html( sc_setting( 'fane_social_title', 'Follow FANE with Sound Creations' ) ); ?></p>
+				<p class="sc-eyebrow"><?php echo esc_html( sc_setting( 'fane_social_title', 'Follow FANE Africa\'s account' ) ); ?></p>
 				<p class="sc-fane-social__lead"><?php echo esc_html( sc_setting( 'fane_social_text', 'See FANE loudspeakers, live demos and installations on the channels we use to bring the brand to East Africa and the Middle East.' ) ); ?></p>
 			</div>
 			<div class="sc-fane-social__links">
