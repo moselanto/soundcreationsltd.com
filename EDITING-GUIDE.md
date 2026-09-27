@@ -50,18 +50,30 @@ Until you do, a sensible default menu shows automatically.
 ### Hero (big video area)
 - **Video:** Business details → "Hero background video URL (MP4)"
 - **Poster image:** Homepage images → "Hero: poster image"
-- **Eyebrow, headline, intro:** Homepage content → Hero fields
-- **The two buttons:** Homepage content → button label and link fields
+- **Headline:** Homepage content → "Hero: headline". Left blank on purpose, so
+  the hero shows video only. Type something here and the headline comes back.
+
+The hero eyebrow, intro paragraph and two buttons are no longer editable — the
+current hero design does not render them, and their settings fields were
+removed in September 2026 rather than left on the page doing nothing.
 
 ### Lower sections
 **Sound Creations → Settings → Homepage content**
 
-- "What we do" eyebrow, heading, intro
-- Process steps — one per line: `Title | Description`
+- "What we do" eyebrow, heading, intro. Only the eyebrow shows by default; the
+  heading and intro appear as soon as you type something into them.
 - Solutions eyebrow and heading; partners strip label
 - Featured projects eyebrow and heading
-- The four proof stats (number + label each)
+- The four proof stats — number, label, and a sub-note on stat 2
 - Closing call-to-action heading and text
+
+**About the proof stats:** these now work. Until September 2026 the numbers
+were written into the template, so editing these fields changed nothing. Each
+stat shows only if it has a number or a label, so clearing both removes that
+tile — that is how you drop from four stats to three. Note the homepage stats
+and the Projects page stats are separate fields and their shipped numbers
+disagree (850+ vs 300+ projects, 22+ vs 20+ years); worth setting both to
+whichever is correct.
 
 ### Homepage images
 **Homepage images** — the four "What we do" photos, three Solutions photos, and
@@ -197,6 +209,9 @@ The most useful thing you can do is fill in the **one-line summary** and
 ## 13. Not editable from the admin (developer changes)
 
 - Colours, fonts, spacing, layout
+- The homepage hero eyebrow, intro and buttons (not rendered by this design)
+- The About page Journey heading, Story card, Expertise, "Where we operate" and
+  CTA sections (not rendered by this design)
 - Section order on a page, or removing a section
 - FANE heritage timeline text (1958, 1960s–70s, …)
 - FANE difference labels (Core, Voice Coil, Basket, Magnet System, Complete Driver)
@@ -218,6 +233,10 @@ The most useful thing you can do is fill in the **one-line summary** and
 | Open Hours promoted to its own footer column | Moved out of Contact |
 | Warranty link removed | Privacy Policy and Terms remain |
 | Footer rebalanced, slogan enlarged | Slogan reads on one line |
+| Homepage proof stats wired to Settings | The four stat fields finally work; numbers were hardcoded before |
+| Projects page stats wired to Settings | Edit via Projects page → "Projects stats", one per line |
+| Section eyebrows wired to Settings | "What We Do", "Our Solutions", "Who We Are" now editable |
+| 52 dead settings fields removed | Settings went from 153 fields to 101, every one of which now actually renders |
 
 ## Quick troubleshooting
 
