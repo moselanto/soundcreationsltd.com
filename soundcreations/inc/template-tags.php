@@ -50,6 +50,22 @@ function sc_default_settings() {
 		'hours_week'   => 'Mon-Fri: 9:00 AM - 5:30 PM',
 		'hours_sat'    => 'Sat: 9:00 AM - 1:30 PM',
 		'hours_sun'    => 'Sun: Closed',
+		// --- Homepage proof stats -------------------------------------------
+		// These four slots are now rendered by front-page.php (previously the
+		// numbers were hardcoded there and these fields did nothing). Clearing a
+		// slot in Settings removes that stat from the homepage.
+		'home_stat1_num'         => '22+',
+		'home_stat1_label'       => 'Years Experience',
+		'home_stat2_num'         => '4',
+		'home_stat2_label'       => 'Regional Locations',
+		'home_stat2_note'        => 'Kenya | Rwanda | DRC Congo | UAE',
+		'home_stat3_num'         => '850+',
+		'home_stat3_label'       => 'Projects Completed',
+		// --- Homepage section headings --------------------------------------
+		'home_whatwedo_eyebrow'  => 'What We Do',
+		'home_solutions_eyebrow' => 'Our Solutions',
+		// --- About ------------------------------------------------------------
+		'about_hero_eyebrow'     => 'Who We Are',
 		'regions'      => 'Kenya · Rwanda · DRC Congo · UAE',
 		'whatsapp'     => '254715754758',
 		'facebook'     => 'https://web.facebook.com/soundcreationsKE',

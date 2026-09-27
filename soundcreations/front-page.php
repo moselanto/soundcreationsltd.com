@@ -60,7 +60,9 @@ $sc_hero_poster = sc_setting( 'home_hero_poster', SC_THEME_URI . '/assets/img/he
 	<div class="sc-container">
 		<div class="sc-sechead">
 			<div>
-				<p class="sc-eyebrow">What We Do</p>
+				<p class="sc-eyebrow"><?php echo esc_html( sc_setting( 'home_whatwedo_eyebrow', 'What We Do' ) ); ?></p>
+				<?php $sc_ww_t = trim( (string) sc_setting( 'home_whatwedo_title', '' ) ); if ( '' !== $sc_ww_t ) : ?><h2 style="margin:0;"><?php echo esc_html( $sc_ww_t ); ?></h2><?php endif; ?>
+				<?php $sc_ww_l = trim( (string) sc_setting( 'home_whatwedo_lead', '' ) ); if ( '' !== $sc_ww_l ) : ?><p class="sc-lead" style="margin:.4rem 0 0;"><?php echo sc_rich_e( $sc_ww_l ); ?></p><?php endif; ?>
 			</div>
 		</div>
 		<div class="sc-svcards">
@@ -149,7 +151,8 @@ $sc_hero_poster = sc_setting( 'home_hero_poster', SC_THEME_URI . '/assets/img/he
 	<div class="sc-container">
 		<div class="sc-sechead">
 			<div>
-				<p class="sc-eyebrow">Our Solutions</p>
+				<p class="sc-eyebrow"><?php echo esc_html( sc_setting( 'home_solutions_eyebrow', 'Our Solutions' ) ); ?></p>
+				<?php $sc_sol_t = trim( (string) sc_setting( 'home_solutions_title', '' ) ); if ( '' !== $sc_sol_t ) : ?><h2 style="margin:0;"><?php echo esc_html( $sc_sol_t ); ?></h2><?php endif; ?>
 			</div>
 		</div>
 		<div class="sc-solgrid">
@@ -278,33 +281,45 @@ $sc_hero_poster = sc_setting( 'home_hero_poster', SC_THEME_URI . '/assets/img/he
 	</script>
 </section>
 
+<?php
+// Proof stats. These were hardcoded in this template, which meant the four
+// "Proof stat" fields in Sound Creations -> Settings had no effect at all.
+// Each slot now renders only when it has a number OR a label, so clearing a
+// slot in Settings removes that stat instead of leaving an empty tile.
+$sc_stat_icons = array(
+			1 => '<span class="sc-stat__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="m12 6.4 1.13 2.29 2.53.37-1.83 1.78.43 2.52L12 12.06l-2.26 1.19.43-2.52-1.83-1.78 2.53-.37z"/><path d="M9 14.4 7.5 21l4.5-2.6L16.5 21 15 14.4"/></svg></span>',
+			2 => '<span class="sc-stat__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.5 4 5.6 4 9s-1.4 6.5-4 9c-2.6-2.5-4-5.6-4-9s1.4-6.5 4-9z"/></svg></span>',
+			3 => '<span class="sc-stat__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4.5h6a1 1 0 0 1 1 1V6a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-.5a1 1 0 0 1 1-1z"/><path d="M8 5.5H6a2 2 0 0 0-2 2V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5a2 2 0 0 0-2-2h-2"/><path d="m8.5 13.5 2.2 2.2 4.3-4.3"/></svg></span>',
+			4 => '<span class="sc-stat__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M16 19v-1.5a3.5 3.5 0 0 0-3.5-3.5h-5A3.5 3.5 0 0 0 4 17.5V19"/><circle cx="10" cy="8" r="3.2"/><path d="M20 19v-1.5a3.5 3.5 0 0 0-2.6-3.4"/><path d="M15.4 5a3.2 3.2 0 0 1 0 6"/></svg></span>',
+);
+$sc_stats = array();
+for ( $sc_i = 1; $sc_i <= 4; $sc_i++ ) {
+	$sc_num  = trim( (string) sc_setting( 'home_stat' . $sc_i . '_num', '' ) );
+	$sc_lab  = trim( (string) sc_setting( 'home_stat' . $sc_i . '_label', '' ) );
+	$sc_note = trim( (string) sc_setting( 'home_stat' . $sc_i . '_note', '' ) );
+	if ( '' === $sc_num && '' === $sc_lab ) {
+		continue;
+	}
+	$sc_stats[] = array( 'num' => $sc_num, 'label' => $sc_lab, 'note' => $sc_note, 'icon' => $sc_i );
+}
+if ( count( $sc_stats ) > 0 ) :
+	?>
 <section class="sc-stats sc-stats--proof">
 	<div class="sc-container">
 		<div class="sc-stats__grid">
+			<?php foreach ( $sc_stats as $sc_st ) : ?>
 			<div class="sc-stat">
-				<span class="sc-stat__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="m12 6.4 1.13 2.29 2.53.37-1.83 1.78.43 2.52L12 12.06l-2.26 1.19.43-2.52-1.83-1.78 2.53-.37z"/><path d="M9 14.4 7.5 21l4.5-2.6L16.5 21 15 14.4"/></svg></span>
+				<?php echo $sc_stat_icons[ $sc_st['icon'] ]; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- trusted inline SVG ?>
 				<div class="sc-stat__body">
-					<div class="sc-stat__head sc-stat__head--num">22+</div>
-					<div class="sc-stat__sub">Years Experience</div>
+					<div class="sc-stat__head sc-stat__head--num"><?php echo esc_html( $sc_st['num'] ); ?></div>
+					<div class="sc-stat__sub"><?php echo esc_html( $sc_st['label'] ); ?><?php if ( '' !== $sc_st['note'] ) : ?><span class="sc-stat__note"><?php echo esc_html( $sc_st['note'] ); ?></span><?php endif; ?></div>
 				</div>
 			</div>
-			<div class="sc-stat">
-				<span class="sc-stat__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.5 4 5.6 4 9s-1.4 6.5-4 9c-2.6-2.5-4-5.6-4-9s1.4-6.5 4-9z"/></svg></span>
-				<div class="sc-stat__body">
-					<div class="sc-stat__head sc-stat__head--num">4</div>
-					<div class="sc-stat__sub">Regional Locations<span class="sc-stat__note">Kenya | Rwanda | DRC Congo | UAE</span></div>
-				</div>
-			</div>
-			<div class="sc-stat">
-				<span class="sc-stat__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4.5h6a1 1 0 0 1 1 1V6a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-.5a1 1 0 0 1 1-1z"/><path d="M8 5.5H6a2 2 0 0 0-2 2V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5a2 2 0 0 0-2-2h-2"/><path d="m8.5 13.5 2.2 2.2 4.3-4.3"/></svg></span>
-				<div class="sc-stat__body">
-					<div class="sc-stat__head sc-stat__head--num">850+</div>
-					<div class="sc-stat__sub">Projects Completed</div>
-				</div>
-			</div>
+			<?php endforeach; ?>
 		</div>
 	</div>
 </section>
+<?php endif; ?>
 
 <section class="sc-section">
 	<div class="sc-container">

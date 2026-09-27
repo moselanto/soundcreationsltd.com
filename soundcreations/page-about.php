@@ -83,7 +83,7 @@ $sc_proc_icons = array(
 	<div class="sc-container sc-journey">
 		<div class="sc-journey__text">
 			<nav class="sc-breadcrumb" aria-label="Breadcrumb"><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a><span class="sep">/</span><span aria-current="page">About</span></nav>
-			<p class="sc-eyebrow">Who We Are</p>
+			<p class="sc-eyebrow"><?php echo esc_html( sc_setting( 'about_hero_eyebrow', 'Who We Are' ) ); ?></p>
 			<h1 class="sc-about-hero__title"><?php echo esc_html( sc_setting( 'about_hero_title', 'If it sounds good, it’s Sound Creations' ) ); ?></h1>
 			<p class="sc-journey__lead"><?php echo sc_rich_e( sc_setting( 'about_journey_p1', 'Founded in 2004, Sound Creations Ltd has grown into a leading provider of professional audio, visual, lighting and acoustic solutions across East Africa and beyond. What began as a specialist audio company is today a full-service integrator — designing, supplying, installing and supporting complete systems for the region’s most demanding spaces.' ) ); ?></p>
 		</div>
