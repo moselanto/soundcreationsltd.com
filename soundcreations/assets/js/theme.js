@@ -279,10 +279,25 @@
 		var v = document.querySelector('[data-sc-hero-video]');
 		if (!v) { return; }
 
+		// The hero video is ~22MB. It is purely decorative -- the poster image is
+		// already painted as the section background and the hero looks complete
+		// without it -- so it is only worth fetching on a wide screen over a
+		// connection that can absorb it. Every bail-out below leaves the poster in
+		// place, which is why none of them needs a fallback.
 		var c = navigator.connection || navigator.webkitConnection || {};
 		if (c.saveData === true) { return; }
-		if (typeof c.effectiveType === 'string' && c.effectiveType.indexOf('2g') !== -1) { return; }
+
+		// Skip 2g AND 3g. Previously only 2g was excluded, which still pushed 22MB
+		// down a 3g connection -- the common case on mobile in our markets.
+		if (typeof c.effectiveType === 'string' &&
+			(c.effectiveType.indexOf('2g') !== -1 || c.effectiveType.indexOf('3g') !== -1)) { return; }
+
 		if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) { return; }
+
+		// Phones and small tablets never get the video. At these widths it sits
+		// behind the scrim and is largely unseen, so it is close to pure cost --
+		// and mobile is where the bandwidth is most expensive.
+		if (window.matchMedia && window.matchMedia('(max-width: 900px)').matches) { return; }
 
 		if (typeof window.IntersectionObserver === 'function') {
 			var io = new IntersectionObserver(function (entries) {
