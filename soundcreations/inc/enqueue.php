@@ -90,9 +90,10 @@ add_filter( 'script_loader_tag', 'sc_defer_scripts', 10, 2 );
    link, so the next navigation paints from memory and feels instant. Falls
    back silently to normal navigation in browsers without support.
 
-   Patterns are derived from the real site path, because this install lives in
-   a subdirectory (/newwebsite/) -- hardcoded '/wp-admin/*' style patterns
-   would never match here.
+   Patterns are derived from the real site path via home_url(), so they stay
+   correct wherever WordPress is installed. The site now runs at the domain
+   root (it was previously served from the /newwebsite/ subdirectory); deriving
+   the base keeps hardcoded '/wp-admin/*' style patterns out of the codebase.
 
    Excluded: wp-admin, wp-login, wp-json, wp-comments-post, the enquiry POST
    endpoint, and anything carrying a query string, so nothing with a side

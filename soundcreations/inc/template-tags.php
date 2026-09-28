@@ -94,7 +94,7 @@ function sc_default_settings() {
 		'projects_cta_title'   => 'Have a project in mind?',
 		'projects_cta_text'    => 'Our team of experts is ready to help you design and deliver the right solution.',
 		'fane_info'            => '<h3>Why FANE</h3><p>FANE has engineered professional loudspeaker components in the UK since 1958, trusted by manufacturers and sound professionals worldwide. Sound Creations is the authorised FANE partner for the region.</p><p><strong>What sets FANE apart</strong></p><ul><li>Precision-engineered drivers built for demanding professional use</li><li>Consistent performance, reliability and long service life</li><li>A complete range for touring, install, hospitality and custom builds</li></ul><p>Talk to our team about specifying FANE components for your project, or about stocking and reselling FANE as a distribution partner.</p>',
-		'hero_video'   => 'https://soundcreationsltd.com/newwebsite/wp-content/uploads/2026/08/dbtechnologies_stories_homepage-1280.mp4',
+		'hero_video'   => 'https://soundcreationsltd.com/wp-content/uploads/2026/08/dbtechnologies_stories_homepage-1280.mp4',
 		'footer_about'       => 'Sound Creations Ltd delivers professional Audio, Visual, Lighting and Acoustic solutions across Africa, backed by expert consultation, quality distribution, acoustic solutions and professional installation.',
 		'footer_explore'     => "Home | /\nSolutions | /solutions/\nBrands & Products | /brands/\nProjects | /projects/\nAbout | /about/\nContact | /contact/",
 		'footer_solutions'   => "Professional Audio | /solutions/professional-audio/\nAcoustics | /solutions/acoustics/\nConferencing | /solutions/conferencing/\nSystem Integration | /solutions/system-integration/\nFANE Loudspeakers | /fane/",
@@ -127,8 +127,9 @@ function sc_default_settings() {
 		// Third field is the link target. This value -- NOT the inline fallback in
 		// page-about.php -- is what actually renders, because sc_setting() checks
 		// sc_default_settings() before the $default argument. Paths are stored
-		// relative and resolved through home_url() in the template, which is
-		// required because this install lives in the /newwebsite/ subdirectory.
+		// relative and resolved through home_url() in the template, which keeps
+		// them correct wherever WordPress is installed. The site now runs at the
+		// domain root; it was previously served from the /newwebsite/ subdirectory.
 		'about_process_items' => "Consultation & Design | We listen, we visualize with our new client, we propose, we reach agreements & we represent the solution. | /service/consultancy/\nDistribution | From the most affordable to the substantial investments, we keep the quality 100% and the warranties. | /distribution-dealership/\nIntegration | Our promise is professional installations, system trainings, seamless handovers and guaranteed. | /service/integration/\nSupport & Training | Comprehensive after-sales support, including a 1-year warranty service after installation. | /service/after-sale-services/", // page-about.php
 		'about_hero_title' => 'If it sounds good, it’s Sound Creations', // page-about.php
 		'about_journey_p1' => 'Founded in 2004, Sound Creations Ltd has grown into a leading provider of professional audio, visual, lighting and acoustic solutions across East Africa and beyond. What began as a specialist audio company is today a full-service integrator — designing, supplying, installing and supporting complete systems for the region’s most demanding spaces.', // page-about.php

@@ -13,7 +13,7 @@ uploads, authentication, headers or anything holding PII.
 ## 1. What this repository is
 
 The first-party WordPress code for the Sound Creations Ltd website
-(<https://soundcreationsltd.com/newwebsite/>) — a B2B professional audio,
+(<https://soundcreationsltd.com/>) — a B2B professional audio,
 acoustics, distribution and integration company operating from Nairobi, Kigali,
 DR Congo and Dubai.
 
@@ -41,9 +41,10 @@ this repository. Do not add them.
    `soundcreations_settings`. Read them with `sc_setting()` in the theme or
    `sc_core_get()` in Core. If an editor cannot change it from the admin, that
    is a bug.
-3. **The site runs in a subdirectory (`/newwebsite/`).** Never write a
+3. **Never assume where the site is installed.** It now runs at the domain
+   root, having moved from the `/newwebsite/` subdirectory. Never write a
    root-relative path like `/wp-admin/*` or `/assets/...`. Derive paths from
-   `home_url()`, `SC_THEME_URI` or `SC_THEME_DIR`.
+   `home_url()`, `SC_THEME_URI` or `SC_THEME_DIR` so a future move is free.
 4. **Sanitise on input, escape on output. Every time.**
 5. **Never weaken a security control to make something work.** If a control is
    in your way, read `SECURITY-AUDIT.md` for why it exists, then solve the

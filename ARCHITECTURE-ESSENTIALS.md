@@ -76,8 +76,9 @@ retry — but nothing is stored or mailed.
 
 ## Things that will surprise you
 
-- The install lives in a **subdirectory** (`/newwebsite/`). Never hardcode a
-  root-relative path like `/wp-admin/*`; derive it from `home_url()`.
+- The install now lives at the **domain root**, moved from the `/newwebsite/`
+  subdirectory. Never hardcode a root-relative path like `/wp-admin/*`; derive
+  it from `home_url()` so the code stays location-independent.
 - The theme version constant is the **filemtime of `main.css`**, so any CSS edit
   cache-busts every asset automatically.
 - `DISALLOW_FILE_EDIT` is defined in **both** the theme and its hardening module.

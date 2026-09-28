@@ -1,6 +1,6 @@
 # Sound Creations Ltd — Website
 
-Source for the Sound Creations Ltd website: <https://soundcreationsltd.com/newwebsite/>
+Source for the Sound Creations Ltd website: <https://soundcreationsltd.com/>
 
 Sound Creations Ltd is a B2B professional audio, acoustics, distribution and
 integration company headquartered in Nairobi, Kenya, with a branch in Kigali,

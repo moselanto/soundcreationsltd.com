@@ -370,9 +370,9 @@ cron. Rewrite rules are flushed on Core deactivation.
 
 ## 10. Conventions and constraints
 
-- **Subdirectory install.** The site runs at `/newwebsite/`. Always derive paths
-  from `home_url()` / `SC_THEME_URI`. Hardcoded root-relative paths will not
-  match.
+- **Location-independent install.** The site runs at the domain root, moved
+  from the `/newwebsite/` subdirectory. Always derive paths from `home_url()` /
+  `SC_THEME_URI`; never hardcode root-relative paths.
 - **PHP 8.0+, WordPress 6.4+.** Both plugins and the theme declare this.
 - **WordPress coding standards**: tabs for indentation, Yoda conditions in
   places, full `ABSPATH` guard at the top of every PHP file, `@package` docblock.

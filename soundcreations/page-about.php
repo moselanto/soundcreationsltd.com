@@ -56,9 +56,11 @@ foreach ( preg_split( "/\r\n|\r|\n/", $sc_proc_raw ) as $sc_line ) {
 	// as a plain card rather than a link.
 	$sc_parts = array_map( 'trim', explode( '|', $sc_line, 3 ) );
 	$sc_url   = isset( $sc_parts[2] ) ? $sc_parts[2] : '';
-	// Relative paths MUST go through home_url(): this install lives in a
-	// subdirectory (/newwebsite/), so a bare "/service/consultancy/" would
-	// resolve against the domain root and 404. Absolute URLs pass through.
+	// Relative paths MUST go through home_url() so they stay correct wherever
+	// WordPress is installed. The site now runs at the domain root; it was
+	// previously served from the /newwebsite/ subdirectory, where a bare
+	// "/service/consultancy/" resolved against the domain root and 404'd.
+	// Absolute URLs pass through unchanged.
 	if ( '' !== $sc_url && 0 !== strpos( $sc_url, 'http' ) ) {
 		$sc_url = home_url( $sc_url );
 	}

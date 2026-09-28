@@ -1,6 +1,6 @@
 # Product Requirements — Sound Creations Ltd Website
 
-**Status:** live at <https://soundcreationsltd.com/newwebsite/>
+**Status:** live at <https://soundcreationsltd.com/>
 **Owner:** Sound Creations Ltd
 **Scope:** the corporate website, its content model and its lead-capture system.
 
@@ -158,7 +158,7 @@ The website therefore has to do three things a product listing cannot:
 | Accessibility | Semantic HTML, labelled form fields, `aria-label` on map pins, keyboard-reachable list items |
 | Compatibility | WordPress 6.4+, PHP 8.0+ |
 | Maintainability | Business logic in plugins, presentation in the theme, child theme for overrides |
-| Deployment | Runs in a subdirectory (`/newwebsite/`); no code may assume a root install |
+| Deployment | Runs at the domain root, moved from the `/newwebsite/` subdirectory; no code may assume a fixed install location |
 
 ## 7. Decisions and rationale
 
