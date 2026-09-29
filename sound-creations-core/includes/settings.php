@@ -34,6 +34,27 @@ function sc_core_settings_fields() {
 			'instagram'            => array( 'Instagram URL', 'text' ),
 		'hero_video'           => array( 'Hero background video URL (MP4)', 'image' ),
 
+		// Geo + branch data feeding LocalBusiness structured data.
+		// A branch node is emitted ONLY when its address is filled in, so
+		// leaving these blank is safe: it means no claim is made, rather
+		// than a wrong one. Never enter a placeholder address here.
+		'__sec_locations'      => array( 'Locations and local SEO', 'heading' ),
+		'google_business'      => array( 'Google Business Profile URL', 'text' ),
+		'geo_lat'              => array( 'Nairobi latitude (e.g. -1.2664)', 'text' ),
+		'geo_lng'              => array( 'Nairobi longitude (e.g. 36.8065)', 'text' ),
+		'branch_kigali_address'=> array( 'Kigali: street address (blank = no Kigali listing)', 'text' ),
+		'branch_kigali_phone'  => array( 'Kigali: phone', 'text' ),
+		'branch_kigali_lat'    => array( 'Kigali: latitude', 'text' ),
+		'branch_kigali_lng'    => array( 'Kigali: longitude', 'text' ),
+		'branch_drc_address'   => array( 'DR Congo: street address (blank = no DRC listing)', 'text' ),
+		'branch_drc_phone'     => array( 'DR Congo: phone', 'text' ),
+		'branch_drc_lat'       => array( 'DR Congo: latitude', 'text' ),
+		'branch_drc_lng'       => array( 'DR Congo: longitude', 'text' ),
+		'branch_dubai_address' => array( 'Dubai: street address (blank = no Dubai listing)', 'text' ),
+		'branch_dubai_phone'   => array( 'Dubai: phone', 'text' ),
+		'branch_dubai_lat'     => array( 'Dubai: latitude', 'text' ),
+		'branch_dubai_lng'     => array( 'Dubai: longitude', 'text' ),
+
 		'__sec_footer'         => array( 'Footer', 'heading' ),
 		'footer_address'       => array( 'Contact: address (one line per row)', 'textarea' ),
 		'footer_hours_label'   => array( 'Contact: open-hours heading', 'text' ),
