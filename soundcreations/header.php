@@ -17,6 +17,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 </head>
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
+<div class="sc-preload" role="status" aria-live="polite" aria-label="<?php esc_attr_e( 'Loading', 'soundcreations' ); ?>">
+	<div class="sc-wavefront" aria-hidden="true">
+		<span class="sc-wavefront__ring"></span>
+		<span class="sc-wavefront__ring"></span>
+		<span class="sc-wavefront__ring"></span>
+		<span class="sc-wavefront__ring"></span>
+		<span class="sc-wavefront__core"></span>
+	</div>
+	<p class="sc-preload__label"><?php echo esc_html( get_bloginfo( 'name' ) ); ?></p>
+</div>
 <a class="sc-skip-link" href="#sc-main"><?php esc_html_e( 'Skip to content', 'soundcreations' ); ?></a>
 
 <div class="sc-utility">

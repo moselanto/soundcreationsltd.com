@@ -19,6 +19,7 @@ add_action(
 
 		wp_enqueue_script( 'sc-theme', SC_THEME_URI . '/assets/js/theme.js', array(), SC_THEME_VERSION, true );
 		wp_enqueue_script( 'sc-map', SC_THEME_URI . '/assets/js/map.js', array(), SC_THEME_VERSION, true );
+		wp_enqueue_script( 'sc-loader', SC_THEME_URI . '/assets/js/loader.js', array(), SC_THEME_VERSION, true );
 	},
 	20
 );
@@ -58,7 +59,7 @@ add_action(
 	'wp_head',
 	function () {
 		$sc_css = '';
-		foreach ( array( 'tokens.css', 'fonts.css' ) as $sc_file ) {
+		foreach ( array( 'tokens.css', 'fonts.css', 'loader.css' ) as $sc_file ) {
 			$sc_path = SC_THEME_DIR . '/assets/css/' . $sc_file;
 			if ( is_readable( $sc_path ) ) {
 				$sc_css .= file_get_contents( $sc_path );
@@ -73,9 +74,27 @@ add_action(
 	2
 );
 
+/* Brand loader bootstrap. Inline and tiny because it must run before first
+   paint; all it does is put one class on <html>.
+
+   Three escape hatches, because a loader that can trap content is a bug:
+     - no JS          -> class never added, overlay never shows
+     - reduced motion -> skipped entirely
+     - already seen   -> skipped for the rest of the session, so only the
+                         first navigation of a visit ever pays for it
+   The 1.6s timeout is a hard failsafe: even if DOMContentLoaded never fires,
+   the overlay still lifts. */
+add_action(
+	'wp_head',
+	function () {
+		echo "<script>(function(){try{if(sessionStorage.getItem('sc-preload')==='1'){return;}if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches){return;}sessionStorage.setItem('sc-preload','1');}catch(e){}var h=document.documentElement;h.className+=' sc-loading';var d=function(){h.className=h.className.replace(/\\s*sc-loading/,'');};if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',d);}else{d();}window.setTimeout(d,1600);})();</script>\n";
+	},
+	3
+);
+
 /* Performance: defer the two front-end scripts (they already load in the footer). */
 function sc_defer_scripts( $tag, $handle ) {
-	if ( in_array( $handle, array( 'sc-theme', 'sc-map' ), true ) && strpos( $tag, ' defer' ) === false ) {
+	if ( in_array( $handle, array( 'sc-theme', 'sc-map', 'sc-loader' ), true ) && strpos( $tag, ' defer' ) === false ) {
 		$tag = str_replace( ' src=', ' defer src=', $tag );
 	}
 	return $tag;
