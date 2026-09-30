@@ -177,6 +177,45 @@ $sc_pstat_icons = array(
 	3 => '<span class="sc-stat__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M16 19v-1.5a3.5 3.5 0 0 0-3.5-3.5h-5A3.5 3.5 0 0 0 4 17.5V19"/><circle cx="10" cy="8" r="3.2"/><path d="M20 19v-1.5a3.5 3.5 0 0 0-2.6-3.4"/><path d="M15.4 5a3.2 3.2 0 0 1 0 6"/></svg></span>',
 );
 $sc_pstat_raw = (string) sc_setting( 'proj_stats', '' );
+
+/*
+ * SINGLE SOURCE OF TRUTH FOR THE PROOF STATS  (30 Sep 2026)
+ *
+ * A previous pass moved these numbers out of the template and into the
+ * proj_stats setting -- see the comment above -- but left a hardcoded
+ * DEFAULT for proj_stats in inc/template-tags.php that still carried the
+ * old figures. sc_setting() falls back to that default whenever the field
+ * is empty, so the contradiction survived the refactor and the site went on
+ * publishing two different numbers for the same facts:
+ *
+ *     homepage        22+ years      4 locations      850+ projects
+ *     projects page   20+ years      4 offices        300+ projects
+ *
+ * A visitor comparing the two pages sees a company that cannot count its
+ * own projects, and 850 versus 300 is not a rounding difference. Publishing
+ * mutually contradictory claims is also precisely the pattern that gets a
+ * business flagged for misrepresentation.
+ *
+ * Fix: the homepage stat fields are now the ONE place these facts live. When
+ * proj_stats is empty this page derives its tiles from them, so editing the
+ * numbers in Settings updates both pages together and they cannot drift
+ * apart again. proj_stats is kept as a deliberate override for the rare case
+ * where this page should show something different -- but it now starts empty,
+ * so matching is the default behaviour rather than something to remember.
+ */
+if ( '' === trim( $sc_pstat_raw ) ) {
+	$sc_derived = array();
+	for ( $sc_si = 1; $sc_si <= 4; $sc_si++ ) {
+		$sc_dnum  = trim( (string) sc_setting( 'home_stat' . $sc_si . '_num', '' ) );
+		$sc_dlab  = trim( (string) sc_setting( 'home_stat' . $sc_si . '_label', '' ) );
+		$sc_dnote = trim( (string) sc_setting( 'home_stat' . $sc_si . '_note', '' ) );
+		if ( '' === $sc_dnum && '' === $sc_dlab ) {
+			continue;
+		}
+		$sc_derived[] = $sc_dnum . ' | ' . $sc_dlab . ' | ' . $sc_dnote;
+	}
+	$sc_pstat_raw = implode( "\n", $sc_derived );
+}
 $sc_pstats    = array();
 foreach ( preg_split( '/\r\n|\r|\n/', $sc_pstat_raw ) as $sc_line ) {
 	$sc_line = trim( $sc_line );

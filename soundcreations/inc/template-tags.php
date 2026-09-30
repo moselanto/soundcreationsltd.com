@@ -90,7 +90,12 @@ function sc_default_settings() {
 		'projects_eyebrow'     => 'Our Projects',
 		'projects_title'       => 'Real solutions. Real impact.',
 		'projects_lead'        => 'Explore a selection of our professional audio, acoustics and integration projects across Africa and the Middle East.',
-		'proj_stats'           => "300+ | Projects Completed | Across Africa & Middle East\n50+ | Expert Professionals | Delivering Excellence\n4 | Regional Offices | Local Presence, Global Reach\n20+ | Years of Experience | In Audio, Visual & Acoustics",
+		// Intentionally EMPTY. This used to hold hardcoded stats that
+		// contradicted the homepage (300+ projects vs 850+, 20+ years vs 22+).
+		// archive-sc_project.php now derives its tiles from the home_stat*
+		// values when this is blank, so the two pages agree by default. Fill
+		// this in only to deliberately override the projects page.
+		'proj_stats'           => '',
 		'projects_cta_title'   => 'Have a project in mind?',
 		'projects_cta_text'    => 'Our team of experts is ready to help you design and deliver the right solution.',
 		'fane_info'            => '<h3>Why FANE</h3><p>FANE has engineered professional loudspeaker components in the UK since 1958, trusted by manufacturers and sound professionals worldwide. Sound Creations is the authorised FANE partner for the region.</p><p><strong>What sets FANE apart</strong></p><ul><li>Precision-engineered drivers built for demanding professional use</li><li>Consistent performance, reliability and long service life</li><li>A complete range for touring, install, hospitality and custom builds</li></ul><p>Talk to our team about specifying FANE components for your project, or about stocking and reselling FANE as a distribution partner.</p>',
