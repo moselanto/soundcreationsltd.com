@@ -748,7 +748,16 @@ function sc_seo_node_video() {
 		return null;
 	}
 	$pid = get_queried_object_id();
-	$vid = sc_seo_youtube_id( get_post_meta( $pid, 'video_url', true ) );
+	// fields.php stores every custom field with a '_sc_' prefix (see its
+	// update_post_meta call), so the key is '_sc_video_url'. Reading the
+	// unprefixed name returned nothing, which silently disabled VideoObject
+	// on all five /videos/ pages and let the Article fallback emit instead.
+	// The unprefixed fallback stays for any legacy row written directly.
+	$raw = get_post_meta( $pid, '_sc_video_url', true );
+	if ( '' === trim( (string) $raw ) ) {
+		$raw = get_post_meta( $pid, 'video_url', true );
+	}
+	$vid = sc_seo_youtube_id( $raw );
 	if ( ! $vid ) {
 		return null; // Not a video resource; emit nothing rather than a stub.
 	}
