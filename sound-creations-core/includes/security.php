@@ -309,9 +309,21 @@ add_filter(
 		if ( empty( $headers['Cross-Origin-Resource-Policy'] ) ) {
 			$headers['Cross-Origin-Resource-Policy'] = 'same-site';
 		}
-		// Opt out of Google's FLoC/Topics inference on a B2B site.
-		if ( empty( $headers['Permissions-Policy'] ) ) {
+		// Opt out of Google's FLoC/Topics cohort inference.
+		//
+		// BUG FIXED 30 Sep 2026: this previously only assigned the header when
+		// it was EMPTY. The theme's own hardening module always sets
+		// Permissions-Policy, so the guard was always false and interest-cohort
+		// was never actually sent -- verified by live probe, which returned
+		// 'geolocation=(), microphone=(), camera=()' with no cohort directive.
+		// A guard written to avoid clobbering another module's value instead
+		// silently disabled the control. Now appends to whatever is already
+		// there rather than competing with it.
+		$pp = isset( $headers['Permissions-Policy'] ) ? (string) $headers['Permissions-Policy'] : '';
+		if ( '' === trim( $pp ) ) {
 			$headers['Permissions-Policy'] = 'geolocation=(), microphone=(), camera=(), interest-cohort=()';
+		} elseif ( false === stripos( $pp, 'interest-cohort' ) ) {
+			$headers['Permissions-Policy'] = rtrim( $pp, ' ,' ) . ', interest-cohort=()';
 		}
 		return $headers;
 	},
