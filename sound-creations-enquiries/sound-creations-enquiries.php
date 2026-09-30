@@ -22,6 +22,7 @@ define( 'SC_ENQ_DIR', plugin_dir_path( __FILE__ ) );
 define( 'SC_ENQ_URI', plugin_dir_url( __FILE__ ) );
 
 require_once SC_ENQ_DIR . 'includes/security.php';
+require_once SC_ENQ_DIR . 'includes/antispam.php';
 require_once SC_ENQ_DIR . 'includes/forms.php';
 require_once SC_ENQ_DIR . 'includes/handler.php';
 require_once SC_ENQ_DIR . 'includes/admin.php';
