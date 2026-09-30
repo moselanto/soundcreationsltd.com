@@ -777,9 +777,32 @@ function sc_seo_node_video() {
 		return null; // Not a video resource; emit nothing rather than a stub.
 	}
 
-	$desc = wp_strip_all_tags( get_the_excerpt( $pid ) );
-	if ( ! $desc ) {
-		$desc = wp_trim_words( wp_strip_all_tags( get_post_field( 'post_content', $pid ) ), 40 );
+	// description is a REQUIRED field for Google video rich results, and a
+	// live check on 30 Sep 2026 found it EMPTY on all five /videos/ pages.
+	// Those posts carry no excerpt and almost no post_content (123-131
+	// words each, with no embedded player on the singular view), so both
+	// original sources returned ''. A VideoObject without description is
+	// ineligible for a rich result, so the markup was being wasted.
+	//
+	// Chain now ends at the per-type meta description seo.php already
+	// generates from the real business geography. That is generated copy
+	// rather than authored prose, but it is truthful and specific, unlike
+	// padding the field by repeating the title back at the crawler.
+	$desc = wp_strip_all_tags( (string) get_the_excerpt( $pid ) );
+	if ( '' === trim( $desc ) ) {
+		$desc = wp_trim_words( wp_strip_all_tags( (string) get_post_field( 'post_content', $pid ) ), 40 );
+	}
+	if ( '' === trim( $desc ) ) {
+		$meta_desc = get_post_meta( $pid, '_sc_seo_desc', true );
+		if ( $meta_desc ) {
+			$desc = wp_strip_all_tags( $meta_desc );
+		}
+	}
+	if ( '' === trim( $desc ) && function_exists( 'sc_seo_description' ) ) {
+		$desc = wp_strip_all_tags( (string) sc_seo_description() );
+	}
+	if ( '' === trim( $desc ) ) {
+		return null; // Nothing truthful to say: emit no node rather than an invalid one.
 	}
 
 	$node = array(
