@@ -53,6 +53,16 @@ $sc_arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-w
 	<div class="sc-container sc-support-hero__inner">
 		<nav class="sc-crumb" aria-label="Breadcrumb"><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a> <span aria-hidden="true">&rsaquo;</span> <span class="sc-crumb__cur"><?php esc_html_e( 'Products', 'soundcreations' ); ?></span></nav>
 		<p class="sc-eyebrow"><?php echo esc_html( sc_setting( 'products_eyebrow', 'What we offer' ) ); ?></p>
+		<?php
+		// This archive had NO h1 at all, while every sibling archive
+		// (solutions, projects, videos) has one. A crawl on 29 Sep 2026
+		// confirmed /brands/ was the only landing page on the site with
+		// zero h1, so the strongest on-page heading signal for every
+		// brand-and-distribution query was simply absent. Default copy
+		// leads with the category rather than a slogan, matching the
+		// title tag generated in seo-titles.php.
+		?>
+		<h1 class="sc-support-hero__title"><?php echo esc_html( sc_setting( 'products_title', 'Professional audio, acoustic and AV brands.' ) ); ?></h1>
 		<p class="sc-lead sc-support-hero__lead"><?php echo esc_html( sc_setting( 'products_lead', 'Professional sound and acoustic solutions.' ) ); ?></p>
 	</div>
 </section>

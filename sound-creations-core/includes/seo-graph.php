@@ -392,6 +392,21 @@ function sc_seo_node_organization() {
 		'audio system calibration',
 		'digital mixing consoles',
 		'professional microphones',
+		// Lighting was missing from every keyword and schema surface even
+		// though the site's own title tag has always read "AV, Audio,
+		// Lighting & Acoustic Solutions". Competitor benchmarking on
+		// 30 Sep 2026 found StagePass mentioning lighting 27 times on its
+		// home page against 9 here, so the term was being conceded despite
+		// being claimed in the title. These entries state the capability
+		// the site already advertises; they do not invent a new service.
+		'stage lighting',
+		'architectural lighting',
+		'lighting design',
+		'lighting control systems',
+		'DMX lighting control',
+		'LED screens and video walls',
+		'digital signage',
+		'stage and venue rigging',
 		'equipment distribution and dealership',
 	);
 
