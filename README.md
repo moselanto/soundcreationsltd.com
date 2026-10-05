@@ -11,17 +11,17 @@
 
 Professional audio, acoustics, lighting, distribution and AV integration across East Africa and the Middle East. Headquartered in Nairobi, with offices in Kigali, Kinshasa and Dubai.
 
-\![WordPress](https://img.shields.io/badge/WordPress-6.4%2B-21759B?logo=wordpress&logoColor=white)
-\![PHP](https://img.shields.io/badge/PHP-8.0%2B-777BB4?logo=php&logoColor=white)
-\![No page builder](https://img.shields.io/badge/Build-hand--coded%2C%20no%20page%20builder-111114)
-\![Schema](https://img.shields.io/badge/SEO-unified%20JSON--LD%20%40graph-4C2A85)
-\![Parent theme](https://img.shields.io/badge/Theme-v0.10.11-624489)
-\![Child theme](https://img.shields.io/badge/Child-v0.1.0-46305F)
-\![Core](https://img.shields.io/badge/SC%20Core-v0.5.25-BA0B0B)
-\![Enquiries](https://img.shields.io/badge/SC%20Enquiries-v0.2.0-BA0B0B)
-\![Security](https://img.shields.io/badge/Security-audited-2e7d32)
-\![License](https://img.shields.io/badge/License-GPLv2%2B-blue)
-\![Status](https://img.shields.io/badge/Status-Live-brightgreen)
+![WordPress](https://img.shields.io/badge/WordPress-6.4%2B-21759B?logo=wordpress&logoColor=white)
+![PHP](https://img.shields.io/badge/PHP-8.0%2B-777BB4?logo=php&logoColor=white)
+![No page builder](https://img.shields.io/badge/Build-hand--coded%2C%20no%20page%20builder-111114)
+![Schema](https://img.shields.io/badge/SEO-unified%20JSON--LD%20%40graph-4C2A85)
+![Parent theme](https://img.shields.io/badge/Theme-v0.10.11-624489)
+![Child theme](https://img.shields.io/badge/Child-v0.1.0-46305F)
+![Core](https://img.shields.io/badge/SC%20Core-v0.5.25-BA0B0B)
+![Enquiries](https://img.shields.io/badge/SC%20Enquiries-v0.2.0-BA0B0B)
+![Security](https://img.shields.io/badge/Security-audited-2e7d32)
+![License](https://img.shields.io/badge/License-GPLv2%2B-blue)
+![Status](https://img.shields.io/badge/Status-Live-brightgreen)
 
 [Live site](https://soundcreationsltd.com/) · [Solutions](https://soundcreationsltd.com/solutions/) · [Brands](https://soundcreationsltd.com/brands/) · [Projects](https://soundcreationsltd.com/projects/) · [FANE Africa](https://soundcreationsltd.com/fane/) · [Videos](https://soundcreationsltd.com/videos/) · [Request a consultation](https://soundcreationsltd.com/request-a-consultation/) · [Rwanda site](https://soundcreationsltd.rw/)
 
@@ -29,7 +29,7 @@ Professional audio, acoustics, lighting, distribution and AV integration across 
 
 ---
 
-\![Sound Creations Ltd homepage](docs/screenshots/home-desktop.jpg)
+![Sound Creations Ltd homepage](docs/screenshots/home-desktop.jpg)
 
 ## Contents
 
@@ -69,21 +69,21 @@ This repository holds the **first-party WordPress code only**: one custom theme,
 
 | Solutions | Acoustics solution page |
 | --- | --- |
-| \![Solutions](docs/screenshots/solutions.jpg) | \![Acoustics](docs/screenshots/acoustics.jpg) |
+| ![Solutions](docs/screenshots/solutions.jpg) | ![Acoustics](docs/screenshots/acoustics.jpg) |
 | **Partner brands** | **FANE Africa** |
-| \![Brands](docs/screenshots/brands.jpg) | \![FANE Africa](docs/screenshots/fane-africa.jpg) |
+| ![Brands](docs/screenshots/brands.jpg) | ![FANE Africa](docs/screenshots/fane-africa.jpg) |
 | **Projects** | **Project case study: Sarit Expo Centre** |
-| \![Projects](docs/screenshots/projects.jpg) | \![Sarit Expo Centre](docs/screenshots/project-sarit-expo.jpg) |
+| ![Projects](docs/screenshots/projects.jpg) | ![Sarit Expo Centre](docs/screenshots/project-sarit-expo.jpg) |
 | **Integration service** | **Videos and resources** |
-| \![Integration](docs/screenshots/service-integration.jpg) | \![Videos](docs/screenshots/videos.jpg) |
+| ![Integration](docs/screenshots/service-integration.jpg) | ![Videos](docs/screenshots/videos.jpg) |
 | **About** | **Contact with four regional offices** |
-| \![About](docs/screenshots/about.jpg) | \![Contact](docs/screenshots/contact.jpg) |
+| ![About](docs/screenshots/about.jpg) | ![Contact](docs/screenshots/contact.jpg) |
 
 | Homepage: what we do | Homepage: solutions and partner brands |
 | --- | --- |
-| \![Homepage services](docs/screenshots/home-services.jpg) | \![Homepage solutions and brands](docs/screenshots/home-solutions-brands.jpg) |
+| ![Homepage services](docs/screenshots/home-services.jpg) | ![Homepage solutions and brands](docs/screenshots/home-solutions-brands.jpg) |
 | **Homepage: featured projects and proof stats** | **Request a consultation** |
-| \![Homepage projects and stats](docs/screenshots/home-projects-stats.jpg) | \![Consultation](docs/screenshots/consultation.jpg) |
+| ![Homepage projects and stats](docs/screenshots/home-projects-stats.jpg) | ![Consultation](docs/screenshots/consultation.jpg) |
 
 ### Mobile
 
