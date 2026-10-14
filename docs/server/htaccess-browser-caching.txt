@@ -1,0 +1,26 @@
+# BEGIN Sound Creations browser caching
+# Paste ABOVE the "# BEGIN WordPress" block in public_html/.htaccess.
+# Static files (images, fonts, CSS, JS, video) are cached by browsers so
+# repeat visits do not download them again. Theme CSS/JS URLs carry a ?ver=
+# value that changes on every theme upload, so updates still show at once.
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault "access plus 1 hour"
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType text/javascript "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType image/x-icon "access plus 1 year"
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType video/mp4 "access plus 1 year"
+</IfModule>
+<IfModule mod_headers.c>
+  <FilesMatch "\.(css|js|webp|jpe?g|png|svg|ico|woff2|mp4)$">
+    Header set Cache-Control "public, max-age=31536000"
+  </FilesMatch>
+</IfModule>
+# END Sound Creations browser caching
