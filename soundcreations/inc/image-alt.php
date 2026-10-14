@@ -25,7 +25,7 @@ function sc_theme_fallback_image_alt( $attr, $attachment ) {
 	if ( is_admin() || is_singular() === false ) {
 		return $attr;
 	}
-	if ( isset( $attr['alt'] ) && '' \!== trim( (string) $attr['alt'] ) ) {
+	if ( isset( $attr['alt'] ) && '' !== trim( (string) $attr['alt'] ) ) {
 		return $attr;
 	}
 	$sc_title = trim( html_entity_decode( wp_strip_all_tags( (string) get_the_title( get_queried_object_id() ) ), ENT_QUOTES, 'UTF-8' ) );
