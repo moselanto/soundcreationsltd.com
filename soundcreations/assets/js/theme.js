@@ -11,18 +11,18 @@
     try { localStorage.setItem('sc-theme', t); } catch (e) {}
   }
 
-  function toggleEl() {
-    return document.querySelector('[data-sc-menu-toggle]');
+  // Header button and the mobile tab bar's Menu tab both toggle the drawer.
+  function setToggles(state) {
+    var all = document.querySelectorAll('[data-sc-menu-toggle]');
+    for (var i = 0; i < all.length; i++) { all[i].setAttribute('aria-expanded', state); }
   }
   function openMenu() {
     body.classList.add('sc-nav-open');
-    var t = toggleEl();
-    if (t) { t.setAttribute('aria-expanded', 'true'); }
+    setToggles('true');
   }
   function closeMenu() {
     body.classList.remove('sc-nav-open');
-    var t = toggleEl();
-    if (t) { t.setAttribute('aria-expanded', 'false'); }
+    setToggles('false');
   }
 
   document.addEventListener('click', function (e) {
