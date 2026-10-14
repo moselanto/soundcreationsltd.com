@@ -109,7 +109,7 @@ while ( have_posts() ) :
 								<button class="sc-lightbox__close" type="button" data-lb-close aria-label="Close viewer">&times;</button>
 								<button class="sc-lightbox__nav sc-lightbox__nav--prev" type="button" data-lb-prev aria-label="Previous photo">&lsaquo;</button>
 								<figure class="sc-lightbox__stage">
-									<img class="sc-lightbox__img" data-lb-img src="" alt="" decoding="async">
+									<img class="sc-lightbox__img" data-lb-img src="" alt="<?php echo esc_attr( get_the_title() . ' enlarged photo' ); ?>" decoding="async">
 									<figcaption class="sc-lightbox__caption" data-lb-caption></figcaption>
 								</figure>
 								<button class="sc-lightbox__nav sc-lightbox__nav--next" type="button" data-lb-next aria-label="Next photo">&rsaquo;</button>
