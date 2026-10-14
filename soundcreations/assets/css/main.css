@@ -2564,3 +2564,17 @@ h1.sc-contactpage-hero__title { font-size: 30px; }
 @media (max-width: 560px) {
 	.sc-footer .sc-footer__grid { grid-template-columns: 1fr; gap: 1.9rem; }
 }
+
+/* ============================================================
+   Nav dropdown layout fix (v0.10.15)
+   `.sc-nav ul { display: flex }` also matched the nested .sub-menu,
+   so dropdown items rendered side by side in a wide horizontal bar.
+   Force the sub-menu back to a vertical list on all screen sizes and
+   size its links to sit just below the top-level items.
+   ============================================================ */
+.sc-nav .sc-nav__list .sub-menu { display: block; gap: 0; }
+.sc-nav .sc-nav__list .sub-menu li { display: block; }
+@media (min-width: 783px) {
+  .sc-nav .sc-nav__list .sub-menu { min-width: 220px; }
+  .sc-nav .sc-nav__list .sub-menu a { display: block; padding: .55rem 1.1rem; font-size: .82rem; font-weight: 500; letter-spacing: 0; white-space: nowrap; }
+}
