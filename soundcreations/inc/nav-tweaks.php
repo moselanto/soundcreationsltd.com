@@ -44,6 +44,48 @@ function sc_theme_nav_fix_rwanda( $items, $args ) {
 add_filter( 'wp_nav_menu_objects', 'sc_theme_nav_fix_rwanda', 10, 2 );
 
 /**
+ * Trim the primary menu to what clients should see:
+ *  - Products (/brands/) and About Us (/about/) are single links, no dropdown;
+ *  - the Conferencing solution is never listed (the page itself stays in
+ *    wp-admin and is hidden from the public separately).
+ *
+ * @param array    $items Menu item objects.
+ * @param stdClass $args  wp_nav_menu() arguments.
+ * @return array
+ */
+function sc_theme_nav_trim( $items, $args ) {
+	if ( empty( $args->theme_location ) || 'primary' !== $args->theme_location ) {
+		return $items;
+	}
+	$sc_flat         = array( '/brands/', '/about/' );
+	$sc_flat_parents = array();
+	foreach ( $items as $item ) {
+		if ( 0 === (int) $item->menu_item_parent ) {
+			$sc_path = trailingslashit( (string) wp_parse_url( (string) $item->url, PHP_URL_PATH ) );
+			if ( in_array( $sc_path, $sc_flat, true ) ) {
+				$sc_flat_parents[] = (int) $item->ID;
+			}
+		}
+	}
+	$sc_keep = array();
+	foreach ( $items as $item ) {
+		$sc_path = trailingslashit( (string) wp_parse_url( (string) $item->url, PHP_URL_PATH ) );
+		if ( '/solutions/conferencing/' === $sc_path ) {
+			continue;
+		}
+		if ( in_array( (int) $item->menu_item_parent, $sc_flat_parents, true ) ) {
+			continue;
+		}
+		if ( in_array( (int) $item->ID, $sc_flat_parents, true ) && is_array( $item->classes ) ) {
+			$item->classes = array_values( array_diff( $item->classes, array( 'menu-item-has-children' ) ) );
+		}
+		$sc_keep[] = $item;
+	}
+	return $sc_keep;
+}
+add_filter( 'wp_nav_menu_objects', 'sc_theme_nav_trim', 11, 2 );
+
+/**
  * Put a Home link first in the primary menu unless the menu already has one.
  *
  * @param string   $items Menu items HTML.

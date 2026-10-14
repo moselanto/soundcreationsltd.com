@@ -107,21 +107,13 @@ function sc_primary_menu_fallback() {
 			array( 'All Solutions', '/solutions/' ),
 			array( 'Professional Audio', '/solutions/professional-audio/' ),
 			array( 'Acoustics', '/solutions/acoustics/' ),
-			array( 'Conferencing', '/solutions/conferencing/' ),
 			array( 'System Integration', '/solutions/system-integration/' ),
 		) ),
-		array( 'Products', '/brands/', array(
-			array( 'All Products', '/brands/' ),
-			array( 'Fane Africa', '/fane/' ),
-		) ),
+		array( 'Products', '/brands/', array() ),
 		array( 'Projects', '/projects/', array() ),
 		array( 'Fane Africa', '/fane/', array() ),
 		array( 'Videos', '/videos/', array() ),
-		array( 'About Us', '/about/', array(
-			array( 'About Sound Creations', '/about/' ),
-			array( 'Training', '/training/' ),
-			array( 'Request a Consultation', '/request-a-consultation/' ),
-		) ),
+		array( 'About Us', '/about/', array() ),
 		array( 'Rwanda', 'https://soundcreationsltd.rw/', array() ),
 	);
 	echo '<ul class="sc-nav__list">';
