@@ -2578,3 +2578,13 @@ h1.sc-contactpage-hero__title { font-size: 30px; }
   .sc-nav .sc-nav__list .sub-menu { min-width: 220px; }
   .sc-nav .sc-nav__list .sub-menu a { display: block; padding: .55rem 1.1rem; font-size: .82rem; font-weight: 500; letter-spacing: 0; white-space: nowrap; }
 }
+
+/* ============================================================
+   Homepage section labels (v0.10.18)
+   "What we do", "Solutions" and "Featured Projects" labels larger;
+   the "Real spaces. Real results." heading smaller.
+   ============================================================ */
+.sc-eyebrow.sc-eyebrow--home { font-size: 1.05rem; letter-spacing: .14em; font-weight: 800; margin-bottom: .8rem; }
+.sc-eyebrow.sc-eyebrow--home::before { width: 34px; height: 3px; }
+h2.sc-home-projects__title { font-size: clamp(1.25rem, 2vw, 1.6rem); line-height: 1.25; }
+@media (max-width: 560px) { .sc-eyebrow.sc-eyebrow--home { font-size: .9rem; } }

@@ -60,7 +60,7 @@ $sc_hero_poster = sc_setting( 'home_hero_poster', SC_THEME_URI . '/assets/img/he
 	<div class="sc-container">
 		<div class="sc-sechead">
 			<div>
-				<p class="sc-eyebrow"><?php echo esc_html( sc_setting( 'home_whatwedo_eyebrow', 'What We Do' ) ); ?></p>
+				<p class="sc-eyebrow sc-eyebrow--home"><?php echo esc_html( sc_setting( 'home_whatwedo_eyebrow', 'What We Do' ) ); ?></p>
 				<?php $sc_ww_t = trim( (string) sc_setting( 'home_whatwedo_title', '' ) ); if ( '' !== $sc_ww_t ) : ?><h2 style="margin:0;"><?php echo esc_html( $sc_ww_t ); ?></h2><?php endif; ?>
 				<?php $sc_ww_l = trim( (string) sc_setting( 'home_whatwedo_lead', '' ) ); if ( '' !== $sc_ww_l ) : ?><p class="sc-lead" style="margin:.4rem 0 0;"><?php echo sc_rich_e( $sc_ww_l ); ?></p><?php endif; ?>
 			</div>
@@ -151,7 +151,7 @@ $sc_hero_poster = sc_setting( 'home_hero_poster', SC_THEME_URI . '/assets/img/he
 	<div class="sc-container">
 		<div class="sc-sechead">
 			<div>
-				<p class="sc-eyebrow"><?php echo esc_html( sc_setting( 'home_solutions_eyebrow', 'Our Solutions' ) ); ?></p>
+				<p class="sc-eyebrow sc-eyebrow--home"><?php echo esc_html( sc_setting( 'home_solutions_eyebrow', 'Our Solutions' ) ); ?></p>
 				<?php $sc_sol_t = trim( (string) sc_setting( 'home_solutions_title', '' ) ); if ( '' !== $sc_sol_t ) : ?><h2 style="margin:0;"><?php echo esc_html( $sc_sol_t ); ?></h2><?php endif; ?>
 			</div>
 		</div>
@@ -219,8 +219,8 @@ $sc_hero_poster = sc_setting( 'home_hero_poster', SC_THEME_URI . '/assets/img/he
 	<div class="sc-container">
 		<div class="sc-section__head">
 			<div>
-				<p class="sc-eyebrow"><?php echo esc_html( sc_setting( 'home_projects_eyebrow', 'Featured Projects' ) ); ?></p>
-				<h2 style="margin:0;"><?php echo esc_html( sc_setting( 'home_projects_title', 'Real spaces. Real results.' ) ); ?></h2>
+				<p class="sc-eyebrow sc-eyebrow--home"><?php echo esc_html( sc_setting( 'home_projects_eyebrow', 'Featured Projects' ) ); ?></p>
+				<h2 class="sc-home-projects__title" style="margin:0;"><?php echo esc_html( sc_setting( 'home_projects_title', 'Real spaces. Real results.' ) ); ?></h2>
 			</div>
 			<a class="sc-link-arrow" href="<?php echo esc_url( home_url( '/projects/' ) ); ?>"><?php esc_html_e( 'View All Projects', 'soundcreations' ); ?> &rarr;</a>
 		</div>
