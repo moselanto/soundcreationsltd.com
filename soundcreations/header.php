@@ -102,6 +102,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function sc_primary_menu_fallback() {
 	$menu = array(
+		array( 'Home', '/', array() ),
 		array( 'Solutions', '/solutions/', array(
 			array( 'All Solutions', '/solutions/' ),
 			array( 'Professional Audio', '/solutions/professional-audio/' ),
@@ -121,7 +122,7 @@ function sc_primary_menu_fallback() {
 			array( 'Training', '/training/' ),
 			array( 'Request a Consultation', '/request-a-consultation/' ),
 		) ),
-		array( 'Rwanda', 'https://rwanda.soundcreationsltd.com/', array() ),
+		array( 'Rwanda', 'https://soundcreationsltd.rw/', array() ),
 	);
 	echo '<ul class="sc-nav__list">';
 	foreach ( $menu as $item ) {
