@@ -2698,9 +2698,11 @@ h2.sc-home-projects__title { font-size: clamp(1.25rem, 2vw, 1.6rem); line-height
 	[data-theme="dark"] .sc-tabbar__item--cta.is-current .sc-tabbar__icon { color: #fff; }
 
 	/* Menu tab turns into Close while the drawer is open. */
-	.sc-tabbar__ico-close, .sc-tabbar__txt-close { display: none; }
-	body.sc-nav-open .sc-tabbar__ico-open, body.sc-nav-open .sc-tabbar__txt-open { display: none; }
-	body.sc-nav-open .sc-tabbar__ico-close { display: block; }
+	/* Scoped under .sc-tabbar__icon so it beats ".sc-tabbar__icon svg { display: block }",
+	   otherwise the X shows on top of the Menu icon (fixed 0.11.1). */
+	.sc-tabbar__icon .sc-tabbar__ico-close, .sc-tabbar__txt-close { display: none; }
+	body.sc-nav-open .sc-tabbar__icon .sc-tabbar__ico-open, body.sc-nav-open .sc-tabbar__txt-open { display: none; }
+	body.sc-nav-open .sc-tabbar__icon .sc-tabbar__ico-close { display: block; }
 	body.sc-nav-open .sc-tabbar__txt-close { display: inline; }
 	body.sc-nav-open .sc-tabbar__menu { color: var(--sc-text); font-weight: 700; }
 
