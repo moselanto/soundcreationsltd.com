@@ -61,6 +61,45 @@ $sc_cta_photo = SC_THEME_URI . '/assets/img/cta-building.webp';
 	</div>
 </section>
 
+<section class="sc-section">
+	<div class="sc-container">
+		<div class="sc-sechead">
+			<div>
+				<p class="sc-eyebrow"><?php esc_html_e( 'Solutions by Sector', 'soundcreations' ); ?></p>
+			</div>
+		</div>
+		<div class="sc-solgrid">
+			<?php
+			// Sector landing pages (Solutions entries created in wp-admin). A card is
+			// shown only while its page is published, so a deleted or drafted page
+			// never leaves a broken link here.
+			$sc_sectors = array(
+				array( 'audio-worship.jpg', 'Church and Worship Sound Systems', 'Church PA systems, mixers, microphones and acoustic treatment for clear speech and music in every seat.', 'church-worship-sound-systems' ),
+				array( 'install-theatre.jpg', 'School and Auditorium Sound Systems', 'Acoustics, sound and lighting for school halls, chapels and auditoriums, designed together.', 'education-auditorium-sound-systems' ),
+				array( 'audio-live.jpg', 'Hospitality and Venue Sound Systems', 'Multi-zone background music, club sound and venue acoustics for hotels, restaurants, clubs and event venues.', 'hospitality-commercial-audio' ),
+			);
+			foreach ( $sc_sectors as $sc_se ) :
+				$sc_se_post = get_page_by_path( $sc_se[3], OBJECT, 'sc_solution' );
+				if ( ! $sc_se_post || 'publish' !== $sc_se_post->post_status ) {
+					continue;
+				}
+				$sc_se_img = has_post_thumbnail( $sc_se_post ) ? get_the_post_thumbnail_url( $sc_se_post, 'large' ) : SC_THEME_URI . '/assets/img/solutions/' . $sc_se[0];
+				?>
+				<a class="sc-solcard" href="<?php echo esc_url( get_permalink( $sc_se_post ) ); ?>">
+					<span class="sc-solcard__img"><img src="<?php echo esc_url( $sc_se_img ); ?>" alt="<?php echo esc_attr( $sc_se[1] ); ?>" loading="lazy" decoding="async" width="640" height="440"></span>
+					<span class="sc-solcard__body">
+						<h3><?php echo esc_html( $sc_se[1] ); ?></h3>
+						<p><?php echo esc_html( $sc_se[2] ); ?></p>
+						<span class="sc-solcard__more"><?php esc_html_e( 'Explore solution', 'soundcreations' ); ?> &rarr;</span>
+					</span>
+				</a>
+				<?php
+			endforeach;
+			?>
+		</div>
+	</div>
+</section>
+
 <section class="sc-section sc-section--surface">
 	<div class="sc-container">
 		<div class="sc-section__head">
