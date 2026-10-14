@@ -25,6 +25,7 @@ require_once SC_THEME_DIR . '/inc/template-tags.php';
 require_once SC_THEME_DIR . '/inc/image-alt.php';
 require_once SC_THEME_DIR . '/inc/nav-tweaks.php';
 require_once SC_THEME_DIR . '/inc/responsive-img.php';
+require_once SC_THEME_DIR . '/inc/whatsapp-chat.php';
 require_once SC_THEME_DIR . '/inc/shortcodes.php';
 require_once SC_THEME_DIR . '/inc/hardening.php';
 require_once SC_THEME_DIR . '/inc/customizer.php';

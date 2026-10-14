@@ -18,6 +18,7 @@ add_action(
 		wp_enqueue_style( 'sc-content', SC_THEME_URI . '/assets/css/content.css', array( 'sc-main' ), SC_THEME_VERSION );
 
 		wp_enqueue_script( 'sc-theme', SC_THEME_URI . '/assets/js/theme.js', array(), SC_THEME_VERSION, true );
+		wp_enqueue_script( 'sc-leads', SC_THEME_URI . '/assets/js/leads.js', array(), SC_THEME_VERSION, true );
 		wp_enqueue_script( 'sc-map', SC_THEME_URI . '/assets/js/map.js', array(), SC_THEME_VERSION, true );
 		wp_enqueue_script( 'sc-loader', SC_THEME_URI . '/assets/js/loader.js', array(), SC_THEME_VERSION, true );
 	},
