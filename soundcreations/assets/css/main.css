@@ -2588,3 +2588,15 @@ h1.sc-contactpage-hero__title { font-size: 30px; }
 .sc-eyebrow.sc-eyebrow--home::before { width: 34px; height: 3px; }
 h2.sc-home-projects__title { font-size: clamp(1.25rem, 2vw, 1.6rem); line-height: 1.25; }
 @media (max-width: 560px) { .sc-eyebrow.sc-eyebrow--home { font-size: .9rem; } }
+
+/* ============================================================
+   Accessibility contrast fixes (v0.10.19)
+   PageSpeed flagged red "Learn more" / "Explore solution" links on dark
+   cards (#BA0B0B on #131318 = 2.8:1) and white WhatsApp text on #25D366
+   (2.0:1). Text-red on dark is now #FF6B6B (6.7:1); light theme keeps the
+   logo red (6.7:1 on white). WhatsApp buttons use a deeper green (5.3:1).
+   ============================================================ */
+:root, [data-theme="dark"] { --sc-red-text: #FF6B6B; }
+[data-theme="light"] { --sc-red-text: #BA0B0B; }
+.sc-svcard__more, .sc-solcard__more { color: var(--sc-red-text); }
+.sc-mobabar__btn--wa { background: #0B7A5C; border-color: #0B7A5C; color: #fff; }

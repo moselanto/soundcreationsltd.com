@@ -61,7 +61,7 @@ $sc_hero_poster = sc_setting( 'home_hero_poster', SC_THEME_URI . '/assets/img/he
 		<div class="sc-sechead">
 			<div>
 				<p class="sc-eyebrow sc-eyebrow--home"><?php echo esc_html( sc_setting( 'home_whatwedo_eyebrow', 'What We Do' ) ); ?></p>
-				<?php $sc_ww_t = trim( (string) sc_setting( 'home_whatwedo_title', '' ) ); if ( '' !== $sc_ww_t ) : ?><h2 style="margin:0;"><?php echo esc_html( $sc_ww_t ); ?></h2><?php endif; ?>
+				<?php $sc_ww_t = trim( (string) sc_setting( 'home_whatwedo_title', 'Audio, acoustics and AV solutions across Kenya and Africa' ) ); if ( '' !== $sc_ww_t ) : ?><h2 style="margin:0;"><?php echo esc_html( $sc_ww_t ); ?></h2><?php endif; ?>
 				<?php $sc_ww_l = trim( (string) sc_setting( 'home_whatwedo_lead', '' ) ); if ( '' !== $sc_ww_l ) : ?><p class="sc-lead" style="margin:.4rem 0 0;"><?php echo sc_rich_e( $sc_ww_l ); ?></p><?php endif; ?>
 			</div>
 		</div>
@@ -131,7 +131,7 @@ $sc_hero_poster = sc_setting( 'home_hero_poster', SC_THEME_URI . '/assets/img/he
 				?>
 				<a class="sc-svcard" href="<?php echo esc_url( $sc_href ); ?>">
 					<span class="sc-svcard__img">
-						<img src="<?php echo esc_url( $sc_img ); ?>" alt="<?php echo esc_attr( $sc_s[2] ); ?>" loading="lazy" decoding="async" width="600" height="450">
+						<?php echo sc_theme_card_img( $sc_img, $sc_s[2], 600, 450, '(max-width: 782px) 92vw, 300px' ); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped in helper. ?>
 					</span>
 					<span class="sc-svcard__body">
 						<span class="sc-svcard__badge"><?php echo $sc_svc_ico[ $sc_s[1] ]; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG. ?></span>
@@ -152,7 +152,7 @@ $sc_hero_poster = sc_setting( 'home_hero_poster', SC_THEME_URI . '/assets/img/he
 		<div class="sc-sechead">
 			<div>
 				<p class="sc-eyebrow sc-eyebrow--home"><?php echo esc_html( sc_setting( 'home_solutions_eyebrow', 'Our Solutions' ) ); ?></p>
-				<?php $sc_sol_t = trim( (string) sc_setting( 'home_solutions_title', '' ) ); if ( '' !== $sc_sol_t ) : ?><h2 style="margin:0;"><?php echo esc_html( $sc_sol_t ); ?></h2><?php endif; ?>
+				<?php $sc_sol_t = trim( (string) sc_setting( 'home_solutions_title', 'Sound and acoustic solutions for every space' ) ); if ( '' !== $sc_sol_t ) : ?><h2 style="margin:0;"><?php echo esc_html( $sc_sol_t ); ?></h2><?php endif; ?>
 			</div>
 		</div>
 		<div class="sc-solgrid">
@@ -194,7 +194,7 @@ $sc_hero_poster = sc_setting( 'home_hero_poster', SC_THEME_URI . '/assets/img/he
 				}
 				?>
 				<a class="sc-solcard" href="<?php echo esc_url( $sc_href ); ?>">
-					<span class="sc-solcard__img"><img src="<?php echo esc_url( $sc_img ); ?>" alt="<?php echo esc_attr( $sc_so[1] ); ?>" loading="lazy" decoding="async" width="640" height="440"></span>
+					<span class="sc-solcard__img"><?php echo sc_theme_card_img( $sc_img, $sc_so[1], 640, 440, '(max-width: 782px) 92vw, 400px' ); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped in helper. ?></span>
 					<span class="sc-solcard__body">
 						<h3><?php echo esc_html( $sc_so[1] ); ?></h3>
 						<p><?php echo esc_html( $sc_so[2] ); ?></p>
@@ -244,7 +244,7 @@ $sc_hero_poster = sc_setting( 'home_hero_poster', SC_THEME_URI . '/assets/img/he
 						$img = sc_project_card_image( $pid );
 						$loc  = (string) get_post_meta( $pid, '_sc_location', true );
 						?>
-						<a class="sc-project" href="<?php the_permalink(); ?>"><span class="sc-project__media"><img src="<?php echo esc_url( $img ); ?>" alt="<?php echo esc_attr( get_the_title() ); ?>" loading="lazy" decoding="async" width="400" height="250"></span><h3 class="sc-project__title"><?php echo esc_html( get_the_title() ); ?></h3><?php if ( '' !== $loc ) : ?><p class="sc-project__loc"><?php echo esc_html( $loc ); ?></p><?php endif; ?></a>
+						<a class="sc-project" href="<?php the_permalink(); ?>"><span class="sc-project__media"><?php echo sc_theme_card_img( $img, get_the_title(), 400, 250, '(max-width: 600px) 85vw, 300px' ); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped in helper. ?></span><h3 class="sc-project__title"><?php echo esc_html( get_the_title() ); ?></h3><?php if ( '' !== $loc ) : ?><p class="sc-project__loc"><?php echo esc_html( $loc ); ?></p><?php endif; ?></a>
 						<?php
 					endwhile;
 					wp_reset_postdata();
