@@ -100,28 +100,45 @@ $sc_email   = sc_setting( 'email' );
 /* WhatsApp chat card: see inc/whatsapp-chat.php (printed via wp_footer). */
 ?>
 <?php
-/* Mobile sticky action bar - keeps the primary CTA and quick contact reachable on phones. */
-$sc_bar_tel = sc_setting( 'phone_link' );
-$sc_bar_wa  = sc_whatsapp_url();
+/*
+ * Mobile bottom navigation (v0.11.0).
+ * Phones and small tablets only. Five big, labelled tabs so visitors who are
+ * not used to hamburger menus can always get Home, see Solutions, ask for a
+ * consultation, call, or open the full menu. WhatsApp is the round floating
+ * button on the right (inc/whatsapp-chat.php), so it is not repeated here.
+ */
+$sc_bar_tel     = (string) sc_setting( 'phone_link' );
+$sc_tab_home    = is_front_page();
+$sc_tab_sol     = is_post_type_archive( 'sc_solution' ) || is_singular( 'sc_solution' ) || is_page( 'solutions' );
+$sc_tab_consult = is_page( array( 'request-a-consultation', 'contact' ) );
 ?>
-<div class="sc-mobabar" role="navigation" aria-label="<?php esc_attr_e( 'Quick actions', 'soundcreations' ); ?>">
-	<?php if ( strlen( (string) $sc_bar_tel ) > 0 ) : ?>
-	<a class="sc-mobabar__btn sc-mobabar__btn--call" href="tel:<?php echo esc_attr( $sc_bar_tel ); ?>">
-		<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2 4.2 2 2 0 0 1 4 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L7.6 9.8a16 16 0 0 0 6 6l1.4-1.4a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6A2 2 0 0 1 22 16.9z"/></svg>
-		<span><?php esc_html_e( 'Call', 'soundcreations' ); ?></span>
+<nav class="sc-tabbar" aria-label="<?php esc_attr_e( 'Quick navigation', 'soundcreations' ); ?>">
+	<a class="sc-tabbar__item<?php echo $sc_tab_home ? ' is-current' : ''; ?>" href="<?php echo esc_url( home_url( '/' ) ); ?>"<?php echo $sc_tab_home ? ' aria-current="page"' : ''; ?>>
+		<span class="sc-tabbar__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 10.5 12 3l9 7.5"/><path d="M5.5 9v11h4.5v-6h4v6h4.5V9"/></svg></span>
+		<span class="sc-tabbar__label"><?php esc_html_e( 'Home', 'soundcreations' ); ?></span>
+	</a>
+	<a class="sc-tabbar__item<?php echo $sc_tab_sol ? ' is-current' : ''; ?>" href="<?php echo esc_url( home_url( '/solutions/' ) ); ?>"<?php echo $sc_tab_sol ? ' aria-current="page"' : ''; ?>>
+		<span class="sc-tabbar__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.6"/></svg></span>
+		<span class="sc-tabbar__label"><?php esc_html_e( 'Solutions', 'soundcreations' ); ?></span>
+	</a>
+	<a class="sc-tabbar__item sc-tabbar__item--cta<?php echo $sc_tab_consult ? ' is-current' : ''; ?>" href="<?php echo esc_url( home_url( '/request-a-consultation/' ) ); ?>"<?php echo $sc_tab_consult ? ' aria-current="page"' : ''; ?>>
+		<span class="sc-tabbar__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 4h6a1 1 0 0 1 1 1v1H8V5a1 1 0 0 1 1-1z"/><path d="M8 5.5H6.5A1.5 1.5 0 0 0 5 7v12.5A1.5 1.5 0 0 0 6.5 21h11a1.5 1.5 0 0 0 1.5-1.5V7a1.5 1.5 0 0 0-1.5-1.5H16"/><path d="M8.5 13.5l2.3 2.3 4.7-4.8"/></svg></span>
+		<span class="sc-tabbar__label"><?php esc_html_e( 'Get a Quote', 'soundcreations' ); ?></span>
+	</a>
+	<?php if ( '' !== $sc_bar_tel ) : ?>
+	<a class="sc-tabbar__item sc-tabbar__item--call" href="tel:<?php echo esc_attr( $sc_bar_tel ); ?>">
+		<span class="sc-tabbar__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 16.4v2.8a1.9 1.9 0 0 1-2.1 1.9 18.8 18.8 0 0 1-8.2-2.9 18.5 18.5 0 0 1-5.7-5.7A18.8 18.8 0 0 1 2.1 4.2 1.9 1.9 0 0 1 4 2.1h2.8a1.9 1.9 0 0 1 1.9 1.6c.1.9.3 1.7.6 2.5a1.9 1.9 0 0 1-.4 2L7.7 9.4a15.2 15.2 0 0 0 5.7 5.7l1.2-1.2a1.9 1.9 0 0 1 2-.4c.8.3 1.6.5 2.5.6a1.9 1.9 0 0 1 1.9 2z"/></svg></span>
+		<span class="sc-tabbar__label"><?php esc_html_e( 'Call', 'soundcreations' ); ?></span>
 	</a>
 	<?php endif; ?>
-	<?php if ( strlen( $sc_bar_wa ) > 0 ) : ?>
-	<a class="sc-mobabar__btn sc-mobabar__btn--wa" data-sc-wa-open href="<?php echo esc_url( $sc_bar_wa ); ?>" target="_blank" rel="noopener noreferrer nofollow">
-		<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.5 15.3L2 22l4.8-1.3A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-2.8.7.8-2.7-.2-.3A8 8 0 1 1 12 20z"/></svg>
-		<span><?php esc_html_e( 'WhatsApp', 'soundcreations' ); ?></span>
-	</a>
-	<?php endif; ?>
-	<a class="sc-mobabar__btn sc-mobabar__btn--cta" href="<?php echo esc_url( home_url( '/request-a-consultation/' ) ); ?>">
-		<span><?php esc_html_e( 'Get a Consultation', 'soundcreations' ); ?></span>
-		<span aria-hidden="true">&rarr;</span>
-	</a>
-</div>
+	<button type="button" class="sc-tabbar__item sc-tabbar__menu" data-sc-menu-toggle aria-controls="sc-primary-nav" aria-expanded="false">
+		<span class="sc-tabbar__icon">
+			<svg class="sc-tabbar__ico-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+			<svg class="sc-tabbar__ico-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18"/></svg>
+		</span>
+		<span class="sc-tabbar__label"><span class="sc-tabbar__txt-open"><?php esc_html_e( 'Menu', 'soundcreations' ); ?></span><span class="sc-tabbar__txt-close"><?php esc_html_e( 'Close', 'soundcreations' ); ?></span></span>
+	</button>
+</nav>
 <?php wp_footer(); ?>
 </body>
 </html>

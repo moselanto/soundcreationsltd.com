@@ -8,6 +8,10 @@
  * WhatsApp with the visitor's message ready to send. No third-party scripts.
  * Pattern adapted from the Smile Community Centre theme.
  *
+ * Phones (v0.11.0): a round WhatsApp button floats on the right above the
+ * bottom navigation and the card opens as a bottom sheet with a dimmed
+ * backdrop, matching the Smile Community Centre site.
+ *
  * Without JavaScript the floating button is still a working wa.me link.
  *
  * @package SoundCreations
@@ -91,6 +95,7 @@ function sc_theme_whatsapp_chat() {
 			<button type="button" class="sc-wa__teaser-close" aria-label="<?php esc_attr_e( 'Dismiss', 'soundcreations' ); ?>">&times;</button>
 			<p><strong><?php esc_html_e( 'Planning a project?', 'soundcreations' ); ?></strong> <?php esc_html_e( 'Chat with our team on WhatsApp for advice, availability and quotes.', 'soundcreations' ); ?></p>
 		</div>
+		<div class="sc-wa__scrim" hidden></div>
 		<section class="sc-wa__panel" id="sc-wa-panel" role="dialog" aria-modal="false" aria-labelledby="sc-wa-title" hidden>
 			<header class="sc-wa__head">
 				<span class="sc-wa__avatar"><img src="<?php echo esc_url( $sc_avatar ); ?>" alt="" width="44" height="44" loading="lazy" decoding="async"><i class="sc-wa__presence" aria-hidden="true"></i></span>

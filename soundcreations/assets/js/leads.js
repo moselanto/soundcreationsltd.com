@@ -49,13 +49,13 @@
 			var href = a.getAttribute( 'href' ) || '';
 			if ( /^https?:\/\/(wa\.me|api\.whatsapp\.com|web\.whatsapp\.com)\//i.test( href ) ) {
 				var where = 'page_link';
-				if ( a.closest( '.sc-mobabar' ) ) { where = 'mobile_bar'; }
+				if ( a.closest( '.sc-tabbar' ) ) { where = 'mobile_bar'; }
 				else if ( a.closest( '.sc-wa' ) ) { where = 'chat_button'; }
 				else if ( a.closest( 'header' ) ) { where = 'header'; }
 				else if ( a.closest( 'footer' ) ) { where = 'footer'; }
 				track( 'whatsapp_click', { link_location: where } );
 			} else if ( /^tel:/i.test( href ) ) {
-				var loc = a.closest( '.sc-mobabar' ) ? 'mobile_bar' : ( a.closest( 'header' ) ? 'header' : ( a.closest( 'footer' ) ? 'footer' : 'page_link' ) );
+				var loc = a.closest( '.sc-tabbar' ) ? 'mobile_bar' : ( a.closest( 'header' ) ? 'header' : ( a.closest( 'footer' ) ? 'footer' : 'page_link' ) );
 				track( 'phone_click', { link_location: loc } );
 			}
 		}, true );
@@ -71,6 +71,8 @@
 			form = root.querySelector( '.sc-wa__form' ),
 			text = root.querySelector( 'textarea' ),
 			teaser = root.querySelector( '.sc-wa__teaser' ),
+			scrim = root.querySelector( '.sc-wa__scrim' ),
+			phone = window.matchMedia( '(max-width: 782px)' ),
 			number = root.getAttribute( 'data-number' );
 		var store = {
 			get: function ( k ) { try { return window.sessionStorage.getItem( k ); } catch ( e ) { return null; } },
@@ -99,6 +101,11 @@
 			hideTeaser();
 			panel.hidden = false;
 			root.classList.add( 'is-open' );
+			// Phones: bottom sheet with a dimmed backdrop and the page held still.
+			if ( phone.matches ) {
+				if ( scrim ) { scrim.hidden = false; }
+				document.documentElement.classList.add( 'sc-wa-sheet-open' );
+			}
 			fab.setAttribute( 'aria-expanded', 'true' );
 			if ( window.matchMedia( '(min-width: 783px)' ).matches ) { text.focus(); }
 			else { var c = root.querySelector( '.sc-wa__close' ); if ( c ) { c.focus(); } }
@@ -107,6 +114,8 @@
 		function close( refocus ) {
 			panel.hidden = true;
 			root.classList.remove( 'is-open' );
+			if ( scrim ) { scrim.hidden = true; }
+			document.documentElement.classList.remove( 'sc-wa-sheet-open' );
 			fab.setAttribute( 'aria-expanded', 'false' );
 			if ( refocus ) { fab.focus(); }
 		}
@@ -120,9 +129,10 @@
 			btn.addEventListener( 'click', function ( e ) { e.preventDefault(); e.stopPropagation(); open(); } );
 		} );
 		root.querySelector( '.sc-wa__close' ).addEventListener( 'click', function () { close( true ); } );
+		if ( scrim ) { scrim.addEventListener( 'click', function () { close( true ); } ); }
 		document.addEventListener( 'keydown', function ( e ) { if ( e.key === 'Escape' && panel.hidden === false ) { close( true ); } } );
 		document.addEventListener( 'click', function ( e ) {
-			if ( panel.hidden === false && root.contains( e.target ) === false && ( e.target.closest && e.target.closest( '[data-sc-wa-open]' ) ) === null ) { close( false ); }
+			if ( panel.hidden === false && ( root.contains( e.target ) === false || e.target === scrim ) && ( e.target.closest && e.target.closest( '[data-sc-wa-open]' ) ) === null ) { close( false ); }
 		} );
 
 		root.querySelectorAll( '.sc-wa__chip' ).forEach( function ( chip ) {
