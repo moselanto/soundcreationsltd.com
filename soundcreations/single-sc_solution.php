@@ -28,15 +28,28 @@ while ( have_posts() ) :
 	$sc_aside_has = ( strlen( $sc_includes ) > 0 || strlen( $sc_outcome ) > 0 || strlen( $sc_apps ) > 0 );
 	$sc_eyebrow  = sc_primary_term_name( get_the_ID(), 'sc_solution_area', __( 'Solution', 'soundcreations' ) );
 
-	$sc_tl = strtolower( (string) get_the_title() );
-	$sc_sk = 'general';
-	if ( is_int( strpos( $sc_tl, 'acoustic' ) ) ) {
-		$sc_sk = 'acoustics';
-	} elseif ( is_int( strpos( $sc_tl, 'integ' ) ) || is_int( strpos( $sc_tl, 'visual' ) ) || is_int( strpos( $sc_tl, 'install' ) ) ) {
-		$sc_sk = 'integration';
-	} elseif ( is_int( strpos( $sc_tl, 'audio' ) ) ) {
-		$sc_sk = 'audio';
-	}
+	// Which tailored section a solution gets is decided by its slug, not its
+	// title. Matching on title words meant any new page whose title contained
+	// "acoustic", "audio", "install" or "visual" (for example an acoustic
+	// panels page) silently inherited the full Acoustics or Professional
+	// Audio block and, for "audio", lost its own body text. The map below
+	// reproduces exactly what the four original solution pages rendered
+	// before; every other solution page is 'general' and shows its own body.
+	$sc_slug_map = array(
+		'professional-audio' => 'audio',
+		'acoustics'          => 'acoustics',
+		'installation'       => 'integration',
+		'system-integration' => 'integration',
+	);
+	$sc_slug = (string) get_post_field( 'post_name', get_the_ID() );
+	$sc_sk   = isset( $sc_slug_map[ $sc_slug ] ) ? $sc_slug_map[ $sc_slug ] : 'general';
+	/**
+	 * Filter the tailored section kind for a solution page.
+	 *
+	 * @param string $sc_sk   One of audio, acoustics, integration, general.
+	 * @param string $sc_slug The solution's slug.
+	 */
+	$sc_sk = (string) apply_filters( 'sc_solution_kind', $sc_sk, $sc_slug );
 
 	// Each real solution kind renders its own tailored section below, so the
 	// generic in-column capabilities strip is intentionally left empty.
