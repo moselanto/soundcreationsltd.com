@@ -32,6 +32,7 @@ function sc_core_settings_fields() {
 		'linkedin'             => array( 'LinkedIn URL', 'text' ),
 		'youtube'              => array( 'YouTube URL', 'text' ),
 			'instagram'            => array( 'Instagram URL', 'text' ),
+		'tiktok'               => array( 'TikTok URL', 'text' ),
 		'hero_video'           => array( 'Hero background video URL (MP4)', 'image' ),
 
 		// Geo + branch data feeding LocalBusiness structured data.
@@ -40,6 +41,8 @@ function sc_core_settings_fields() {
 		// than a wrong one. Never enter a placeholder address here.
 		'__sec_locations'      => array( 'Locations and local SEO', 'heading' ),
 		'google_business'      => array( 'Google Business Profile URL', 'text' ),
+		'founding_year'        => array( 'Year founded (structured data, e.g. 2004)', 'text' ),
+		'org_description'      => array( 'Company description for Google structured data (keep in step with the Google Business Profile description)', 'textarea' ),
 		'geo_lat'              => array( 'Nairobi latitude (e.g. -1.2664)', 'text' ),
 		'geo_lng'              => array( 'Nairobi longitude (e.g. 36.8065)', 'text' ),
 		'branch_kigali_address'=> array( 'Kigali: street address (blank = no Kigali listing)', 'text' ),
@@ -200,7 +203,7 @@ function sc_core_sanitize_settings( $input ) {
 			continue;
 		}
 		$val = trim( (string) $input[ $key ] );
-		if ( in_array( $key, array( 'facebook', 'x', 'linkedin', 'youtube', 'instagram', 'fane_facebook', 'fane_x', 'fane_linkedin', 'fane_youtube', 'fane_instagram', 'fane_tiktok' ), true ) || 'image' === $type ) {
+		if ( in_array( $key, array( 'facebook', 'x', 'linkedin', 'youtube', 'instagram', 'tiktok', 'google_business', 'fane_facebook', 'fane_x', 'fane_linkedin', 'fane_youtube', 'fane_instagram', 'fane_tiktok' ), true ) || 'image' === $type ) {
 			$clean[ $key ] = esc_url_raw( $val );
 		} elseif ( 'email' === $key ) {
 			$clean[ $key ] = sanitize_email( $val );

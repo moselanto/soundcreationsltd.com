@@ -327,7 +327,13 @@ function sc_seo_node_organization() {
 		$org['legalName'] = $legal;
 	}
 
-	$desc = sc_core_get( 'tagline', get_bloginfo( 'description' ) );
+	// A full company description (kept in step with the Google Business
+	// Profile) says far more to search engines than the short tagline, which
+	// is used only as a fallback.
+	$desc = trim( (string) sc_core_get( 'org_description' ) );
+	if ( '' === $desc ) {
+		$desc = sc_core_get( 'tagline', get_bloginfo( 'description' ) );
+	}
 	if ( $desc ) {
 		$org['description'] = $desc;
 	}
@@ -356,6 +362,13 @@ function sc_seo_node_organization() {
 		$org['email'] = $email;
 	}
 
+	// Founding year, confirmed by the business (2004) and matching the
+	// opening date on the Google Business Profile.
+	$founded = trim( (string) sc_core_get( 'founding_year', '2004' ) );
+	if ( preg_match( '/^\d{4}$/', $founded ) ) {
+		$org['foundingDate'] = $founded;
+	}
+
 	// The head-office address doubles as the Organization address so the
 	// company entity is itself locatable, not only its branch nodes.
 	$addr = sc_core_get( 'address' );
@@ -367,6 +380,29 @@ function sc_seo_node_organization() {
 			'addressRegion'   => 'Nairobi County',
 			'addressCountry'  => 'KE',
 		);
+	}
+
+	// The Organization is also the Nairobi head office (ProfessionalService
+	// is a LocalBusiness subtype), so the local signals Google matches
+	// against the Business Profile live here: coordinates, map link and
+	// opening hours. A separate Nairobi branch node is no longer emitted,
+	// because it duplicated this entity at the same address.
+	$lat = sc_core_get( 'geo_lat' );
+	$lng = sc_core_get( 'geo_lng' );
+	if ( is_numeric( $lat ) && is_numeric( $lng ) ) {
+		$org['geo'] = array(
+			'@type'     => 'GeoCoordinates',
+			'latitude'  => (float) $lat,
+			'longitude' => (float) $lng,
+		);
+	}
+	$gbp = (string) sc_core_get( 'google_business' );
+	if ( preg_match( '#^https?://#i', $gbp ) ) {
+		$org['hasMap'] = $gbp;
+	}
+	$org_hours = sc_seo_hours_spec();
+	if ( $org_hours ) {
+		$org['openingHoursSpecification'] = $org_hours;
 	}
 
 	$org['knowsAbout'] = array(
@@ -411,7 +447,7 @@ function sc_seo_node_organization() {
 	);
 
 	$same = array();
-	foreach ( array( 'facebook', 'x', 'linkedin', 'youtube', 'instagram', 'google_business', 'map_url' ) as $s ) {
+	foreach ( array( 'facebook', 'x', 'linkedin', 'youtube', 'instagram', 'tiktok' ) as $s ) {
 		$u = sc_core_get( $s );
 		if ( $u && preg_match( '#^https?://#i', $u ) ) {
 			$same[] = $u;
@@ -444,11 +480,11 @@ function sc_seo_node_organization() {
 	// Branch references, added only for branches that really resolved.
 	$subs = array();
 	foreach ( sc_seo_branches() as $slug => $branch ) {
-		if ( sc_core_get( $branch['keys']['address'] ) ) {
+		if ( empty( $branch['primary'] ) && sc_core_get( $branch['keys']['address'] ) ) {
 			$subs[] = array( '@id' => sc_seo_id( 'branch-' . $slug ) );
 		}
 	}
-	if ( count( $subs ) > 1 ) {
+	if ( count( $subs ) > 0 ) {
 		$org['subOrganization'] = $subs;
 	}
 
@@ -466,6 +502,9 @@ function sc_seo_nodes_branches() {
 	$hours = sc_seo_hours_spec();
 
 	foreach ( sc_seo_branches() as $slug => $branch ) {
+		if ( empty( $branch['primary'] ) === false ) {
+			continue; // Head office is the Organization node itself; no duplicate LocalBusiness.
+		}
 		$addr = sc_core_get( $branch['keys']['address'] );
 		if ( ! $addr ) {
 			continue; // Deliberate: no address on file means no node.
