@@ -183,6 +183,22 @@ function sc_seo_canonical() {
 	return '';
 }
 
+/**
+ * True when Rank Math is active and should own the head meta tags.
+ *
+ * Rank Math 1.0.x is installed on the live site and was already printing its
+ * own title, description, canonical and Open Graph tags next to Core's, so
+ * every page carried duplicates. The owner chose (14 Oct 2026) to let Rank
+ * Math own those tags while Core keeps the structured-data graph. Filterable
+ * so the old behaviour can be restored without a code change elsewhere.
+ *
+ * @return bool
+ */
+function sc_seo_rank_math_owns_meta() {
+	$active = defined( 'RANK_MATH_VERSION' ) || class_exists( 'RankMath' );
+	return (bool) apply_filters( 'sc_seo_defer_meta_to_rank_math', $active );
+}
+
 add_action( 'wp_head', 'sc_seo_head', 1 );
 function sc_seo_head() {
 	if ( is_admin() ) {
@@ -195,6 +211,19 @@ function sc_seo_head() {
 	$type  = ( is_singular() && ! is_front_page() ) ? 'article' : 'website';
 
 	echo "\n<!-- Sound Creations SEO -->\n";
+
+	// Rank Math owns titles, descriptions, canonicals and social tags while it
+	// is active (owner decision, 14 Oct 2026). A live check found every page
+	// carrying two meta descriptions and two og:title tags, one from Rank Math
+	// and one from here. Core keeps the single JSON-LD graph (Rank Math's
+	// Schema module is switched off), so only the graph is printed.
+	if ( sc_seo_rank_math_owns_meta() ) {
+		if ( function_exists( 'sc_seo_graph' ) ) {
+			sc_seo_graph();
+		}
+		return;
+	}
+
 	if ( $desc ) {
 		echo '<meta name="description" content="' . esc_attr( $desc ) . '">' . "\n";
 	}
