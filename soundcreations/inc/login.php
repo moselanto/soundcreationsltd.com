@@ -174,6 +174,7 @@ function sc_login_aside() {
 		</div>
 	</aside>
 	<main class="sc-login-main" id="sc-login-main">
+		<a class="sc-login-back" href="<?php echo esc_url( home_url( '/' ) ); ?>"><span aria-hidden="true">&larr;</span> <?php esc_html_e( 'Back to website', 'soundcreations' ); ?></a>
 	<?php
 }
 add_action( 'login_header', 'sc_login_aside' );
@@ -204,7 +205,9 @@ function sc_login_intro( $message ) {
 	} else {
 		return $message;
 	}
-	return '<div class="sc-login-intro"><h2>' . esc_html( $title ) . '</h2><p>' . esc_html( $sub ) . '</p></div>' . $message;
+	$logo  = '<a class="sc-login-intro__logo" href="' . esc_url( home_url( '/' ) ) . '"><img src="' . esc_url( SC_THEME_URI . '/assets/img/logo-white.webp' ) . '" alt="' . esc_attr( get_bloginfo( 'name' ) ) . '" width="150" height="56"></a>';
+	$badge = '<span class="sc-login-intro__badge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h3l2-6 4 12 3-9 2 3h4"/></svg></span>';
+	return '<div class="sc-login-intro">' . $logo . $badge . '<h2>' . esc_html( $title ) . '</h2><p>' . esc_html( $sub ) . '</p></div>' . $message;
 }
 add_filter( 'login_message', 'sc_login_intro', 5 );
 
@@ -220,10 +223,44 @@ function sc_login_footer() {
 		<svg aria-hidden="true" focusable="false" width="14" height="14" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2"/></svg>
 		<?php esc_html_e( 'Secure connection. Five failed attempts pause sign-in for 15 minutes.', 'soundcreations' ); ?>
 	</p>
+	<?php
+	$help_phone = sc_login_setting( 'phone', '+254 715 754 758' );
+	$help_link  = sc_login_setting( 'phone_link', preg_replace( '/[^0-9+]/', '', $help_phone ) );
+	?>
+	<p class="sc-login-help"><?php esc_html_e( 'Locked out?', 'soundcreations' ); ?> <a href="<?php echo esc_url( 'tel:' . $help_link ); ?>"><?php echo esc_html( $help_phone ); ?></a></p>
 	<p class="sc-login-copy">
 		&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> <?php echo esc_html( sc_login_setting( 'company_name', 'Sound Creations Ltd' ) ); ?>, <?php esc_html_e( 'Nairobi', 'soundcreations' ); ?>
 	</p>
 	</main>
+	<script>
+	(function () {
+		var pass = document.getElementById( 'user_pass' ) || document.getElementById( 'pass1' );
+		var form = document.getElementById( 'loginform' );
+		// Caps Lock warning: the most common reason staff get "wrong password".
+		if ( pass ) {
+			var warn = document.createElement( 'p' );
+			warn.className = 'sc-login-caps';
+			warn.setAttribute( 'role', 'status' );
+			warn.textContent = <?php echo wp_json_encode( __( 'Caps Lock is on', 'soundcreations' ) ); ?>;
+			var wrap = pass.closest( '.wp-pwd' ) || pass;
+			wrap.parentNode.insertBefore( warn, wrap.nextSibling );
+			var check = function ( e ) { if ( e.getModifierState ) { warn.classList.toggle( 'is-on', e.getModifierState( 'CapsLock' ) ); } };
+			pass.addEventListener( 'keydown', check );
+			pass.addEventListener( 'keyup', check );
+			pass.addEventListener( 'blur', function () { warn.classList.remove( 'is-on' ); } );
+		}
+		// Busy state so the button is not pressed twice.
+		if ( form ) {
+			var user = document.getElementById( 'user_login' );
+			if ( user && ! user.getAttribute( 'placeholder' ) ) { user.setAttribute( 'placeholder', <?php echo wp_json_encode( __( 'Username or email', 'soundcreations' ) ); ?> ); }
+			if ( pass && ! pass.getAttribute( 'placeholder' ) ) { pass.setAttribute( 'placeholder', <?php echo wp_json_encode( __( 'Your password', 'soundcreations' ) ); ?> ); }
+			form.addEventListener( 'submit', function () {
+				var btn = document.getElementById( 'wp-submit' );
+				if ( btn ) { btn.classList.add( 'is-busy' ); btn.value = <?php echo wp_json_encode( __( 'Signing in...', 'soundcreations' ) ); ?>; }
+			} );
+		}
+	}() );
+	</script>
 	<?php
 }
 add_action( 'login_footer', 'sc_login_footer', 5 );
@@ -242,6 +279,12 @@ function sc_login_gettext( $translation, $text, $domain ) {
 	}
 	if ( 'Log In' === $text ) {
 		return __( 'Sign in', 'soundcreations' );
+	}
+	if ( 'Remember Me' === $text ) {
+		return __( 'Keep me signed in on this device', 'soundcreations' );
+	}
+	if ( 'Lost your password?' === $text ) {
+		return __( 'Forgot your password?', 'soundcreations' );
 	}
 	return $translation;
 }

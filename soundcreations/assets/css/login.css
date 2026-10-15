@@ -13,13 +13,18 @@ body.sc-login {
 	-webkit-font-smoothing: antialiased;
 }
 body.sc-login * { box-sizing: border-box; }
+/* Core login.css fixes html/body at height:100%, which cut the brand panel off
+   at one screen height. Let the page grow with its content instead. */
+html:has(body.sc-login) { height: auto; min-height: 100%; background: #0B0B0F; }
+body.sc-login { height: auto !important; min-height: 100vh; min-height: 100dvh; }
 body.sc-login ::selection { background: rgba(98,68,137,.55); color: #fff; }
 
 /* ---------- Left brand panel ---------- */
 .sc-login-aside {
 	position: relative; min-height: 100vh; overflow: hidden; color: #fff; isolation: isolate;
 	background:
-		linear-gradient(160deg, rgba(11,11,15,.94) 0%, rgba(30,20,46,.86) 45%, rgba(70,48,95,.62) 100%),
+		linear-gradient(180deg, rgba(11,11,15,.55) 0%, rgba(11,11,15,0) 30%, rgba(11,11,15,.7) 100%),
+		linear-gradient(110deg, rgba(11,11,15,.96) 0%, rgba(24,16,38,.9) 50%, rgba(70,48,95,.72) 100%),
 		var(--sc-login-photo, none) center / cover no-repeat, #0B0B0F;
 }
 .sc-login-aside::before { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(70% 55% at 0% 100%, rgba(186,11,11,.28), transparent 70%); }
@@ -53,17 +58,35 @@ body.sc-login ::selection { background: rgba(98,68,137,.55); color: #fff; }
 .sc-login-aside__foot a:hover { color: var(--p3); }
 
 /* ---------- Right column + card ---------- */
-.sc-login-main { display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 48px 24px 28px; }
+.sc-login-main {
+	position: relative; display: flex; flex-direction: column; align-items: center; min-height: 100vh; min-height: 100dvh; padding: 48px 24px 28px;
+	background-image: radial-gradient(rgba(169,139,214,.10) 1px, transparent 1px); background-size: 22px 22px;
+	-webkit-mask-image: none;
+}
+.sc-login-main::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(60% 50% at 50% 45%, transparent 0, var(--bg) 100%); }
+.sc-login-main > * { position: relative; }
+.sc-login-back { align-self: flex-end; display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: 13px; font-weight: 600; text-decoration: none; background: rgba(19,19,24,.7); }
+.sc-login-back:hover { color: #fff; border-color: rgba(169,139,214,.5); }
+.sc-login-back:focus { outline: 2px solid var(--p3); outline-offset: 3px; }
+.sc-login-help { margin: 6px 0 0; text-align: center; font-size: 13px; color: var(--muted); }
+.sc-login-help a { color: var(--p3); font-weight: 600; text-decoration: none; }
+@media (min-width: 960px) { .sc-login-help { display: none; } }
 body.sc-login #login {
 	width: 100%; max-width: 448px; margin: auto 0 0; padding: 36px 36px 28px; position: relative;
 	border: 1px solid var(--line); border-radius: 22px; background: linear-gradient(180deg, var(--surface2), var(--surface));
 	box-shadow: 0 1px 0 rgba(255,255,255,.04) inset, 0 30px 70px -30px rgba(0,0,0,.8), 0 0 0 1px rgba(98,68,137,.08);
 }
 body.sc-login #login::before { content: ""; position: absolute; top: -1px; left: 36px; right: 36px; height: 2px; border-radius: 2px; background: linear-gradient(90deg, var(--p), var(--red)); }
-body.sc-login #login h1 { margin: 0 0 24px; }
+body.sc-login #login > h1 { display: none; }
+body.sc-login .sc-login-intro__logo { display: block; margin: 0 0 26px; }
+body.sc-login .sc-login-intro__logo img { display: block; width: 150px; height: auto; }
+@media (min-width: 960px) { body.sc-login .sc-login-intro__logo { display: none; } }
+body.sc-login .sc-login-intro__badge { display: inline-flex; align-items: center; justify-content: center; width: 46px; height: 46px; margin: 0 0 18px; border-radius: 14px; background: linear-gradient(135deg, rgba(98,68,137,.35), rgba(186,11,11,.25)); border: 1px solid rgba(169,139,214,.35); color: #fff; }
+body.sc-login .sc-login-intro__badge svg { width: 22px; height: 22px; }
+@media (max-width: 959px) { body.sc-login .sc-login-intro__badge { display: none; } }
 body.sc-login #login h1 a {
-	width: 168px \!important; height: 62px \!important; margin: 0; padding: 0; overflow: hidden; text-indent: -9999px;
-	background-image: var(--sc-login-logo) \!important; background-size: contain \!important; background-position: left center \!important; background-repeat: no-repeat \!important;
+	width: 168px !important; height: 62px !important; margin: 0; padding: 0; overflow: hidden; text-indent: -9999px;
+	background-image: var(--sc-login-logo) !important; background-size: contain !important; background-position: left center !important; background-repeat: no-repeat !important;
 }
 body.sc-login #login h1 a:focus { outline: 2px solid var(--p3); outline-offset: 4px; box-shadow: none; border-radius: 6px; }
 body.sc-login .sc-login-intro { margin: 0 0 22px; text-align: left; }
@@ -83,6 +106,12 @@ body.sc-login input[type="password"] {
 	font-size: 16px; color: var(--text); box-shadow: none; transition: border-color .15s, box-shadow .15s, background-color .15s;
 }
 body.sc-login form .input:hover { border-color: #3A3A46; }
+body.sc-login #user_login, body.sc-login #user_pass, body.sc-login #pass1 { padding-left: 46px; background-repeat: no-repeat; background-position: 15px center; background-size: 18px 18px; }
+body.sc-login #user_login { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A0A0AC' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='8' r='4'/%3E%3Cpath d='M4 21a8 8 0 0 1 16 0'/%3E%3C/svg%3E"); }
+body.sc-login #user_pass, body.sc-login #pass1 { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A0A0AC' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='4.5' y='10.5' width='15' height='10' rx='2'/%3E%3Cpath d='M8 10.5V7.5a4 4 0 0 1 8 0v3'/%3E%3C/svg%3E"); }
+body.sc-login input::placeholder { color: #5E5E6A; opacity: 1; }
+.sc-login-caps { display: none; align-items: center; gap: 8px; margin: -10px 0 16px; padding: 8px 12px; border-radius: 10px; background: rgba(233,181,59,.14); color: #F2D48A; font-size: 13px; font-weight: 600; }
+.sc-login-caps.is-on { display: flex; }
 body.sc-login form .input:focus,
 body.sc-login input[type="text"]:focus,
 body.sc-login input[type="email"]:focus,
@@ -112,6 +141,8 @@ body.sc-login #wp-submit:hover { background: var(--red5); box-shadow: 0 14px 30p
 body.sc-login .button-primary:focus,
 body.sc-login #wp-submit:focus { outline: 0; box-shadow: 0 0 0 3px var(--surface), 0 0 0 6px var(--p3); }
 body.sc-login .button-primary:active { transform: translateY(1px); }
+body.sc-login #wp-submit.is-busy { opacity: .85; cursor: progress; background-image: linear-gradient(90deg, transparent 0, rgba(255,255,255,.18) 50%, transparent 100%); background-size: 200% 100%; animation: sc-login-busy 1.1s linear infinite; }
+@keyframes sc-login-busy { from { background-position: 200% 0; } to { background-position: -200% 0; } }
 body.sc-login .button.wp-generate-pw,
 body.sc-login .button-secondary { border-color: var(--p3); color: var(--p3); background: transparent; border-radius: 10px; }
 
@@ -167,15 +198,17 @@ body.sc-login .backup-methods-wrap a { color: var(--p3); font-weight: 600; text-
 	.sc-login-aside__lead { margin: 0; font-size: 14.5px; }
 	.sc-login-aside__list, .sc-login-aside__stats, .sc-login-aside__foot { display: none; }
 	.sc-login-aside__wave { height: 60px; gap: 4px; padding: 0 22px; opacity: .35; }
-	.sc-login-main { min-height: 0; padding: 0 16px 32px; }
+	.sc-login-main { min-height: 0; padding: 0 16px 32px; background-image: none; }
+	.sc-login-main::before { display: none; }
+	.sc-login-back { display: none; }
 	body.sc-login #login { margin-top: -26px; z-index: 2; }
-	body.sc-login #login h1 { display: none; }
 }
 @media (max-width: 420px) {
 	body.sc-login #login { padding: 28px 20px 22px; border-radius: 18px; }
 	body.sc-login #login::before { left: 20px; right: 20px; }
 }
 @media (prefers-reduced-motion: reduce) {
-	body.sc-login * { transition: none \!important; }
+	body.sc-login * { transition: none !important; }
 	.sc-login-aside__wave span { animation: none; }
+	body.sc-login #wp-submit.is-busy { animation: none; }
 }
