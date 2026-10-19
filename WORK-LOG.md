@@ -37,14 +37,16 @@ Owner contact for decisions: Agnes (website project lead).
    agent sandbox). Run it across the tree before or right after any deploy.
 3. **Testimonials page is live but empty.** Add real client quotes under
    Testimonials in wp-admin (ideally local projects: PCEA Kahawa, RPF Rubavu).
-4. **Sitemap could not be fetched** (`/wp-sitemap.xml` failed,
-   `/sitemap_index.xml` 404). Check Rank Math -> Sitemap Settings, then submit
-   it in Google Search Console.
+4. **Sitemap**: `/wp-sitemap.xml` (WordPress core) is live (Rank Math's
+   sitemap is off, so `/sitemap_index.xml` 404s, which is fine). Submit
+   `/wp-sitemap.xml` in Google Search Console and confirm "Success"; some
+   fetchers fail on it, so check for bot/WAF filtering if GSC errors.
 5. **Mobile speed not verified.** Run PageSpeed Insights on the homepage
    (mobile), confirm WEBP under Tools -> Site Health -> Info -> Media
    Handling, then regenerate thumbnails once.
 6. **Rank Math hook names** used in `seo.php` (`rank_math/sitemap/entry`,
-   `rank_math/frontend/robots`, `rank_math/frontend/canonical`) were written
+   `rank_math/frontend/robots`, `rank_math/frontend/canonical`, and
+   `rank_math/json_ld` in `seo-graph.php`) were written
    from documentation, not checked against the installed version.
 7. **Before-and-after project photos** suggested by the external review are a
    content task, not code.
@@ -52,6 +54,27 @@ Owner contact for decisions: Agnes (website project lead).
 ---
 
 ## Log
+
+### 19 Oct 2026 — Technical SEO + schema audit, 6 fixes — committed, needs plugin + 1 theme file upload
+
+- Full report: `docs/seo/TECHNICAL-AUDIT.md`; schema reference: `docs/seo/SCHEMA.md`.
+- `faeec28` Rank Math JSON-LD emptied in code while Core owns the graph
+  (was only a wp-admin toggle). `fb64e15` FAQPage only where the FAQ block
+  is visible. `29f1557` VideoObject thumbnails use hqdefault (maxresdefault
+  404s on non-HD uploads). `6f0d066` product breadcrumbs go to /brands/, not
+  the redirecting /products/ (visible + schema). `5ce401c` schema logo uses
+  the Customizer logo when set (was the favicon). `7cca035` Service nodes
+  get a description. Core version 0.5.28.
+- Upload: `sound-creations-core/` (seo-graph.php, seo-faq.php,
+  sound-creations-core.php) and `soundcreations/single-sc_product.php`.
+- Raw `<head>` could not be fetched from the agent environment: confirm in
+  view-source that there is exactly one ld+json block. php -l not run.
+- Sitemap: `/wp-sitemap.xml` (WordPress core) is live and lists pages,
+  projects, products, brands, solutions, videos, services; Rank Math's
+  sitemap is off. It still lists the 5 FANE product pages - owner decision
+  whether to noindex them (products are not showcased).
+- Set a logo under Appearance > Customize > Site Identity for the schema fix
+  to take effect.
 
 ### 19 Oct 2026 — Compact homepage testimonials strip (CSS only) — committed, needs main.css upload
 
