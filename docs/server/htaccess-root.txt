@@ -1,142 +1,98 @@
 # ============================================================================
 # Sound Creations Ltd - security + performance
 # File: /public_html/.htaccess (domain root)
-# Updated: 2026-10-19 (supersedes 2026-09-28)
+# Updated: 2026-10-19 (conservative revision of the 2026-09-28 file)
 #
 # NOTES FOR FUTURE EDITORS:
 #  - Do NOT edit inside the BEGIN/END WordPress, BEGIN/END seraphinite or the
-#    cPanel PHP handler markers. They are regenerated automatically and your
-#    changes will be lost.
+#    cPanel PHP handler markers. They are regenerated automatically.
+#  - NEVER hand-edit the cPanel PHP handler block. On 2026-10-19 changing it
+#    to ea-php84 took the whole site down (500). Change PHP versions only in
+#    cPanel > MultiPHP Manager / PHP Selector.
+#  - This revision only uses directive types the 2026-09-28 file already
+#    used successfully on this server. A fuller version (Brotli, charset
+#    directives) caused a 500 here and was withdrawn.
 #  - Security headers below are scoped to STATIC FILES ONLY. PHP pages already
-#    get them from the theme (soundcreations/inc/hardening.php). Do not add
-#    them globally here or every page will send them twice.
+#    get them from the theme (soundcreations/inc/hardening.php).
 #  - XML-RPC is already disabled in PHP, so it is not repeated here.
-#  - /sitenew/ and /testimonials-v-N/ redirects live in PHP
-#    (sound-creations-core/includes/post-types.php) and only fire on a 404,
-#    so real content always wins. Do not duplicate them here.
-#  - The master copy of this file is docs/server/htaccess-root.txt in the
-#    repository. Change it there first, then paste it here.
-#
-# CHANGES ON 2026-10-19:
-#  - HTTPS runs before the legacy redirects: an old http://.../newwebsite/
-#    link now takes one 301 hop instead of two.
-#  - Removed ExpiresDefault "1 month". It was also applied to dynamic JSON
-#    and XML (REST API, admin-ajax, sitemaps, feeds), so browsers could keep
-#    stale data for a month. Every cached type is now listed explicitly and
-#    dynamic types are set to 0 seconds.
-#  - Images: 180 days and no "immutable". Theme images and replaced media
-#    keep the same filename with no version string, so a one-year immutable
-#    cache would hide an updated photo from returning visitors.
-#    CSS, JS and fonts keep one year + immutable, because they are versioned.
-#  - Added AVIF, TTF/OTF, PDF, JSON-LD, web manifest and favicon handling.
-#  - Added Brotli where available (gzip stays as the fallback).
-#  - Added WordPress's documented wp-includes / wp-admin/includes blocks.
-#  - Added more sensitive-file patterns (composer/npm files, archives,
-#    wp-config backups).
-#  - Added UTF-8 charset for text assets.
+#  - /sitenew/ and /testimonials-v-N/ redirects live in PHP and only fire on
+#    a 404, so real content always wins. Do not duplicate them here.
+#  - Master copy: docs/server/htaccess-root.txt in the repository.
 # ============================================================================
 
 # ---------------------------------------------------------------------------
-# 1. Canonical HTTPS, then legacy /newwebsite/ redirects.
-#    HTTPS first, so an old http:// link costs one hop, not two.
+# 1. Canonical HTTPS first, then legacy /newwebsite/ redirects, so an old
+#    http://.../newwebsite/ link costs one redirect instead of two.
 # ---------------------------------------------------------------------------
 <IfModule mod_rewrite.c>
 RewriteEngine On
 
-# Canonical HTTPS. The second condition keeps this safe behind a proxy or CDN
-# (without it, some hosts loop forever).
+# The second condition keeps this safe behind a proxy or CDN.
 RewriteCond %{HTTPS} !=on
 RewriteCond %{HTTP:X-Forwarded-Proto} !=https
 RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-# The site moved from /newwebsite/ to the domain root. Preserves Google
-# rankings and keeps old inbound links alive. Query strings are kept.
+# The site moved from /newwebsite/ to the domain root. Query strings are kept.
 RewriteRule ^newwebsite/?$ / [R=301,L]
-RewriteRule ^newwebsite/(.+)$ /$1 [R=301,L]
-
-# WordPress hardening (from the WordPress "Hardening WordPress" guide):
-# block direct requests to internal PHP files that are only meant to be
-# included by WordPress itself.
-RewriteRule ^wp-admin/includes/ - [F,L]
-RewriteRule !^wp-includes/ - [S=3]
-RewriteRule ^wp-includes/[^/]+\.php$ - [F,L]
-RewriteRule ^wp-includes/js/tinymce/langs/.+\.php - [F,L]
-RewriteRule ^wp-includes/theme-compat/ - [F,L]
+RewriteRule ^newwebsite/(.*)$ /$1 [R=301,L]
 </IfModule>
 
 # ---------------------------------------------------------------------------
-# 2. Compression. Already active on this server; kept as a safety net so
-#    compression survives a plugin being disabled. The server skips anything
-#    that already carries a Content-Encoding, so this cannot double-compress.
-#    WOFF/WOFF2, JPEG, PNG, WebP, AVIF and MP4 are already compressed and
-#    are deliberately not listed.
+# 2. Compression safety net (skips anything already compressed).
+#    WOFF/WOFF2, JPEG, PNG, WebP, AVIF and MP4 are already compressed.
 # ---------------------------------------------------------------------------
-<IfModule mod_brotli.c>
-  AddOutputFilterByType BROTLI_COMPRESS text/html text/plain text/xml text/css
-  AddOutputFilterByType BROTLI_COMPRESS text/javascript application/javascript application/x-javascript
-  AddOutputFilterByType BROTLI_COMPRESS application/json application/ld+json application/xml
-  AddOutputFilterByType BROTLI_COMPRESS application/rss+xml application/atom+xml
-  AddOutputFilterByType BROTLI_COMPRESS application/manifest+json image/svg+xml image/x-icon
-  AddOutputFilterByType BROTLI_COMPRESS font/ttf font/otf application/vnd.ms-fontobject
-</IfModule>
-
 <IfModule mod_deflate.c>
   AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css
   AddOutputFilterByType DEFLATE text/javascript application/javascript application/x-javascript
   AddOutputFilterByType DEFLATE application/json application/ld+json application/xml
   AddOutputFilterByType DEFLATE application/rss+xml application/atom+xml
-  AddOutputFilterByType DEFLATE application/manifest+json image/svg+xml image/x-icon
-  AddOutputFilterByType DEFLATE font/ttf font/otf application/vnd.ms-fontobject
+  AddOutputFilterByType DEFLATE image/svg+xml image/x-icon font/ttf font/otf
 </IfModule>
 
 # ---------------------------------------------------------------------------
 # 3. Browser caching.
-#    CSS/JS/fonts: 1 year. Safe because the theme cache-busts automatically
-#    using the filemtime of main.css, and WordPress core/plugins add ?ver=.
-#    Images: 180 days, not immutable (unversioned filenames, see top).
-#    Video and PDFs: shorter, because they get replaced in place.
-#    Dynamic responses (HTML, JSON, XML, feeds): never cached by the browser;
-#    page caching is seraphinite's job.
+#    - No ExpiresDefault: the old "1 month" default was also applied to
+#      dynamic JSON/XML (REST API, forms, sitemaps, feeds).
+#    - CSS/JS/fonts: 1 year (versioned by the theme and by ?ver=).
+#    - Images: 180 days, not immutable. Theme images and replaced media keep
+#      the same filename, so a 1-year immutable cache hides updated photos.
+#    - Video/PDF: shorter, because they get replaced in place.
 # ---------------------------------------------------------------------------
 <IfModule mod_expires.c>
   ExpiresActive On
 
-  ExpiresByType text/css                       "access plus 1 year"
-  ExpiresByType application/javascript         "access plus 1 year"
-  ExpiresByType text/javascript                "access plus 1 year"
+  ExpiresByType text/css                "access plus 1 year"
+  ExpiresByType application/javascript  "access plus 1 year"
+  ExpiresByType text/javascript         "access plus 1 year"
 
-  ExpiresByType font/woff2                     "access plus 1 year"
-  ExpiresByType font/woff                      "access plus 1 year"
-  ExpiresByType application/font-woff2         "access plus 1 year"
-  ExpiresByType font/ttf                       "access plus 1 year"
-  ExpiresByType font/otf                       "access plus 1 year"
+  ExpiresByType font/woff2              "access plus 1 year"
+  ExpiresByType font/woff               "access plus 1 year"
+  ExpiresByType application/font-woff2  "access plus 1 year"
+  ExpiresByType font/ttf                "access plus 1 year"
+  ExpiresByType font/otf                "access plus 1 year"
 
-  ExpiresByType image/jpeg                     "access plus 180 days"
-  ExpiresByType image/png                      "access plus 180 days"
-  ExpiresByType image/gif                      "access plus 180 days"
-  ExpiresByType image/webp                     "access plus 180 days"
-  ExpiresByType image/avif                     "access plus 180 days"
-  ExpiresByType image/svg+xml                  "access plus 180 days"
-  ExpiresByType image/x-icon                   "access plus 180 days"
-  ExpiresByType image/vnd.microsoft.icon       "access plus 180 days"
+  ExpiresByType image/jpeg              "access plus 180 days"
+  ExpiresByType image/png               "access plus 180 days"
+  ExpiresByType image/gif               "access plus 180 days"
+  ExpiresByType image/webp              "access plus 180 days"
+  ExpiresByType image/avif              "access plus 180 days"
+  ExpiresByType image/svg+xml           "access plus 180 days"
+  ExpiresByType image/x-icon            "access plus 180 days"
 
-  # Shorter on purpose: the hero video is due to be re-encoded and re-uploaded
-  # over the same filename. Raise this once the video is final.
-  ExpiresByType video/mp4                      "access plus 1 month"
+  # Hero video is due to be re-encoded over the same filename.
+  ExpiresByType video/mp4               "access plus 1 month"
 
-  # The company profile and FANE catalogue PDFs get replaced in place.
-  ExpiresByType application/pdf                "access plus 1 week"
+  # Company profile and FANE catalogue PDFs get replaced in place.
+  ExpiresByType application/pdf         "access plus 1 week"
 
-  ExpiresByType application/manifest+json      "access plus 1 week"
-
-  # Dynamic content: never cache in the browser.
-  ExpiresByType text/html                      "access plus 0 seconds"
-  ExpiresByType application/json               "access plus 0 seconds"
-  ExpiresByType application/ld+json            "access plus 0 seconds"
-  ExpiresByType application/xml                "access plus 0 seconds"
-  ExpiresByType text/xml                       "access plus 0 seconds"
-  ExpiresByType application/rss+xml            "access plus 0 seconds"
-  ExpiresByType application/atom+xml           "access plus 0 seconds"
+  # Dynamic content: never cache in the browser (page caching is seraphinite's job).
+  ExpiresByType text/html               "access plus 0 seconds"
+  ExpiresByType application/json        "access plus 0 seconds"
+  ExpiresByType application/ld+json     "access plus 0 seconds"
+  ExpiresByType application/xml         "access plus 0 seconds"
+  ExpiresByType text/xml                "access plus 0 seconds"
+  ExpiresByType application/rss+xml     "access plus 0 seconds"
+  ExpiresByType application/atom+xml    "access plus 0 seconds"
 </IfModule>
 
 <IfModule mod_headers.c>
@@ -144,7 +100,7 @@ RewriteRule ^wp-includes/theme-compat/ - [F,L]
     Header set Cache-Control "public, max-age=31536000, immutable"
   </FilesMatch>
 
-  <FilesMatch "\.(jpe?g|png|gif|webp|avif|svg|ico)$">
+  <FilesMatch "\.(jpg|jpeg|png|gif|webp|avif|svg|ico)$">
     Header set Cache-Control "public, max-age=15552000"
   </FilesMatch>
 
@@ -157,7 +113,7 @@ RewriteRule ^wp-includes/theme-compat/ - [F,L]
   </FilesMatch>
 
   # Cookies are pointless on static files and block some proxy caches.
-  <FilesMatch "\.(css|js|jpe?g|png|gif|webp|avif|svg|ico|woff|woff2|ttf|otf|mp4|pdf)$">
+  <FilesMatch "\.(css|js|jpg|jpeg|png|gif|webp|avif|svg|ico|woff|woff2|ttf|otf|mp4|pdf)$">
     Header unset Set-Cookie
   </FilesMatch>
 </IfModule>
@@ -166,19 +122,13 @@ RewriteRule ^wp-includes/theme-compat/ - [F,L]
 FileETag MTime Size
 
 # ---------------------------------------------------------------------------
-# 4. Security headers for STATIC ASSETS ONLY.
-#    PHP pages already receive these from the theme - see note at top.
+# 4. Security headers for STATIC ASSETS ONLY (PHP pages get them from theme).
 # ---------------------------------------------------------------------------
 <IfModule mod_headers.c>
-  <FilesMatch "\.(css|js|jpe?g|png|gif|webp|avif|svg|ico|woff|woff2|ttf|otf|mp4|pdf)$">
+  <FilesMatch "\.(css|js|jpg|jpeg|png|gif|webp|avif|svg|ico|woff|woff2|ttf|otf|mp4|pdf)$">
     Header set X-Content-Type-Options "nosniff"
     Header set Referrer-Policy "strict-origin-when-cross-origin"
     Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
-  </FilesMatch>
-
-  # SVGs can carry script. Served directly (not as <img>), they must not run it.
-  <FilesMatch "\.svg$">
-    Header set Content-Security-Policy "default-src 'none'; style-src 'unsafe-inline'; img-src data:"
   </FilesMatch>
 </IfModule>
 
@@ -188,23 +138,17 @@ FileETag MTime Size
 Options -Indexes
 ServerSignature Off
 
-# WordPress config, server files, install notes and logs.
 <FilesMatch "^(wp-config\.php|wp-config-sample\.php|\.htaccess|\.htpasswd|\.user\.ini|php\.ini|readme\.html|license\.txt|debug\.log|error_log)$">
   Require all denied
 </FilesMatch>
 
-# Developer and package-manager files that should never be on a live server.
-<FilesMatch "^(composer\.(json|lock)|package(-lock)?\.json|yarn\.lock|phpunit\.xml(\.dist)?|Gruntfile\.js|gulpfile\.js)$">
+# Developer / package-manager files that should never be public.
+<FilesMatch "^(composer\.json|composer\.lock|package\.json|package-lock\.json|yarn\.lock)$">
   Require all denied
 </FilesMatch>
 
-# Backups, dumps, logs, shell scripts and archive copies of the site.
-<FilesMatch "\.(bak|backup|old|orig|save|swp|swo|dist|sql|sql\.gz|log|ini|sh|tar|tgz|tar\.gz)$">
-  Require all denied
-</FilesMatch>
-
-# Copies of wp-config left behind by editors (wp-config.php.bak, ~ files).
-<FilesMatch "^wp-config.*$">
+# Backups, database dumps, logs, scripts and archive copies of the site.
+<FilesMatch "\.(bak|backup|old|orig|save|swp|sql|log|ini|sh|tar|tgz)$">
   Require all denied
 </FilesMatch>
 
@@ -212,24 +156,18 @@ ServerSignature Off
 RedirectMatch 404 /\.(?!well-known)
 
 # ---------------------------------------------------------------------------
-# 6. Correct MIME types and charset, so the caching and compression rules
-#    above match.
+# 6. Correct MIME types, so the caching and compression rules above match.
 # ---------------------------------------------------------------------------
 <IfModule mod_mime.c>
   AddType image/webp                 .webp
   AddType image/avif                 .avif
-  AddType image/svg+xml              .svg .svgz
-  AddType image/x-icon               .ico
   AddType font/woff2                 .woff2
   AddType font/woff                  .woff
   AddType font/ttf                   .ttf
   AddType font/otf                   .otf
   AddType video/mp4                  .mp4
-  AddType application/manifest+json  .webmanifest
+  AddType image/svg+xml              .svg
   AddType application/x-web-app-manifest+json .webapp
-
-  AddDefaultCharset utf-8
-  AddCharset utf-8 .css .js .json .xml .svg .webmanifest .txt
 </IfModule>
 
 # BEGIN WordPress
@@ -256,10 +194,6 @@ RewriteRule . /index.php [L]
 
 # php -- BEGIN cPanel-generated handler, do not edit
 # Set the “ea-php80” package as the default “PHP” programming language.
-# (2026-10-19: hand-editing this to ea-php84 caused a 500 error site-wide;
-#  the server's PHP 8.4 comes from the CloudLinux PHP Selector, not an
-#  ea-php84 package. Change PHP only via cPanel MultiPHP Manager / PHP
-#  Selector, never by editing this block.)
 <IfModule mime_module>
   AddHandler application/x-httpd-ea-php80___lsphp .php .php8 .phtml
 </IfModule>

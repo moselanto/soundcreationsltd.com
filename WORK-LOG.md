@@ -53,6 +53,22 @@ Owner contact for decisions: Agnes (website project lead).
 
 ## Log
 
+### 19 Oct 2026 — Conservative .htaccess revision — owner to paste
+
+- The full 19 Oct .htaccess caused a 500 on this server; the 28 Sep file
+  works. Exact failing directive not identified (candidates: ea-php84
+  handler, Brotli block, AddDefaultCharset/AddCharset, [S=3] rewrite rules).
+- `docs/server/htaccess-root.txt` is now a conservative revision that only
+  uses directive types the 28 Sep file already ran: HTTPS-first redirect
+  order, no ExpiresDefault (dynamic JSON/XML not cached), images 180 days
+  without immutable, AVIF/fonts/PDF, wider DEFLATE list, more blocked files.
+  Handler stays ea-php80.
+- Do not re-add Brotli, charset directives or wp-includes rewrite blocks
+  without testing them one at a time on this server.
+- The uploads `.htaccess` (docs/server/htaccess-uploads.txt) is on hold
+  until the root file is confirmed stable; if added, drop the `Options` line
+  first if images 500.
+
 ### 19 Oct 2026 — ea-php84 handler caused a 500 error — reverted to ea-php80
 
 - Pasting the `ea-php84` handler gave a site-wide 500 error. Most likely
