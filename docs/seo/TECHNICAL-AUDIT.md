@@ -45,7 +45,7 @@ live check).
 | T-04 | /products/* / `seo-graph.php`, `single-sc_product.php` | Breadcrumb (visible and schema) second item = `/products/`, which 301s to `/brands/`. | `sc_core_redirect_legacy_paths`, templates. | Redirecting URL in BreadcrumbList; inconsistent trail. | Both trails now Home / Brands / Product. | P1 | Defect | **Fixed `6f0d066`** | Rich Results Test on /products/fane-cd140/: breadcrumb item 2 = /brands/. |
 | T-05 | all pages / `seo-graph.php` | Organization `logo` is the 512px Site Icon (favicon). | Code. | Weak logo for brand/knowledge-panel surfaces. | Prefer Customizer `custom_logo`, fall back to Site Icon. | P1 | Defect | **Fixed `5ce401c`** - takes effect once a logo is set under Appearance > Customize > Site Identity. | Graph `#logo` URL = the uploaded logo. |
 | T-06 | /solutions/*, /service/* / `seo-graph.php` | Service node had no `description` (templates have no excerpt). | Code; live pages render from PHP templates. | Thin Service entity. | Fall back to `sc_seo_description()`. | P2 | Defect | **Fixed `7cca035`** | Schema validator shows Service.description. |
-| T-07 | sitemap `wp-sitemap-posts-sc_product-1.xml` | 5 FANE product pages listed and indexable while products are "not showcased". | Live sitemap. | Contradicts the owner decision; product pages are reachable and promoted to Google. | Owner decision: noindex + drop from sitemap, or keep. Not changed. | P2 | Defect vs. policy | **Open - owner decision** | - |
+| T-07 | sitemap `wp-sitemap-posts-sc_product-1.xml` | 5 FANE product pages listed and indexable while products are "not showcased". | Live sitemap. | Contradicts the owner decision; product pages are reachable and promoted to Google. | Owner decision (19 Oct 2026, products not showcased): `noindex,follow` on product singles via `wp_robots` and `rank_math/frontend/robots`; `sc_product` removed from the core sitemap and Rank Math sitemap entries. Pages stay online. Reversible via `sc_core_index_products`. | P2 | Defect vs. policy | **Fixed `1d797b8`** | View source of /products/fane-cd140/: robots meta contains `noindex`; /wp-sitemap.xml no longer lists `wp-sitemap-posts-sc_product-1.xml`. |
 | T-08 | /brands/ | Visible breadcrumb label "Products", title "Brands \| ...", Core title filter says "Products", schema crumb says "Brands". | Live page, `post-types.php`. | Inconsistent naming of one page. | Pick one label (keyword study). | P2 | Defect | Open (deferred to keyword study) | - |
 | T-09 | archives | Core archive title templates (`sc_title_archive_map`) are dead while Rank Math owns titles. | Live titles. | Confusing code; titles are short but not broken. | Set titles in Rank Math after the keyword study, or let Core own titles. | P2 | Defect | Open | - |
 | T-10 | /service/* | Visible trail Home / Services (`/#services`) / X; schema trail Home / X (no Services archive). | Template vs code. | Minor mismatch; a fragment URL should not be a breadcrumb item, so schema is the safer one. | None now. | P3 | Defect | Open (accepted) | - |
@@ -70,6 +70,8 @@ live check).
 | `6f0d066` | Point product breadcrumbs at Brands, not the redirected archive |
 | `5ce401c` | Prefer the Customizer logo over the favicon in schema |
 | `7cca035` | Give Service nodes a description on template pages |
+| `1d797b8` | Keep product pages out of Google while products are hidden (T-07) |
+| `d2e7337` | Redirect legacy URLs from the pre-redesign site (see LEGACY-REDIRECTS.md) |
 
 Files to upload: `sound-creations-core/includes/seo-graph.php`,
 `sound-creations-core/includes/seo-faq.php`,
@@ -78,7 +80,7 @@ Files to upload: `sound-creations-core/includes/seo-graph.php`,
 
 ## What remains
 
-- T-07: owner decision on noindexing FAQ/product pages that are not showcased.
+- T-07: fixed in `1d797b8`; upload `sound-creations-core/includes/seo.php` and verify.
 - T-08, T-09: title and label alignment, after the keyword study.
 - T-11, T-20: confirm in Search Console and on the server.
 - Upload a real logo in the Customizer so T-05 takes effect.

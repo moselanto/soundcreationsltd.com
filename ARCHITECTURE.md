@@ -160,6 +160,27 @@ than by breaking links:
   any published page at those paths out of the XML sitemap (core and Rank
   Math).
 
+- **Pre-redesign site URLs** (old blog posts, services, WooCommerce
+  `/product/` and `/product-category/`, date/category/tag archives,
+  `?service=` / `?portfolio=` links) → their mapped destinations, per
+  `docs/seo/LEGACY-REDIRECTS.md`. Handled by `sc_core_legacy_redirects()` in
+  `includes/legacy-redirects.php` at `template_redirect` **priority 1**, so it
+  runs before the 404-only handler above (9) and `redirect_canonical()` (10).
+  Exact map rows (`sc_core_legacy_redirect_map()`, filterable) fire even when
+  WordPress resolved something, because WordPress's slug guessing was serving
+  wrong content at `/service/` and `/sitenew/`; they never fire on a current
+  destination or on a live Core post/term at its own address. Pattern rules
+  fire only on a 404. Rows marked 410 set a 404 query, send status 410 and
+  render the theme 404 template. `/author/*` is always 410 (consistent with the
+  username-enumeration guard in `security.php`). WordPress's 404 slug guess
+  (`do_redirect_guess_404_permalink`) is disabled for mapped paths, and any
+  published post or page at a mapped path is dropped from the sitemaps.
+  `?p=` / `?page_id=` are left to WordPress.
+
+Product singles (`sc_product`) stay online but are `noindex,follow` and out of
+the sitemap while products are not showcased (`seo.php`,
+`sc_seo_hide_products()`; reverse with the `sc_core_index_products` filter).
+
 The Brands archive also has its document `<title>` rewritten to "Products" via
 `document_title_parts`, so the URL, the post type and the user-facing label
 intentionally differ. Keep that in mind when debugging.

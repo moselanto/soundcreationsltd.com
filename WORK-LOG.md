@@ -17,13 +17,14 @@ Owner contact for decisions: Agnes (website project lead).
   individual products shown. The product directory on `/brands/` is hidden by
   default (setting `products_dir_enabled`; type `yes` to show). Do not enable
   it, link to it, or promote products until Agnes confirms the company has
-  approved it. Individual product pages (e.g. FANE drivers) are still
-  reachable by direct URL; hiding those too is an open question.
+  approved it. Individual product pages (e.g. FANE drivers) stay reachable
+  by direct URL but are `noindex,follow` and out of the sitemap (`1d797b8`).
 - **No invented content.** No sample testimonials, fake projects or
   placeholder addresses. Empty states hide the section instead.
-- **Pre-redesign blog posts** at the root (e.g. `/audio-solutions/`,
-  `/yu-mwaminifu-concert-by-james-kahero/`) are left alone on purpose.
-  Redirecting or deleting them is an owner decision that has not been made.
+- **Pre-redesign URLs are 301'd** (owner decision 19 Oct 2026): every old
+  page Google crawled goes to its best new equivalent, per
+  `docs/seo/LEGACY-REDIRECTS.md` (implemented in `d2e7337`). Change targets in
+  that doc and the map in `includes/legacy-redirects.php` together.
 - **Commits go directly to `main`** (owner's instruction), one logical change
   per commit.
 
@@ -54,6 +55,54 @@ Owner contact for decisions: Agnes (website project lead).
 ---
 
 ## Log
+
+### 19 Oct 2026 — Legacy 301/410 redirects + product pages noindexed — committed, needs upload
+
+| Commit | Change |
+| --- | --- |
+| `d2e7337` | New `sound-creations-core/includes/legacy-redirects.php` (required from `sound-creations-core.php`): implements the 70-row map, pattern rules and `?service=`/`?portfolio=` rows from `docs/seo/LEGACY-REDIRECTS.md`. `template_redirect` priority 1; exact rows fire even when WordPress guessed content; patterns only on 404; 410 rows render the 404 template with status 410; WordPress 404 slug-guessing off for mapped paths; mapped posts/pages out of sitemaps. Existing `/products/`, `/resources/`, `/sitenew/*`, `/newwebsite/*`, `testimonials-v-N` redirects untouched (none removed). |
+| `1d797b8` | `includes/seo.php`: `sc_product` singles `noindex,follow` (wp_robots + Rank Math robots) and removed from the core sitemap and Rank Math sitemap entries (audit T-07). Reverse with the `sc_core_index_products` filter. |
+| this commit | Docs (LEGACY-REDIRECTS, TECHNICAL-AUDIT T-07, ARCHITECTURE 3.4) and Core 0.5.28 -> 0.5.29. |
+
+Why: Google still indexes ~70 old-site URLs (mostly 404; `/service/` served
+a video and `/sitenew/` a duplicate homepage), and product pages were being
+promoted although products are not showcased.
+
+Deviation: `/author/moses/` (and any `/author/*`) answers **410**, not a
+301 to `/about/`. `security.php` already 410s existing authors; redirecting
+only unknown authors would reveal which usernames exist.
+
+**Upload (all three, same time):**
+- `sound-creations-core/includes/legacy-redirects.php` (new)
+- `sound-creations-core/includes/seo.php`
+- `sound-creations-core/sound-creations-core.php`
+
+`php -l` was **not** run (no PHP in the agent sandbox); bracket balance was
+checked by script and every line reviewed by hand. Lint first, or upload
+with cPanel open so `sound-creations-core.php` can be reverted at once if
+the site shows a critical error. No rewrite flush needed.
+
+**Verify after upload:**
+1. Plugins screen shows Sound Creations Core 0.5.29; homepage, a solution,
+   a project, `/service/integration/` and wp-admin load normally.
+2. `curl -sI https://soundcreationsltd.com/sitenew/` -> `301`, `Location: https://soundcreationsltd.com/`.
+3. `curl -sI .../service/` -> `301` to `/solutions/`; `.../service/intergration/` -> `/service/integration/`.
+4. `curl -sI` on `/our-services/`, `/audio-solutions/`, `/acoustic-solutions/`,
+   `/shure-microphones/`, `/sound-creations-ltd-audio-visual-integration-at-citam-buruburu/`,
+   `/2021/`, `/category/video/`, `/product-category/uncategorized/`,
+   `/product/behringer-u-phoria-umc202hd-usb-audio-interface/` -> `301` with
+   the `Location` in the map (one hop: curl the Location and expect `200`).
+   Run every path in the doc's section 5 the same way.
+5. Pattern: `/product/shure-sm58-test/` -> `/brands/shure/`; `/2019/05/` -> `/projects/`.
+6. Query string kept: `/our-services/?utm_source=x` -> `/solutions/?utm_source=x`.
+7. `curl -sI .../many-types-of-construction-equipment-are-designed/` and
+   `.../product-category/surgery/` -> `HTTP/... 410`; `/author/moses/` -> `410`.
+8. `curl -sI "https://soundcreationsltd.com/?portfolio=mdas"` -> `301` to `/brands/midas/`.
+9. Live pages are not redirected: `/solutions/`, `/brands/`, `/projects/`, `/videos/`, `/products/` (still 301 to `/brands/`), `/resources/` (still 301 to `/videos/`).
+10. View source of `/products/fane-cd140/`: robots meta contains `noindex` (and `follow`).
+11. `/wp-sitemap.xml` no longer lists `wp-sitemap-posts-sc_product-1.xml`, and no sitemap lists an old-site URL.
+12. Search Console: inspect `/sitenew/` and `/service/`, then request a
+    re-crawl; re-run the Wayback CDX query and add any new paths to the doc.
 
 ### 19 Oct 2026 — Technical SEO + schema audit, 6 fixes — committed, needs plugin + 1 theme file upload
 
