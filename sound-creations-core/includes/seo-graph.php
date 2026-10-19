@@ -1158,3 +1158,42 @@ function sc_seo_graph() {
 		. wp_json_encode( $payload, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE )
 		. '</script>' . "\n";
 }
+
+/* ============================================================
+   ONE SOURCE OF JSON-LD
+
+   Core prints the only structured-data graph on the site. The owner
+   switched Rank Math's Schema module off (14 Oct 2026) so its
+   Organization, WebSite, WebPage and BreadcrumbList nodes would not
+   compete with these. That decision currently lives in a wp-admin
+   toggle that any plugin update, settings import or well-meaning
+   click can reverse, and the result would be two Organization nodes
+   with different @ids and two BreadcrumbLists per page -- exactly the
+   conflicting-entity problem this file exists to prevent.
+
+   Emptying Rank Math's json_ld payload makes the decision hold in
+   code. Rank Math prints nothing when the filtered payload is empty,
+   so this removes its block without touching its titles, meta
+   descriptions, canonicals or sitemap, which it still owns. Return
+   false from sc_seo_core_owns_schema to hand schema back to Rank Math.
+   ============================================================ */
+
+/**
+ * Whether Core's graph is the single source of JSON-LD.
+ *
+ * @return bool
+ */
+function sc_seo_core_owns_schema() {
+	return (bool) apply_filters( 'sc_seo_core_owns_schema', true );
+}
+
+add_filter(
+	'rank_math/json_ld',
+	function ( $data ) {
+		if ( is_admin() || ! sc_seo_core_owns_schema() ) {
+			return $data;
+		}
+		return array();
+	},
+	99
+);
