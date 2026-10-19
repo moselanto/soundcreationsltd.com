@@ -336,8 +336,15 @@ one footer widget area.
 - `main.css` and `content.css` enqueued normally; `tokens.css` and `fonts.css`
   are **inlined into `<head>`** to remove two render-blocking requests, with
   relative font URLs rewritten to absolute.
-- `theme.js` and `map.js` load in the footer and are given `defer` via
-  `script_loader_tag`.
+- `theme.js`, `map.js`, `loader.js` and `leads.js` load in the footer and are
+  given `defer` via `script_loader_tag`. The WhatsApp chat card inside
+  `leads.js` additionally waits for browser idle or the first interaction
+  before wiring itself up; until then its button is a plain wa.me link, so it
+  never breaks. Lead tracking is not delayed.
+- Every non-LCP `<img>` carries `loading="lazy" decoding="async"` (card
+  images via `sc_theme_card_img()`, footer logos, brand logos). The LCP image
+  (homepage and About heroes) is never lazy and stays in sync with the
+  preload above.
 - The primary self-hosted font is preloaded; the LCP hero image is preloaded per
   template (front page and About have different heroes — if the preload and the
   template's actual image drift apart, the browser high-priority-fetches an

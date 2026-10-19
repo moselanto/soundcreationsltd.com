@@ -175,10 +175,35 @@
 		}
 	}
 
+	/* Chat card start-up is delayed until the browser is idle or the visitor
+	   first interacts, whichever comes first. It is never needed for first
+	   paint, and on mid-range phones its DOM wiring and Intl date maths were
+	   landing inside the main-thread work that delays interactivity.
+	   Delaying it is safe because the card degrades: until initChat() runs,
+	   the floating button is a plain wa.me link (no sc-wa-js class yet), so an
+	   early tap still opens WhatsApp. Tracking is NOT delayed -- clicks and
+	   form-success events must be caught from the very first interaction. */
+	function initChatWhenIdle() {
+		var started = false;
+		var evts = [ 'pointerdown', 'keydown', 'touchstart', 'scroll' ];
+		function start() {
+			if ( started ) { return; }
+			started = true;
+			evts.forEach( function ( n ) { window.removeEventListener( n, start, { passive: true } ); } );
+			initChat();
+		}
+		evts.forEach( function ( n ) { window.addEventListener( n, start, { passive: true } ); } );
+		if ( typeof window.requestIdleCallback === 'function' ) {
+			window.requestIdleCallback( start, { timeout: 4000 } );
+		} else {
+			window.setTimeout( start, 2500 );
+		}
+	}
+
 	function boot() {
 		trackFormSuccess();
 		trackLinkClicks();
-		initChat();
+		initChatWhenIdle();
 	}
 	if ( document.readyState === 'loading' ) { document.addEventListener( 'DOMContentLoaded', boot ); } else { boot(); }
 }() );

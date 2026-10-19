@@ -98,9 +98,13 @@ add_action(
 	3
 );
 
-/* Performance: defer the two front-end scripts (they already load in the footer). */
+/* Performance: defer the front-end scripts (they already load in the footer).
+   sc-leads (WhatsApp chat card + lead tracking) joined this list in Oct 2026:
+   it was the only first-party script still parsed synchronously, and nothing
+   in it has to run before the document finishes parsing. Its boot already
+   handles readyState, so defer changes timing only, never behaviour. */
 function sc_defer_scripts( $tag, $handle ) {
-	if ( in_array( $handle, array( 'sc-theme', 'sc-map', 'sc-loader' ), true ) && strpos( $tag, ' defer' ) === false ) {
+	if ( in_array( $handle, array( 'sc-theme', 'sc-map', 'sc-loader', 'sc-leads' ), true ) && strpos( $tag, ' defer' ) === false ) {
 		$tag = str_replace( ' src=', ' defer src=', $tag );
 	}
 	return $tag;
