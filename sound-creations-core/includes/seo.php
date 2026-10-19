@@ -444,13 +444,63 @@ function sc_seo_is_thin_archive() {
 	return false;
 }
 
+/* ============================================================
+   Product pages out of Google.
+
+   Owner decision (19 Oct 2026): the company does not want individual
+   products showcased. The product directory on /brands/ is already hidden
+   (products_dir_enabled), but the sc_product singles -- the five FANE
+   driver pages -- were still listed in wp-sitemap.xml and indexable, which
+   promoted exactly what the company asked not to promote (audit T-07).
+
+   The pages stay online: existing links, quotes and dealer conversations
+   that point at them keep working. They are noindex,follow (links on them
+   still pass to brand and solution pages) and dropped from the sitemap,
+   because listing a URL while telling Google not to index it is a
+   contradictory signal.
+
+   To reverse when the company approves showcasing products:
+       add_filter( 'sc_core_index_products', '__return_true' );
+   ============================================================ */
+
+/**
+ * Whether product singles are kept out of search engines.
+ *
+ * @return bool True while products are not showcased (the default).
+ */
+function sc_seo_hide_products() {
+	return ! (bool) apply_filters( 'sc_core_index_products', false );
+}
+
+/**
+ * Whether the current request is a product single that should be noindexed.
+ *
+ * @return bool
+ */
+function sc_seo_is_hidden_product() {
+	if ( is_admin() || is_feed() ) {
+		return false;
+	}
+	return is_singular( 'sc_product' ) && sc_seo_hide_products();
+}
+
+add_filter(
+	'wp_sitemaps_post_types',
+	function ( $post_types ) {
+		if ( sc_seo_hide_products() ) {
+			unset( $post_types['sc_product'] );
+		}
+		return $post_types;
+	}
+);
+
 // Use the wp_robots filter rather than echoing a second robots tag: WordPress
 // already prints one (max-image-preview:large), and two robots meta tags on a
 // page is ambiguous. This merges into the single existing tag.
 add_filter(
 	'wp_robots',
 	function ( $robots ) {
-		if ( sc_seo_is_thin_archive() ) {
+		if ( sc_seo_is_thin_archive() || sc_seo_is_hidden_product() ) {
 			$robots['noindex'] = true;
 			$robots['follow']  = true;
 			unset( $robots['index'] );
@@ -539,6 +589,10 @@ add_filter(
 		if ( 'post' === $type && $obj instanceof WP_Post && in_array( (int) $obj->ID, sc_seo_legacy_page_ids(), true ) ) {
 			return false;
 		}
+		// Product pages are kept out of search (see sc_seo_hide_products()).
+		if ( 'post' === $type && $obj instanceof WP_Post && 'sc_product' === $obj->post_type && sc_seo_hide_products() ) {
+			return false;
+		}
 		return $url;
 	},
 	10,
@@ -552,7 +606,7 @@ add_filter(
 add_filter(
 	'rank_math/frontend/robots',
 	function ( $robots ) {
-		if ( sc_seo_is_thin_archive() ) {
+		if ( sc_seo_is_thin_archive() || sc_seo_is_hidden_product() ) {
 			$robots['index']  = 'noindex';
 			$robots['follow'] = 'follow';
 		}
