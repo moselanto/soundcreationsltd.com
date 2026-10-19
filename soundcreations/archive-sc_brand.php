@@ -151,6 +151,13 @@ $sc_arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-w
 	</div>
 </section>
 
+<?php
+// Filterable product directory (Brand / Application / Product type). Query
+// rules live in Core (includes/product-filters.php); markup in template-tags.
+// Renders nothing when no products are published.
+echo sc_product_directory(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in helper.
+?>
+
 <section class="sc-section">
 	<div class="sc-container sc-brands-why">
 		<div class="sc-brands-why__intro">

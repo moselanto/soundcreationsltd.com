@@ -2771,3 +2771,16 @@ h2.sc-home-projects__title { font-size: clamp(1.25rem, 2vw, 1.6rem); line-height
 .sc-quote__meta { color: var(--sc-muted); }
 .sc-quote__link { color: var(--sc-red); font-weight: 600; margin-top: .3rem; }
 .sc-testimonials__cta { margin: 1.5rem 0 3rem; }
+
+/* ============================================================
+   Product directory filters on /brands/ (sc_product_filter_form).
+   Native selects keep keyboard and screen-reader behaviour for free.
+   ============================================================ */
+.sc-pfilter { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 1rem; margin: 1.25rem 0 1rem; padding: 1rem 1.1rem; border: 1px solid var(--sc-border); border-radius: var(--sc-radius-lg); background: var(--sc-bg); }
+.sc-pfilter__field { display: flex; flex-direction: column; gap: .35rem; min-width: 200px; flex: 1 1 200px; }
+.sc-pfilter__field label { font-size: .8rem; font-weight: 600; letter-spacing: .02em; color: var(--sc-muted); }
+.sc-pfilter__field select { width: 100%; padding: .7rem .8rem; border: 1px solid var(--sc-border); border-radius: var(--sc-radius); background: var(--sc-bg); color: var(--sc-text); font: inherit; }
+.sc-pfilter__field select:focus-visible { outline: 2px solid var(--sc-red); outline-offset: 2px; }
+.sc-pfilter__actions { display: flex; flex-wrap: wrap; gap: .6rem; }
+.sc-pdir__count { color: var(--sc-muted); font-size: .9rem; margin: 0 0 1rem; }
+@media (max-width: 600px) { .sc-pfilter__field { min-width: 100%; } .sc-pfilter__actions { width: 100%; } .sc-pfilter__actions .sc-btn { flex: 1 1 auto; justify-content: center; } }

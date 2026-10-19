@@ -200,6 +200,13 @@ selection order is display order.
 **Categorising:** Product Category, Brand, Industry, Application, Project Type,
 Location, Solution Area. These power the filtered views.
 
+**Product filters on the Products page (/brands/):** visitors can filter
+products by Brand, Application and Product type. A filter option appears only
+once at least one published product is tagged with it, so tag each product
+with its Brand, Application(s) and Product Category. The section heading and
+eyebrow are in **Settings → Products page - product directory**. Filtered
+views are hidden from Google on purpose.
+
 ### Testimonials
 
 **Testimonials** in the wp-admin menu. Each entry is one client quote: put the

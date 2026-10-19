@@ -65,7 +65,8 @@ soundcreationsltd.com/
 │   │   ├── setup-wizard.php        Guided first-run setup
 │   │   ├── seo.php                 Meta, canonical, OG, Twitter, JSON-LD
 │   │   ├── brand-order.php         Manual ordering of brands
-│   │   └── media.php               WebP sub-sizes for new JPEG/PNG uploads
+│   │   ├── media.php               WebP sub-sizes for new JPEG/PNG uploads
+│   │   └── product-filters.php     Brand / Application / Product-type facets
 │   └── assets/                     Admin JS (media picker, gallery, brand order)
 │
 └── sound-creations-enquiries/      Plugin (v0.2.0)
@@ -162,6 +163,23 @@ than by breaking links:
 The Brands archive also has its document `<title>` rewritten to "Products" via
 `document_title_parts`, so the URL, the post type and the user-facing label
 intentionally differ. Keep that in mind when debugging.
+
+### 3.4a Product directory facets
+
+The `/brands/` archive (titled "Products") carries a filterable product
+directory: Brand (`sc_brand_tax`), Application (`sc_application`) and Product
+type (`sc_product_category`). Because `/products/` stays redirected (3.4) and
+the Brands archive's main query is `sc_brand`, the list is a secondary query
+whose arguments come from `sc_core_product_directory_query_args()` in
+`product-filters.php`; the same facets are applied by `pre_get_posts` to any
+main product query. Parameters are `f_brand`, `f_application`, `f_type` (not
+the taxonomy or post-type names, which are WordPress query vars), each
+`sanitize_title()`'d and checked against a real term. Only terms attached to a
+published product are offered. Markup is `sc_product_filter_form()` /
+`sc_product_directory()` in `template-tags.php`; it is a plain GET form and
+works without JavaScript. Any filtered view is `noindex,follow` with the
+canonical left on the unfiltered archive, through `wp_robots` and, while Rank
+Math owns the head, `rank_math/frontend/robots` and `rank_math/frontend/canonical`.
 
 ### 3.5 Editorial fields
 

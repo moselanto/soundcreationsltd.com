@@ -429,6 +429,15 @@ function sc_seo_is_thin_archive() {
 	// the team adds real quotes. An empty page is the definition of thin, so it
 	// is kept out of the index until there is at least one published quote,
 	// then indexes itself automatically -- nobody has to remember to flip it.
+	// Faceted product views (?f_brand=, ?f_application=, ?f_type=) are thin
+	// permutations of one directory. Each combination would otherwise be
+	// crawlable as its own page; noindex,follow keeps them out of the index
+	// while still letting Google reach the product pages they link to. The
+	// canonical stays the unfiltered archive (sc_seo_canonical() ignores the
+	// query string, and the Rank Math filter below does the same).
+	if ( function_exists( 'sc_core_product_filters_active' ) && sc_core_product_filters_active() ) {
+		return true;
+	}
 	if ( is_page( 'testimonials' ) && function_exists( 'sc_core_testimonials' ) && count( sc_core_testimonials( 1 ) ) === 0 ) {
 		return true;
 	}
@@ -534,4 +543,34 @@ add_filter(
 	},
 	10,
 	3
+);
+
+// Rank Math owns robots and canonical tags while it is active (see
+// sc_seo_rank_math_owns_meta), so the thin-archive decision above has to be
+// handed to it through its own filters as well; otherwise Rank Math would
+// print "index" on a faceted or empty page regardless of wp_robots.
+add_filter(
+	'rank_math/frontend/robots',
+	function ( $robots ) {
+		if ( sc_seo_is_thin_archive() ) {
+			$robots['index']  = 'noindex';
+			$robots['follow'] = 'follow';
+		}
+		return $robots;
+	}
+);
+
+add_filter(
+	'rank_math/frontend/canonical',
+	function ( $canonical ) {
+		if ( function_exists( 'sc_core_product_filters_active' ) && sc_core_product_filters_active() && is_post_type_archive() ) {
+			$pt   = get_query_var( 'post_type' );
+			$pt   = is_array( $pt ) ? reset( $pt ) : $pt;
+			$link = get_post_type_archive_link( (string) $pt );
+			if ( is_string( $link ) && '' !== $link ) {
+				return $link;
+			}
+		}
+		return $canonical;
+	}
 );

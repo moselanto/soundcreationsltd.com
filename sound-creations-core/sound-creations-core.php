@@ -35,6 +35,7 @@ require_once SC_CORE_DIR . 'includes/seo-titles.php';
 require_once SC_CORE_DIR . 'includes/setup-wizard.php';
 require_once SC_CORE_DIR . 'includes/brand-order.php';
 require_once SC_CORE_DIR . 'includes/media.php';
+require_once SC_CORE_DIR . 'includes/product-filters.php';
 
 register_activation_hook(
 	__FILE__,

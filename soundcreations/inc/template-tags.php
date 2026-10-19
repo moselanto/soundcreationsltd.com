@@ -545,3 +545,89 @@ function sc_testimonials_grid( $limit = -1 ) {
 	}
 	return $out . '</div></section>';
 }
+
+
+/**
+ * Filter form for the product directory (Brand, Application, Product type).
+ *
+ * A plain GET form: works without JavaScript and every result is a
+ * shareable link. Selections and the term lists come from Core
+ * (sound-creations-core/includes/product-filters.php); this only renders.
+ * A facet with no terms attached to a published product is not shown.
+ *
+ * @param string $action Form action URL (the unfiltered archive).
+ * @return string Escaped HTML, or '' when no facet has any options.
+ */
+function sc_product_filter_form( $action ) {
+	if ( function_exists( 'sc_core_product_facets' ) === false ) {
+		return '';
+	}
+	$values = sc_core_product_filter_values();
+	$fields = '';
+	foreach ( sc_core_product_facets() as $param => $def ) {
+		$terms = sc_core_product_filter_terms( $def[0] );
+		if ( count( $terms ) === 0 ) {
+			continue;
+		}
+		$id      = 'sc-pf-' . $param;
+		$current = isset( $values[ $param ] ) ? $values[ $param ] : '';
+		$fields .= '<div class="sc-pfilter__field"><label for="' . esc_attr( $id ) . '">' . esc_html( $def[1] ) . '</label>';
+		$fields .= '<select id="' . esc_attr( $id ) . '" name="' . esc_attr( $param ) . '">';
+		/* translators: %s: facet label, e.g. Brand. */
+		$fields .= '<option value="">' . esc_html( sprintf( __( 'All (%s)', 'soundcreations' ), strtolower( $def[1] ) ) ) . '</option>';
+		foreach ( $terms as $t ) {
+			$fields .= '<option value="' . esc_attr( $t->slug ) . '"' . selected( $current, $t->slug, false ) . '>' . esc_html( $t->name ) . '</option>';
+		}
+		$fields .= '</select></div>';
+	}
+	if ( '' === $fields ) {
+		return '';
+	}
+	$out  = '<form class="sc-pfilter" method="get" action="' . esc_url( $action ) . '#sc-products" role="search" aria-label="' . esc_attr__( 'Filter products', 'soundcreations' ) . '">';
+	$out .= $fields;
+	$out .= '<div class="sc-pfilter__actions"><button type="submit" class="sc-btn sc-btn--primary">' . esc_html__( 'Apply filters', 'soundcreations' ) . '</button>';
+	if ( count( $values ) > 0 ) {
+		$out .= '<a class="sc-btn sc-btn--ghost" href="' . esc_url( $action ) . '#sc-products">' . esc_html__( 'Clear filters', 'soundcreations' ) . '</a>';
+	}
+	return $out . '</div></form>';
+}
+
+/**
+ * The filterable product directory section for the Brands archive.
+ *
+ * Renders nothing when there are no published products at all, so a site
+ * without a catalogue does not show an empty "Products" block.
+ *
+ * @return string Escaped HTML.
+ */
+function sc_product_directory() {
+	if ( function_exists( 'sc_core_product_directory_query_args' ) === false || count( sc_core_published_product_ids() ) === 0 ) {
+		return '';
+	}
+	$action = get_post_type_archive_link( 'sc_brand' );
+	if ( empty( $action ) ) {
+		$action = home_url( '/brands/' );
+	}
+	$q   = new WP_Query( sc_core_product_directory_query_args() );
+	$out = '<section class="sc-section sc-pdir" id="sc-products"><div class="sc-container">';
+	$out .= '<div class="sc-res-head"><div><p class="sc-eyebrow">' . esc_html( sc_setting( 'products_dir_eyebrow', __( 'Product directory', 'soundcreations' ) ) ) . '</p>';
+	$out .= '<h2 style="margin:.15rem 0 0;">' . esc_html( sc_setting( 'products_dir_title', __( 'Find products by brand, application and type', 'soundcreations' ) ) ) . '</h2></div></div>';
+	$out .= sc_product_filter_form( $action );
+	/* translators: %d: number of products found. */
+	$out .= '<p class="sc-pdir__count" role="status">' . esc_html( sprintf( _n( '%d product', '%d products', (int) $q->found_posts, 'soundcreations' ), (int) $q->found_posts ) ) . '</p>';
+	if ( $q->have_posts() ) {
+		$out .= '<div class="sc-grid sc-pdir__grid">';
+		while ( $q->have_posts() ) {
+			$q->the_post();
+			$pid   = get_the_ID();
+			$brand = sc_primary_term_name( $pid, 'sc_brand_tax', (string) get_post_meta( $pid, '_sc_brand_name', true ) );
+			$type  = sc_primary_term_name( $pid, 'sc_product_category', '' );
+			$out  .= sc_media_card( $pid, $brand, $type );
+		}
+		wp_reset_postdata();
+		$out .= '</div>';
+	} else {
+		$out .= '<p class="sc-empty">' . esc_html__( 'No products match these filters. Clear a filter to see more.', 'soundcreations' ) . '</p>';
+	}
+	return $out . '</div></section>';
+}
