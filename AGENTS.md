@@ -8,6 +8,11 @@ right file, [`ARCHITECTURE.md`](ARCHITECTURE.md) before changing how something
 works, and [`SECURITY-AUDIT.md`](SECURITY-AUDIT.md) before touching forms,
 uploads, authentication, headers or anything holding PII.
 
+**Before starting any task, read [`WORK-LOG.md`](WORK-LOG.md)** for what has
+already been done, what is live, standing owner decisions (for example:
+products are not to be showcased) and the open next steps. **When you finish,
+add an entry to it** in the same commit or the one straight after.
+
 ---
 
 ## 1. What this repository is
