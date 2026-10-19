@@ -53,6 +53,19 @@ Owner contact for decisions: Agnes (website project lead).
 
 ## Log
 
+### 19 Oct 2026 — Improved .htaccess — committed as reference, owner to paste on server
+
+- Master copies: `docs/server/htaccess-root.txt` (domain root) and
+  `docs/server/htaccess-uploads.txt` (new file for `wp-content/uploads/`).
+- Root: HTTPS before legacy redirects (one hop); removed `ExpiresDefault`
+  that was caching JSON/XML/sitemaps/feeds for a month; images 180 days
+  without `immutable`; Brotli + more types; WordPress-documented
+  wp-includes blocks; more sensitive-file patterns; SVG CSP; UTF-8.
+- Uploads: blocks PHP/script execution in the uploads folder.
+- Not live until pasted via cPanel File Manager. Back up the current file
+  first. Check after: homepage, wp-admin, a form submission, `/newwebsite/`
+  redirect, an image and the WhatsApp button.
+
 ### 19 Oct 2026 — Hide product directory (commit `4dfab9a`) — committed, needs deploy
 
 - `soundcreations/archive-sc_brand.php`: directory only renders when
