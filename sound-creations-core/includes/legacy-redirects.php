@@ -83,7 +83,7 @@ function sc_core_legacy_redirect_map() {
 		'sitenew'                                                                     => '/',
 		'newwebsite'                                                                  => '/',
 		'testimonials-v'                                                              => '/testimonials/',
-		'acoustics-treatment-at-p-c-e-a-in-chuka-town'                                => '/solutions/church-worship-sound-systems/',
+		'acoustics-treatment-at-p-c-e-a-in-chuka-town'                                => '/projects/pcea-chuka/', // Case study published 19 Oct 2026; was the church solution page.
 		'all-saints-cathedral-trinity-center-project'                                 => '/projects/all-saints-cathedral/',
 		'yu-mwaminifu-concert-by-james-kahero'                                        => '/projects/sarit-expo-centre/',
 		'allen-heath-empowers-a-larger-vision'                                        => '/brands/allen-heath/',
