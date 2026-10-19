@@ -53,6 +53,12 @@ Owner contact for decisions: Agnes (website project lead).
 
 ## Log
 
+### 19 Oct 2026 — .htaccess step 2 live: images 180 days, not immutable
+
+- Owner confirmed the site reloads fine. Reference copy updated to match.
+- Step 3 prepared as a download: AVIF, TTF/OTF and PDF caching, MIME types
+  and a wider DEFLATE list (same directive types already in use).
+
 ### 19 Oct 2026 — .htaccess step 1 live: ExpiresDefault removed
 
 - ROOT CAUSE of the earlier 500 errors: copying .htaccess text out of the
