@@ -27,34 +27,86 @@ Owner contact for decisions: Agnes (website project lead).
   that doc and the map in `includes/legacy-redirects.php` together.
 - **Commits go directly to `main`** (owner's instruction), one logical change
   per commit.
+- **PCEA Chuka case study is unlisted.** `/projects/pcea-chuka/` stays
+  published (the old 2020 article 301s to it) but is hidden from every
+  listing, the sitemap and Google via Settings -> "Unlisted projects"
+  (`pcea-chuka`, `includes/unlisted.php`). The "Chuka, Kenya" location term is
+  unassigned. Do not re-list it unless Agnes asks.
+- **Dealership wording:** the company holds dealership certificates, so
+  "certified" wording may stay, backed by visible proof. Allen & Heath and Bose
+  Professional list Sound Creations for Kenya (verified 19 Oct 2026). Shure
+  appointed Hub Media as Africa distributor on 8 Jul 2026: say "dealer" for
+  Shure unless a current Shure certificate is shown.
+- **Compete on every relevant term**, including where VTECH Audio overlaps.
+- **Separate logins:** Kenya uses the Google account infosoundcreations@gmail.com
+  (Search Console, GA4 G-3DES5T0T6T, GTM GTM-WQVHFBJ, Business Profile). Never
+  use the Rwanda logins for this site.
+- **Never paste .htaccess from chat** (hidden characters caused 500 errors);
+  deliver clean files to upload, one change at a time.
 
 ### Open items / next steps
 
-1. **Server PHP is 8.0.30**, which no longer gets security updates. The
-   WordPress dashboard recommends PHP 8.3+, Site Health reports a critical
-   issue, and the Better Search Replace plugin needs PHP 8.1+. Upgrade PHP at
-   the host (check the code still runs; the declared floor is PHP 8.0).
-2. **`php -l` has never been run on the Oct 2026 commits** (no PHP in the
-   agent sandbox). Run it across the tree before or right after any deploy.
-3. **Testimonials page is live but empty.** Add real client quotes under
-   Testimonials in wp-admin (ideally local projects: PCEA Kahawa, RPF Rubavu).
-4. **Sitemap**: `/wp-sitemap.xml` (WordPress core) is live (Rank Math's
-   sitemap is off, so `/sitemap_index.xml` 404s, which is fine). Submit
-   `/wp-sitemap.xml` in Google Search Console and confirm "Success"; some
-   fetchers fail on it, so check for bot/WAF filtering if GSC errors.
-5. **Mobile speed not verified.** Run PageSpeed Insights on the homepage
-   (mobile), confirm WEBP under Tools -> Site Health -> Info -> Media
-   Handling, then regenerate thumbnails once.
-6. **Rank Math hook names** used in `seo.php` (`rank_math/sitemap/entry`,
-   `rank_math/frontend/robots`, `rank_math/frontend/canonical`, and
-   `rank_math/json_ld` in `seo-graph.php`) were written
-   from documentation, not checked against the installed version.
-7. **Before-and-after project photos** suggested by the external review are a
-   content task, not code.
+1. **Server PHP is 8.0.30** (no security updates). Switch via cPanel MultiPHP
+   Manager ("inherit") / PHP Selector or ask the host; never hand-edit the
+   cPanel handler block in .htaccess.
+2. **`php -l` has never been run on the Oct 2026 commits.** Run it across the tree.
+3. **Search Console (retry from 20 Oct):** request indexing for
+   `/solutions/sound-isolation/`, `/solutions/professional-audio/`,
+   `/solutions/installation/` and `/` (19 Oct attempts hit Google errors and the
+   daily quota; boardroom page was queued OK). Rerun Rich Results Test on
+   professional-audio and installation (FAQPage present in live JSON-LD).
+   Check the Pages report once processed.
+4. **Owner answers needed:** free site visit? live streaming? mosques? repairs
+   of non-supplied equipment? Bose conferencing models stocked; any boardroom
+   project; mosque/temple, sports, studio projects; stocked model ranges
+   (Opera, IG, SQ, X32). See CONTENT-DRAFTS.md and CLIENT-KEYWORDS.md.
+5. **Google Business Profile:** replies drafted in `docs/seo/GBP-REVIEW-REPLIES.md`
+   (100+ reviews unanswered). Post after the owner confirms the parking and
+   in-store noise lines and whether to reply to Moses Njeru Munyi. Photos last
+   added ~2,100 days ago: use the shot list.
+6. **Dealership certificates:** owner to send; add to /distribution/ and brand pages.
+7. **Manufacturer listings show old numbers** (Allen & Heath +254 20 2572752/3,
+   Bose +254 720 886 900): ask them to update to +254 715 754 758 if agreed.
+8. **Brand pages:** expand copy per CLIENT-KEYWORDS.md section 6 (model
+   families, manufacturer-listing proof) once stocked ranges are confirmed.
+9. **AI visibility:** baseline 19 Oct (ChatGPT logged-out, Gemini) recorded
+   below; Perplexity and Copilot not tested (sign-in). Re-test in ~4 weeks.
+10. **Mobile speed not verified** (PageSpeed); regenerate thumbnails once for WebP.
+11. **Rank Math hook/meta names** in Core were taken from docs, not verified.
+12. **Before-and-after project photos** are a content task.
 
 ---
 
 ## Log
+
+### 19 Oct 2026 — SEO/AEO/GEO phase 1 summary (evening)
+
+- **Titles/meta:** 17 key pages' Rank Math titles and descriptions rewritten
+  per KEYWORDS.md (live in wp-admin, no upload).
+- **New pages (published in wp-admin):** `/solutions/sound-isolation/`,
+  `/solutions/conferencing-boardroom-audio/`, `/projects/pcea-chuka/`
+  (now unlisted). Unconfirmed claims were left out (see open item 4).
+- **FAQs:** 27 Q&As in the FAQ meta boxes of church, acoustics, professional
+  audio, installation, after-sales and distribution pages. Template fix
+  `9657df6` makes them render on professional-audio and installation; FAQPage
+  schema verified in live JSON-LD on both.
+- **Code commits (all uploaded, Core 0.5.32 live):** `c85894b` JSON-LD
+  description follows Rank Math; `2dae4e9` Chuka redirect -> case study;
+  `9657df6` FAQ rendering; `2e590e1` unlisted projects.
+- **Docs:** `docs/seo/CLIENT-KEYWORDS.md` (`9ed4d5b`, company keyword list
+  mapped one target page per group), `CONTENT-DRAFTS.md`, `GBP-REVIEW-REPLIES.md`.
+- **GA4 (property 363802499):** key events now generate_lead, whatsapp_click,
+  phone_click, whatsapp_chat_open; event retention 2 -> 14 months; Search
+  Console link confirmed. GTM container is empty and unused (site uses gtag
+  directly); nothing published there.
+- **Search Console:** `/wp-sitemap.xml` resubmitted (Success, 57 pages, no
+  product sitemap). Last 3 months: 50 clicks, 1,869 impressions, avg pos 5.9,
+  mostly branded queries.
+- **AI visibility baseline (19 Oct):** ChatGPT (logged out) named Sound
+  Creations 1st for Nairobi installers, church installers, Allen & Heath and
+  Bose distributor questions, 3rd for acoustic consultants and soundproofing,
+  absent for conference-room AV. Gemini: 1st for acoustic consultants, Allen &
+  Heath, Bose; absent for installers, church sound, soundproofing, conference AV.
 
 ### 19 Oct 2026 — JSON-LD description follows Rank Math meta — committed, needs upload
 
