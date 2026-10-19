@@ -53,6 +53,16 @@ Owner contact for decisions: Agnes (website project lead).
 
 ## Log
 
+### 19 Oct 2026 — Four Google reviews published as testimonials
+
+- Published in wp-admin > Testimonials (verbatim text, reviewer name as
+  title, "Google review" as Organisation): Brandon Tengeya, Aalawy Balala,
+  MICHAEL ODIDA, TRIAD KUOLO. Verified live at /testimonials/.
+- Moses Njeru Munyi's review was shortlisted but excluded at the owner's
+  request. Do not add it.
+- Source: Google Business Profile (4.5/5, 143 reviews at the time).
+- Open item 3 (empty testimonials page) is resolved.
+
 ### 19 Oct 2026 — .htaccess step 4 live: more sensitive files blocked
 
 - Owner confirmed the site works. Root reference copy updated to match.
