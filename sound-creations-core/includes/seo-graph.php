@@ -849,7 +849,11 @@ function sc_seo_node_video() {
 		'@id'          => sc_seo_page_id( 'video' ),
 		'name'         => get_the_title( $pid ),
 		'description'  => $desc,
-		'thumbnailUrl' => array( 'https://i.ytimg.com/vi/' . $vid . '/maxresdefault.jpg' ),
+		// hqdefault, not maxresdefault: YouTube only generates the 1280px
+		// maxresdefault for HD uploads and returns a 404 for the rest, and an
+		// unfetchable thumbnail makes the video ineligible in Search. The
+		// 480x360 hqdefault exists for every public video.
+		'thumbnailUrl' => array( 'https://i.ytimg.com/vi/' . $vid . '/hqdefault.jpg' ),
 		'uploadDate'   => get_the_date( 'c', $pid ),
 		'embedUrl'     => 'https://www.youtube.com/embed/' . $vid,
 		'url'          => get_permalink( $pid ),
