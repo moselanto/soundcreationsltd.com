@@ -935,13 +935,6 @@ function sc_seo_nodes_entities() {
 			'mainEntityOfPage' => $page,
 		);
 		$d = wp_strip_all_tags( get_the_excerpt( $pid ) );
-		// Solution and Service pages render from PHP templates with no
-		// excerpt, so the Service node shipped with no description at all.
-		// Reuse the page's own meta description chain (SEO field, summary,
-		// body, type template) so the node says what the page says.
-		if ( '' === trim( $d ) && function_exists( 'sc_seo_description' ) ) {
-			$d = wp_strip_all_tags( (string) sc_seo_description() );
-		}
 		if ( $d ) {
 			$node['description'] = $d;
 		}
