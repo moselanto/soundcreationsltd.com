@@ -162,6 +162,10 @@ function sc_core_settings_fields() {
 			'__sec_products_dir'      => array( 'Products page - product directory', 'heading' ),
 			'products_dir_eyebrow'    => array( 'Product directory: eyebrow', 'text' ),
 			'products_dir_title'      => array( 'Product directory: heading', 'text' ),
+			// Off by default: the company has not yet confirmed it wants individual
+			// products showcased on the site. Kept as an explicit opt-in so the
+			// directory cannot reappear just because products get published.
+			'products_dir_enabled'    => array( 'Product directory: show on the Products page? Type "yes" to show it. Leave blank to keep it hidden.', 'text' ),
 
 			'__sec_testimonials'      => array( 'Testimonials page', 'heading' ),
 			'testimonials_eyebrow'    => array( 'Testimonials hero: eyebrow', 'text' ),

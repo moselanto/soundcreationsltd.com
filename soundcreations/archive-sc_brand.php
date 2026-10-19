@@ -155,7 +155,14 @@ $sc_arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-w
 // Filterable product directory (Brand / Application / Product type). Query
 // rules live in Core (includes/product-filters.php); markup in template-tags.
 // Renders nothing when no products are published.
-echo sc_product_directory(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in helper.
+//
+// Hidden unless an editor opts in (Settings -> Products page - product
+// directory). The company has not confirmed it wants products showcased, so
+// the safe default is off; typing "yes" in that field switches it on with no
+// code change.
+if ( 'yes' === strtolower( trim( (string) sc_setting( 'products_dir_enabled', '' ) ) ) ) {
+	echo sc_product_directory(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in helper.
+}
 ?>
 
 <section class="sc-section">
