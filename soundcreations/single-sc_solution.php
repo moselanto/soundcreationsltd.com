@@ -69,8 +69,22 @@ while ( have_posts() ) :
 	$sc_lead = strlen( $sc_summary ) > 0 ? $sc_summary : ( isset( $sc_leadmap[ $sc_sk ] ) ? $sc_leadmap[ $sc_sk ] : '' );
 	$sc_raw_body = trim( wp_strip_all_tags( get_the_content() ) );
 	$sc_has_body = ( '' !== $sc_raw_body && false === stripos( $sc_raw_body, 'CONTENT TO BE CONFIRMED' ) );
+	// Professional Audio keeps its tailored intro block, so the older intro
+	// paragraphs at the top of its body stay hidden. Sections added to the
+	// body from the first heading onward are shown (19 Oct 2026), so new
+	// copy saved in the editor reaches the live page.
+	$sc_body_html = '';
 	if ( $sc_sk === 'audio' ) {
 		$sc_has_body = false;
+		$sc_raw_html = (string) get_the_content();
+		$sc_cut      = stripos( $sc_raw_html, '<!-- wp:heading' );
+		if ( false === $sc_cut ) {
+			$sc_cut = stripos( $sc_raw_html, '<h2' );
+		}
+		if ( false !== $sc_cut ) {
+			$sc_body_html = substr( $sc_raw_html, $sc_cut );
+			$sc_has_body  = ( '' !== trim( wp_strip_all_tags( $sc_body_html ) ) );
+		}
 	}
 	$sc_main_has = ( $sc_has_body || count( $sc_caps ) > 0 );
 	$sc_body_mod = '';
@@ -153,7 +167,13 @@ while ( have_posts() ) :
 			<div class="sc-container sc-svc-body<?php echo $sc_body_mod; ?>">
 				<?php if ( $sc_main_has ) : ?>
 				<div class="sc-svc-main">
-					<?php if ( $sc_has_body ) : ?><div class="sc-prose"><?php the_content(); ?></div><?php endif; ?>
+					<?php if ( $sc_has_body ) : ?><div class="sc-prose"><?php
+						if ( '' !== $sc_body_html ) {
+							echo str_replace( ']]>', ']]&gt;', apply_filters( 'the_content', $sc_body_html ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- same filters as the_content().
+						} else {
+							the_content();
+						}
+					?></div><?php endif; ?>
 
 					<?php if ( count( $sc_caps ) > 0 ) : ?>
 						<div class="sc-svc-highlights">
