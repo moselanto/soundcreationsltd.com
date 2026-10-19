@@ -118,7 +118,9 @@ logic goes in a new `/inc` module.
   this with a hardcoded string.
 - **Brands archive is titled "Products".** The post type is `sc_brand`; a
   `document_title_parts` filter relabels it. The old `/products/` archive 301s
-  to `/brands/`, and `/resources/*` 301s to `/videos/*`. Do not "fix" these.
+  to `/brands/`, and `/resources/*` 301s to `/videos/*`. `/sitenew/*`,
+  `/newwebsite/*` and `/testimonials-v-N/` also 301 (on 404 only) via
+  `sc_core_redirect_legacy_paths()`. Do not "fix" these.
 - **`sc_enquiry` is registered in both plugins.** Core registers a baseline
   version; Enquiries registers a capability-restricted version at `init`
   priority 20 only if the type does not already exist. Known debt — see

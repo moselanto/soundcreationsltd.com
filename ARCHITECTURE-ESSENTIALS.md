@@ -52,8 +52,10 @@ single `/testimonials/` page; no URL of its own, never seeded with sample quotes
 Taxonomies: `sc_product_category`, `sc_brand_tax`, `sc_industry`,
 `sc_application`, `sc_project_type`, `sc_location`, `sc_solution_area`.
 
-Two legacy URL spaces are 301-redirected: `/products/` → `/brands/` and
-`/resources/` → `/videos/`.
+Legacy URL spaces are 301-redirected: `/products/` → `/brands/`,
+`/resources/` → `/videos/`, `/sitenew/*` and `/newwebsite/*` → the same path
+at the root (only when the request would otherwise 404), and
+`/testimonials-v-N/` → `/testimonials/`.
 
 ## Settings are the source of truth for copy
 

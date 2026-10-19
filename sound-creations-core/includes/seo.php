@@ -461,3 +461,77 @@ add_filter(
 		return $taxonomies;
 	}
 );
+
+/* ============================================================
+   Legacy, staging and versioned pages out of the sitemap.
+
+   If an old /sitenew/..., /newwebsite/... or testimonials-v-N page still
+   exists as a published WordPress page, it would be listed in the XML
+   sitemap while sc_core_redirect_legacy_paths() treats that address as
+   legacy -- the same contradictory signal the thin-archive filter above
+   avoids. The classification is shared with the redirect
+   (sc_core_legacy_destination) so the two cannot drift apart.
+
+   Drafts, private and trashed posts are already excluded by WordPress core
+   (sitemaps list published content only), so only published pages need
+   handling here.
+   ============================================================ */
+function sc_seo_legacy_page_ids() {
+	static $ids = null;
+	if ( null !== $ids ) {
+		return $ids;
+	}
+	$ids = array();
+	if ( function_exists( 'sc_core_legacy_destination' ) === false ) {
+		return $ids;
+	}
+	$pages = get_posts(
+		array(
+			'post_type'      => 'page',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+			'no_found_rows'  => true,
+		)
+	);
+	foreach ( (array) $pages as $pid ) {
+		// get_page_uri() returns the full hierarchical path (sitenew/about),
+		// so child pages of a legacy parent are caught as well.
+		if ( '' !== sc_core_legacy_destination( (string) get_page_uri( $pid ) ) ) {
+			$ids[] = (int) $pid;
+		}
+	}
+	return $ids;
+}
+
+add_filter(
+	'wp_sitemaps_posts_query_args',
+	function ( $args, $post_type ) {
+		if ( 'page' !== $post_type ) {
+			return $args;
+		}
+		$ids = sc_seo_legacy_page_ids();
+		if ( count( $ids ) > 0 ) {
+			$existing             = isset( $args['post__not_in'] ) ? (array) $args['post__not_in'] : array();
+			$args['post__not_in'] = array_values( array_unique( array_merge( $existing, $ids ) ) );
+		}
+		return $args;
+	},
+	10,
+	2
+);
+
+// Rank Math replaces the core sitemap when its Sitemap module is on. Its
+// rank_math/sitemap/entry filter drops an entry when it returns false, so the
+// same legacy pages are excluded from whichever sitemap is live.
+add_filter(
+	'rank_math/sitemap/entry',
+	function ( $url, $type, $obj ) {
+		if ( 'post' === $type && $obj instanceof WP_Post && in_array( (int) $obj->ID, sc_seo_legacy_page_ids(), true ) ) {
+			return false;
+		}
+		return $url;
+	},
+	10,
+	3
+);

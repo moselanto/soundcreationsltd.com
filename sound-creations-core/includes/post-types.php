@@ -152,6 +152,73 @@ function sc_core_redirect_resources_to_videos() {
 add_action( 'template_redirect', 'sc_core_redirect_resources_to_videos' );
 
 /**
+ * Classify a site-relative path as a legacy URL left over from the redesign.
+ *
+ * Three legacy spaces are still being requested (verified live 19 Oct 2026,
+ * all returning a bare 404):
+ *   - /sitenew/*     the staging copy used while the redesign was built
+ *   - /newwebsite/*  the subdirectory the new site ran from before moving to
+ *                    the domain root (see AGENTS.md rule 3)
+ *   - /testimonials-v-1/ .. /testimonials-v-N/  versioned drafts of one page
+ * The first two strip the prefix and land on the same path at the root, so
+ * deep links survive. Every testimonials variant collapses to the single
+ * canonical Testimonials page.
+ *
+ * Shared by the redirect below and the sitemap exclusion in seo.php so the
+ * two can never disagree about what counts as legacy.
+ *
+ * @param string $rel Path relative to the install root, without leading slash.
+ * @return string Absolute destination URL, or '' when the path is not legacy.
+ */
+function sc_core_legacy_destination( $rel ) {
+	$rel = ltrim( (string) $rel, '/' );
+	if ( 1 === preg_match( '#^(?:sitenew|newwebsite)(?:/(.*))?$#i', $rel, $m ) ) {
+		$rest = isset( $m[1] ) ? ltrim( $m[1], '/' ) : '';
+		return home_url( '/' . $rest );
+	}
+	if ( 1 === preg_match( '#^testimonials?-v-?\d+/?$#i', $rel ) ) {
+		return sc_core_testimonials_url();
+	}
+	return '';
+}
+
+/**
+ * 301 legacy URLs to their modern equivalents.
+ *
+ * Same template_redirect mechanism as the /products/ and /resources/
+ * redirects above. Two deliberate differences:
+ *   - It only fires on a 404. If a real page ever exists at one of these
+ *     paths, the content wins and nothing is hijacked.
+ *   - It runs at priority 9, ahead of redirect_canonical() at 10, whose
+ *     "guess the permalink" heuristic would otherwise send /sitenew/about/
+ *     to whatever post happens to have a similar slug.
+ * The path is computed relative to home_url() so the logic holds wherever
+ * WordPress is installed, and wp_safe_redirect() keeps it on-site.
+ */
+function sc_core_redirect_legacy_paths() {
+	if ( is_admin() || ! is_404() ) {
+		return;
+	}
+	$uri  = isset( $_SERVER['REQUEST_URI'] ) ? (string) wp_unslash( $_SERVER['REQUEST_URI'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- only pattern-matched; never echoed or stored.
+	$path = (string) wp_parse_url( $uri, PHP_URL_PATH );
+	$base = trailingslashit( (string) wp_parse_url( home_url( '/' ), PHP_URL_PATH ) );
+	if ( '' === $path || 0 !== strpos( $path, $base ) ) {
+		return;
+	}
+	$dest = sc_core_legacy_destination( substr( $path, strlen( $base ) ) );
+	if ( '' === $dest ) {
+		return;
+	}
+	$query = (string) wp_parse_url( $uri, PHP_URL_QUERY );
+	if ( '' !== $query ) {
+		$dest .= ( false === strpos( $dest, '?' ) ? '?' : '&' ) . $query;
+	}
+	wp_safe_redirect( $dest, 301 );
+	exit;
+}
+add_action( 'template_redirect', 'sc_core_redirect_legacy_paths', 9 );
+
+/**
  * The Brands archive is presented as the "Products" page, so its document <title>
  * should read "Products" rather than the "Brands" post-type label.
  */

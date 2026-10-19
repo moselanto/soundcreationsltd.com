@@ -140,13 +140,23 @@ All hierarchical, public, REST-enabled, with an admin column:
 
 ### 3.4 Legacy URL handling
 
-Two content areas were renamed after launch. Both are handled with permanent
-redirects on `template_redirect` rather than by breaking links:
+Content areas renamed after launch, and URL spaces left over from the
+redesign, are handled with permanent redirects on `template_redirect` rather
+than by breaking links:
 
 - `/products/` (the `sc_product` archive) → `/brands/`, because the
   represented-products list now lives on the Brands archive.
 - `/resources/` and `/resources/*` → `/videos/*`, a prefix-preserving regex
   rewrite so deep links survive.
+
+- `/sitenew/*` and `/newwebsite/*` → the same path at the root, and
+  `/testimonials-v-1/` … `/testimonials-v-N/` → the canonical Testimonials page.
+  Handled by `sc_core_redirect_legacy_paths()`, which fires **only on a 404**
+  (real content at those paths always wins) and at `template_redirect`
+  priority 9, ahead of `redirect_canonical()`'s slug guessing. The pattern
+  lives in `sc_core_legacy_destination()`, which `seo.php` also uses to keep
+  any published page at those paths out of the XML sitemap (core and Rank
+  Math).
 
 The Brands archive also has its document `<title>` rewritten to "Products" via
 `document_title_parts`, so the URL, the post type and the user-facing label
