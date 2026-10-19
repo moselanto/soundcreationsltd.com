@@ -1,119 +1,93 @@
 # ============================================================================
 # Sound Creations Ltd - security + performance
-# File: /public_html/.htaccess (domain root)
-# Updated: 2026-10-19 (conservative revision of the 2026-09-28 file)
+# Updated: 2026-09-28
 #
 # NOTES FOR FUTURE EDITORS:
-#  - Do NOT edit inside the BEGIN/END WordPress, BEGIN/END seraphinite or the
-#    cPanel PHP handler markers. They are regenerated automatically.
-#  - NEVER hand-edit the cPanel PHP handler block. On 2026-10-19 changing it
-#    to ea-php84 took the whole site down (500). Change PHP versions only in
-#    cPanel > MultiPHP Manager / PHP Selector.
-#  - This revision only uses directive types the 2026-09-28 file already
-#    used successfully on this server. A fuller version (Brotli, charset
-#    directives) caused a 500 here and was withdrawn.
+#  - Do NOT edit inside the BEGIN/END WordPress or BEGIN/END seraphinite
+#    markers. Both are regenerated automatically and your changes will be lost.
 #  - Security headers below are scoped to STATIC FILES ONLY. PHP pages already
-#    get them from the theme (soundcreations/inc/hardening.php).
+#    get them from the theme (soundcreations/inc/hardening.php). Do not add
+#    them globally here or every page will send them twice.
 #  - XML-RPC is already disabled in PHP, so it is not repeated here.
-#  - /sitenew/ and /testimonials-v-N/ redirects live in PHP and only fire on
-#    a 404, so real content always wins. Do not duplicate them here.
-#  - Master copy: docs/server/htaccess-root.txt in the repository.
 # ============================================================================
 
 # ---------------------------------------------------------------------------
-# 1. Canonical HTTPS first, then legacy /newwebsite/ redirects, so an old
-#    http://.../newwebsite/ link costs one redirect instead of two.
+# 1. Legacy /newwebsite/ redirects  --  the site moved to the domain root.
+#    Preserves Google rankings and keeps old inbound links alive.
 # ---------------------------------------------------------------------------
 <IfModule mod_rewrite.c>
 RewriteEngine On
 
-# The second condition keeps this safe behind a proxy or CDN.
+RewriteRule ^newwebsite/?$ / [R=301,L]
+RewriteRule ^newwebsite/(.*)$ /$1 [R=301,L]
+
+# Canonical HTTPS. The second condition keeps this safe behind a proxy or CDN
+# (without it, some hosts loop forever).
 RewriteCond %{HTTPS} !=on
 RewriteCond %{HTTP:X-Forwarded-Proto} !=https
 RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-
-# The site moved from /newwebsite/ to the domain root. Query strings are kept.
-RewriteRule ^newwebsite/?$ / [R=301,L]
-RewriteRule ^newwebsite/(.*)$ /$1 [R=301,L]
 </IfModule>
 
 # ---------------------------------------------------------------------------
-# 2. Compression safety net (skips anything already compressed).
-#    WOFF/WOFF2, JPEG, PNG, WebP, AVIF and MP4 are already compressed.
+# 2. Compression. Already active on this server; kept as a safety net so
+#    compression survives a plugin being disabled. Apache skips anything that
+#    already carries a Content-Encoding, so this cannot double-compress.
 # ---------------------------------------------------------------------------
 <IfModule mod_deflate.c>
   AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css
-  AddOutputFilterByType DEFLATE text/javascript application/javascript application/x-javascript
-  AddOutputFilterByType DEFLATE application/json application/ld+json application/xml
-  AddOutputFilterByType DEFLATE application/rss+xml application/atom+xml
-  AddOutputFilterByType DEFLATE image/svg+xml image/x-icon font/ttf font/otf
+  AddOutputFilterByType DEFLATE application/javascript application/x-javascript
+  AddOutputFilterByType DEFLATE application/json application/xml
+  AddOutputFilterByType DEFLATE image/svg+xml
 </IfModule>
 
 # ---------------------------------------------------------------------------
-# 3. Browser caching.
-#    - No ExpiresDefault: the old "1 month" default was also applied to
-#      dynamic JSON/XML (REST API, forms, sitemaps, feeds).
-#    - CSS/JS/fonts: 1 year (versioned by the theme and by ?ver=).
-#    - Images: 180 days, not immutable. Theme images and replaced media keep
-#      the same filename, so a 1-year immutable cache hides updated photos.
-#    - Video/PDF: shorter, because they get replaced in place.
+# 3. Browser caching  --  THE MAIN PERFORMANCE FIX.
+#    Static assets currently ship with no cache headers at all, so repeat
+#    visitors re-download every stylesheet, script, font and image.
+#
+#    One year is safe for theme assets: the theme cache-busts automatically
+#    using the filemtime of main.css, so an edit produces a new URL.
+#    Video is deliberately shorter - see the note under section 3b.
 # ---------------------------------------------------------------------------
 <IfModule mod_expires.c>
   ExpiresActive On
+  ExpiresDefault                        "access plus 1 month"
 
   ExpiresByType text/css                "access plus 1 year"
   ExpiresByType application/javascript  "access plus 1 year"
   ExpiresByType text/javascript         "access plus 1 year"
 
+  ExpiresByType image/jpeg              "access plus 1 year"
+  ExpiresByType image/png               "access plus 1 year"
+  ExpiresByType image/gif               "access plus 1 year"
+  ExpiresByType image/webp              "access plus 1 year"
+  ExpiresByType image/svg+xml           "access plus 1 year"
+  ExpiresByType image/x-icon            "access plus 1 year"
+
   ExpiresByType font/woff2              "access plus 1 year"
   ExpiresByType font/woff               "access plus 1 year"
   ExpiresByType application/font-woff2  "access plus 1 year"
-  ExpiresByType font/ttf                "access plus 1 year"
-  ExpiresByType font/otf                "access plus 1 year"
 
-  ExpiresByType image/jpeg              "access plus 180 days"
-  ExpiresByType image/png               "access plus 180 days"
-  ExpiresByType image/gif               "access plus 180 days"
-  ExpiresByType image/webp              "access plus 180 days"
-  ExpiresByType image/avif              "access plus 180 days"
-  ExpiresByType image/svg+xml           "access plus 180 days"
-  ExpiresByType image/x-icon            "access plus 180 days"
-
-  # Hero video is due to be re-encoded over the same filename.
+  # Shorter on purpose: the hero video is due to be re-encoded and re-uploaded
+  # over the same filename. A 1-year cache would leave visitors stuck on the
+  # old 22MB copy. Raise this to 1 year once the video is final.
   ExpiresByType video/mp4               "access plus 1 month"
 
-  # Company profile and FANE catalogue PDFs get replaced in place.
-  ExpiresByType application/pdf         "access plus 1 week"
-
-  # Dynamic content: never cache in the browser (page caching is seraphinite's job).
+  # Never cache the HTML itself - page caching is seraphinite's job.
   ExpiresByType text/html               "access plus 0 seconds"
-  ExpiresByType application/json        "access plus 0 seconds"
-  ExpiresByType application/ld+json     "access plus 0 seconds"
-  ExpiresByType application/xml         "access plus 0 seconds"
-  ExpiresByType text/xml                "access plus 0 seconds"
-  ExpiresByType application/rss+xml     "access plus 0 seconds"
-  ExpiresByType application/atom+xml    "access plus 0 seconds"
 </IfModule>
 
 <IfModule mod_headers.c>
-  <FilesMatch "\.(css|js|woff|woff2|ttf|otf)$">
+  <FilesMatch "\.(css|js|jpg|jpeg|png|gif|webp|svg|ico|woff|woff2)$">
     Header set Cache-Control "public, max-age=31536000, immutable"
-  </FilesMatch>
-
-  <FilesMatch "\.(jpg|jpeg|png|gif|webp|avif|svg|ico)$">
-    Header set Cache-Control "public, max-age=15552000"
   </FilesMatch>
 
   <FilesMatch "\.mp4$">
     Header set Cache-Control "public, max-age=2592000"
   </FilesMatch>
 
-  <FilesMatch "\.pdf$">
-    Header set Cache-Control "public, max-age=604800"
-  </FilesMatch>
-
   # Cookies are pointless on static files and block some proxy caches.
-  <FilesMatch "\.(css|js|jpg|jpeg|png|gif|webp|avif|svg|ico|woff|woff2|ttf|otf|mp4|pdf)$">
+  <FilesMatch "\.(css|js|jpg|jpeg|png|gif|webp|svg|ico|woff|woff2|mp4)$">
     Header unset Set-Cookie
   </FilesMatch>
 </IfModule>
@@ -122,10 +96,11 @@ RewriteRule ^newwebsite/(.*)$ /$1 [R=301,L]
 FileETag MTime Size
 
 # ---------------------------------------------------------------------------
-# 4. Security headers for STATIC ASSETS ONLY (PHP pages get them from theme).
+# 4. Security headers for STATIC ASSETS ONLY.
+#    PHP pages already receive these from the theme - see note at top.
 # ---------------------------------------------------------------------------
 <IfModule mod_headers.c>
-  <FilesMatch "\.(css|js|jpg|jpeg|png|gif|webp|avif|svg|ico|woff|woff2|ttf|otf|mp4|pdf)$">
+  <FilesMatch "\.(css|js|jpg|jpeg|png|gif|webp|svg|ico|woff|woff2|mp4)$">
     Header set X-Content-Type-Options "nosniff"
     Header set Referrer-Policy "strict-origin-when-cross-origin"
     Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
@@ -138,17 +113,11 @@ FileETag MTime Size
 Options -Indexes
 ServerSignature Off
 
-<FilesMatch "^(wp-config\.php|wp-config-sample\.php|\.htaccess|\.htpasswd|\.user\.ini|php\.ini|readme\.html|license\.txt|debug\.log|error_log)$">
+<FilesMatch "^(wp-config\.php|\.htaccess|\.htpasswd|readme\.html|license\.txt|debug\.log|error_log)$">
   Require all denied
 </FilesMatch>
 
-# Developer / package-manager files that should never be public.
-<FilesMatch "^(composer\.json|composer\.lock|package\.json|package-lock\.json|yarn\.lock)$">
-  Require all denied
-</FilesMatch>
-
-# Backups, database dumps, logs, scripts and archive copies of the site.
-<FilesMatch "\.(bak|backup|old|orig|save|swp|sql|log|ini|sh|tar|tgz)$">
+<FilesMatch "\.(bak|old|orig|save|swp|sql|log|ini|sh)$">
   Require all denied
 </FilesMatch>
 
@@ -160,11 +129,7 @@ RedirectMatch 404 /\.(?!well-known)
 # ---------------------------------------------------------------------------
 <IfModule mod_mime.c>
   AddType image/webp                 .webp
-  AddType image/avif                 .avif
   AddType font/woff2                 .woff2
-  AddType font/woff                  .woff
-  AddType font/ttf                   .ttf
-  AddType font/otf                   .otf
   AddType video/mp4                  .mp4
   AddType image/svg+xml              .svg
   AddType application/x-web-app-manifest+json .webapp

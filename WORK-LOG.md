@@ -53,6 +53,17 @@ Owner contact for decisions: Agnes (website project lead).
 
 ## Log
 
+### 19 Oct 2026 — Both new .htaccess versions caused 500; live file is the 28 Sep one
+
+- The full AND the conservative 19 Oct .htaccess both gave a site-wide 500.
+  Only the 28 Sep file works. Cause not identified yet; it may be how the
+  file is pasted (copying from chat) rather than a directive.
+- `docs/server/htaccess-root.txt` is now an exact copy of the working
+  28 Sep file. Do NOT paste anything else on the server until the cPanel
+  error log (Metrics > Errors) shows the exact failing line.
+- Next step: change the working file one small edit at a time, testing
+  after each, starting with removing `ExpiresDefault`.
+
 ### 19 Oct 2026 — Conservative .htaccess revision — owner to paste
 
 - The full 19 Oct .htaccess caused a 500 on this server; the 28 Sep file
