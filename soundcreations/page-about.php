@@ -130,6 +130,19 @@ $sc_proc_icons = array(
 	</div>
 </section>
 
+<?php
+// Body text from the About page editor (for example the company summary),
+// shown above the company profiles. Hidden when the editor is empty.
+$sc_about_body = (string) get_post_field( 'post_content', get_queried_object_id() );
+if ( '' !== trim( wp_strip_all_tags( $sc_about_body ) ) ) :
+	?>
+<section class="sc-section sc-section--tight" id="about-company">
+	<div class="sc-container">
+		<div class="sc-prose"><?php echo str_replace( ']]>', ']]&gt;', apply_filters( 'the_content', $sc_about_body ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- same filters as the_content(). ?></div>
+	</div>
+</section>
+<?php endif; ?>
+
 <section class="sc-section sc-section--tight" id="company-profiles">
 	<div class="sc-container">
 		<?php echo do_shortcode( '[sc_profiles]' ); ?>
