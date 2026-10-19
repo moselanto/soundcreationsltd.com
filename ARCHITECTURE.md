@@ -64,7 +64,8 @@ soundcreationsltd.com/
 │   │   ├── starter-setup.php       One-click site scaffolding
 │   │   ├── setup-wizard.php        Guided first-run setup
 │   │   ├── seo.php                 Meta, canonical, OG, Twitter, JSON-LD
-│   │   └── brand-order.php         Manual ordering of brands
+│   │   ├── brand-order.php         Manual ordering of brands
+│   │   └── media.php               WebP sub-sizes for new JPEG/PNG uploads
 │   └── assets/                     Admin JS (media picker, gallery, brand order)
 │
 └── sound-creations-enquiries/      Plugin (v0.2.0)
@@ -349,6 +350,11 @@ one footer widget area.
   template (front page and About have different heroes — if the preload and the
   template's actual image drift apart, the browser high-priority-fetches an
   image that never paints).
+- **WebP uploads** (`sound-creations-core/includes/media.php`): new JPEG and
+  PNG uploads get WebP sub-sizes via `image_editor_output_format`; originals
+  are kept. It is a no-op when the server's Imagick/GD cannot encode WebP, so
+  it can never break an upload. Existing images need a one-off thumbnail
+  regeneration to gain WebP sizes. Opt out with `sc_core_webp_uploads`.
 - A tiny inline script applies the saved colour theme (dark by default) before
   first paint to avoid a flash.
 - **Speculation Rules** prerender same-site links on moderate eagerness, with

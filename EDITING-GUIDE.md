@@ -212,6 +212,14 @@ intro are in **Sound Creations → Settings → Testimonials page**. Until at le
 one testimonial is published the quote grid is hidden and the page is kept out
 of Google automatically. Only publish real quotes you have permission to use.
 
+### Image formats
+
+New photos you upload as JPEG or PNG are automatically resized into WebP
+versions (smaller and faster on phones); your original file is kept. Photos
+uploaded before October 2026 keep their old sizes until thumbnails are
+regenerated once. If your host cannot create WebP files, uploads simply carry
+on as before.
+
 ## 12. Search engine listings (SEO)
 
 Meta descriptions, titles, social share previews and structured data are

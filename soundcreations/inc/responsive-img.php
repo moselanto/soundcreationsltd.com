@@ -37,6 +37,19 @@ function sc_theme_attachment_id_from_url( $url ) {
 			if ( is_string( $sc_full ) ) {
 				$sc_id = (int) attachment_url_to_postid( $sc_full );
 			}
+			// Since Core started writing WebP sub-sizes (includes/media.php), a
+			// sub-size URL such as photo-1024x768.webp belongs to an ORIGINAL
+			// that is still photo.jpg or photo.png. Stripping the size alone
+			// gives photo.webp, which matches nothing, so the card would lose its
+			// srcset and fall back to one oversized file. Try the source formats.
+			if ( 0 === $sc_id && is_string( $sc_full ) && 1 === preg_match( '/\.webp$/i', $sc_full ) ) {
+				foreach ( array( 'jpg', 'jpeg', 'png' ) as $sc_ext ) {
+					$sc_id = (int) attachment_url_to_postid( (string) preg_replace( '/\.webp$/i', '.' . $sc_ext, $sc_full ) );
+					if ( $sc_id > 0 ) {
+						break;
+					}
+				}
+			}
 		}
 	}
 	$sc_cache[ $url ] = $sc_id;
