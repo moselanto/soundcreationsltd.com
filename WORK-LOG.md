@@ -53,6 +53,18 @@ Owner contact for decisions: Agnes (website project lead).
 
 ## Log
 
+### 19 Oct 2026 — PHP 8.0 -> 8.4 handler — owner to apply on server
+
+- cPanel PHP Selector shows all five soundcreationsltd.com domains on PHP 8.4
+  (account default), but the root `.htaccess` handler forced `ea-php80`, so
+  WordPress still ran 8.0.30.
+- `docs/server/htaccess-root.txt` handler now `ea-php84`. Preferred route:
+  cPanel > MultiPHP Manager > set the domain to PHP 8.4, which rewrites the
+  block itself. Only hand-paste if `ea-php84` is listed there.
+- After switching: confirm Tools > Site Health > Info > Server shows 8.4,
+  then test homepage, wp-admin, a form and the WhatsApp button. Roll back to
+  `ea-php80` if anything shows a 500 error.
+
 ### 19 Oct 2026 — Improved .htaccess — committed as reference, owner to paste on server
 
 - Master copies: `docs/server/htaccess-root.txt` (domain root) and
