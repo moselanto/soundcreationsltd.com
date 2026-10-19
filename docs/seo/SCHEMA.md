@@ -3,7 +3,7 @@
 The single source of truth for what the site tells search engines about the
 business. Code: `sound-creations-core/includes/seo-graph.php` (graph),
 `seo-faq.php` (FAQPage), `seo.php` (descriptions, canonical, robots hand-off).
-Last reviewed 19 Oct 2026.
+Last reviewed 19 Oct 2026 (WebPage/Service description now follows Rank Math, Core 0.5.30).
 
 ## Ownership and duplicate prevention
 
@@ -96,7 +96,8 @@ FAQPage --mainEntityOfPage--> #webpage (only when the FAQ is visible)
 | logo | Customizer `custom_logo`, else Site Icon 512px (`sc_seo_logo_url`) |
 | areaServed | Kenya, Rwanda, DR Congo, UAE (Country) + East Africa (AdministrativeArea), from `sc_seo_areas_served()` |
 | branches | settings `branch_{kigali,drc,dubai}_{address,phone,lat,lng}` |
-| Service description | excerpt, else the page's meta-description chain (`sc_seo_description`) |
+| WebPage description | Rank Math per-post `rank_math_description` (or `rank-math-options-titles[homepage_description]` on a posts-page homepage), Rank Math variables resolved or the value skipped; else `sc_seo_description` (`_sc_seo_desc`, summary, excerpt, content, type default). Via `sc_seo_schema_description()`. Rank Math is read only while it owns the meta (`sc_seo_rank_math_owns_meta`). |
+| Service description | same Rank Math description first, else excerpt, else `sc_seo_description` |
 | Video thumbnail | featured image (if any), then `i.ytimg.com/vi/{id}/hqdefault.jpg` |
 | FAQ | post meta `_sc_faq`, only on templates that render it (`sc_faq_is_rendered`) |
 

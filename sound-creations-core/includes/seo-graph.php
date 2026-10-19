@@ -639,6 +639,108 @@ function sc_seo_node_website() {
 }
 
 /* ============================================================
+   DESCRIPTION SHOWN TO SEARCH ENGINES
+
+   Rank Math owns the visible meta description (owner decision,
+   14 Oct 2026), and on 19 Oct 2026 the titles and descriptions
+   were rewritten in Rank Math's per-post fields. Core's graph
+   still read only its own chain (sc_seo_description: _sc_seo_desc,
+   summary, excerpt, content, type default), so the homepage
+   WebPage node kept asserting the OLD description while the
+   <meta name="description"> carried the new one. Two different
+   descriptions of one page is a mixed signal, and the stale one
+   was the copy the owner had deliberately replaced.
+
+   So the graph now reads the description Rank Math prints first
+   and falls back to Core's chain only when Rank Math has none.
+   ============================================================ */
+
+/**
+ * The Rank Math per-post (or posts-page homepage) meta description, cleaned
+ * for JSON-LD, or '' when there is none or it cannot be resolved safely.
+ *
+ * Read only while Rank Math owns the meta tags: if it is deactivated, Core
+ * prints its own description from sc_seo_description(), and preferring a
+ * leftover Rank Math field would recreate the same mismatch in reverse.
+ *
+ * Rank Math descriptions may hold variables such as %title% or %sep%. They
+ * are resolved with Rank Math's own replacer when it is available; if any
+ * %variable% survives (replacer missing, renamed or failing), the value is
+ * skipped rather than published, because a literal "%excerpt%" in the graph
+ * is worse than the fallback chain.
+ *
+ * NOTE: the meta key rank_math_description, the option
+ * rank-math-options-titles[homepage_description] and
+ * RankMath\Helper::replace_vars() follow Rank Math's documented storage and
+ * were not checked against the installed version (no PHP or wp-admin access
+ * from the agent environment). Every path fails safe to the old behaviour.
+ *
+ * @return string
+ */
+function sc_seo_rank_math_description() {
+	if ( ! function_exists( 'sc_seo_rank_math_owns_meta' ) || ! sc_seo_rank_math_owns_meta() ) {
+		return '';
+	}
+
+	$raw  = '';
+	$post = null;
+
+	if ( is_singular() ) {
+		// Covers a static front page too: Rank Math stores the homepage
+		// description on that page's own post meta in that case.
+		$post = get_post( get_queried_object_id() );
+		if ( $post instanceof WP_Post ) {
+			$raw = (string) get_post_meta( $post->ID, 'rank_math_description', true );
+		}
+	} elseif ( is_front_page() && is_home() ) {
+		// Latest-posts homepage: Rank Math keeps it in Titles & Meta options.
+		$opts = get_option( 'rank-math-options-titles' );
+		if ( is_array( $opts ) && ! empty( $opts['homepage_description'] ) && is_string( $opts['homepage_description'] ) ) {
+			$raw = $opts['homepage_description'];
+		}
+	}
+
+	$raw = trim( $raw );
+	if ( '' === $raw ) {
+		return '';
+	}
+
+	if ( false !== strpos( $raw, '%' ) ) {
+		if ( class_exists( 'RankMath\\Helper' ) && is_callable( array( 'RankMath\\Helper', 'replace_vars' ) ) ) {
+			try {
+				$raw = (string) call_user_func( array( 'RankMath\\Helper', 'replace_vars' ), $raw, $post ? $post : array() );
+			} catch ( Throwable $e ) {
+				return ''; // A replacer error must never break the page head.
+			}
+		}
+		if ( preg_match( '/%[a-z0-9_-]+(?:\([^)]*\))?%/i', $raw ) ) {
+			return ''; // Unresolved variable: skip, let the fallback chain answer.
+		}
+	}
+
+	$clean = wp_strip_all_tags( html_entity_decode( $raw, ENT_QUOTES | ENT_HTML5, 'UTF-8' ) );
+	$clean = trim( (string) preg_replace( '/\s+/u', ' ', $clean ) );
+
+	return $clean;
+}
+
+/**
+ * Description for the WebPage node: Rank Math's first, then Core's chain.
+ *
+ * @return string
+ */
+function sc_seo_schema_description() {
+	$d = sc_seo_rank_math_description();
+	if ( '' !== $d ) {
+		return $d;
+	}
+	if ( function_exists( 'sc_seo_description' ) ) {
+		return trim( wp_strip_all_tags( (string) sc_seo_description() ) );
+	}
+	return '';
+}
+
+/* ============================================================
    WEBPAGE
 
    Missing entirely before this build. Without it, breadcrumbs
@@ -673,11 +775,12 @@ function sc_seo_node_webpage() {
 		'inLanguage' => 'en',
 	);
 
-	if ( function_exists( 'sc_seo_description' ) ) {
-		$d = sc_seo_description();
-		if ( $d ) {
-			$node['description'] = $d;
-		}
+	// Prefer the description Rank Math actually printed in the <head>, so
+	// the WebPage node and the visible meta description say the same thing.
+	// See sc_seo_schema_description() for why.
+	$d = sc_seo_schema_description();
+	if ( '' !== $d ) {
+		$node['description'] = $d;
 	}
 
 	if ( is_singular() ) {
@@ -934,8 +1037,18 @@ function sc_seo_nodes_entities() {
 			'url'             => get_permalink( $pid ),
 			'mainEntityOfPage' => $page,
 		);
-		$d = wp_strip_all_tags( get_the_excerpt( $pid ) );
-		if ( $d ) {
+		// Same order as the WebPage node: the Rank Math per-post description
+		// the page really shows first, then the excerpt, then the Core
+		// meta-description chain. Without the Rank Math step the Service and
+		// WebPage nodes could describe one page in two different ways.
+		$d = sc_seo_rank_math_description();
+		if ( '' === $d ) {
+			$d = trim( wp_strip_all_tags( (string) get_the_excerpt( $pid ) ) );
+		}
+		if ( '' === $d && function_exists( 'sc_seo_description' ) ) {
+			$d = trim( wp_strip_all_tags( (string) sc_seo_description() ) );
+		}
+		if ( '' !== $d ) {
 			$node['description'] = $d;
 		}
 		if ( has_post_thumbnail( $pid ) ) {

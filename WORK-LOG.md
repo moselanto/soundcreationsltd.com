@@ -56,6 +56,27 @@ Owner contact for decisions: Agnes (website project lead).
 
 ## Log
 
+### 19 Oct 2026 — JSON-LD description follows Rank Math meta — committed, needs upload
+
+- `includes/seo-graph.php`: new `sc_seo_rank_math_description()` and
+  `sc_seo_schema_description()`. The WebPage node (and the Service node on
+  solutions/services) now prefers Rank Math's per-post meta description
+  (`rank_math_description`; posts-page homepage option as a fallback) before
+  Core's old chain. `%variables%` are resolved with Rank Math's replacer or the
+  value is skipped. Only used while Rank Math owns the meta.
+- Why: titles/descriptions were rewritten in Rank Math today, but the homepage
+  WebPage JSON-LD still carried the old description.
+- Core 0.5.29 -> 0.5.30. `docs/seo/SCHEMA.md` field sources updated.
+- **Upload:** `sound-creations-core/includes/seo-graph.php` and
+  `sound-creations-core/sound-creations-core.php`.
+- `php -l` NOT run (no PHP in the agent sandbox); bracket balance checked by
+  script, hand-reviewed. Rank Math meta key / option / `replace_vars` names are
+  from Rank Math docs, not verified on the installed version; all paths fall
+  back to the old behaviour.
+- **Verify:** view-source of `/` and one `/solutions/...` page: the ld+json
+  WebPage `description` equals `<meta name="description">`; no `%` variables;
+  Rich Results Test still parses.
+
 ### 19 Oct 2026 — Legacy 301/410 redirects + product pages noindexed — committed, needs upload
 
 | Commit | Change |
