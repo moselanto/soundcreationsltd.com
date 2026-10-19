@@ -2789,14 +2789,35 @@ h2.sc-home-projects__title { font-size: clamp(1.25rem, 2vw, 1.6rem); line-height
 .sc-quote__who strong { font-size: 1rem; }
 .sc-quote__meta { color: var(--sc-muted); font-size: .85rem; }
 .sc-quote__link { color: var(--sc-red); font-weight: 600; flex-basis: 100%; }
-/* Homepage testimonials strip + Google rating line. */
+/* Homepage testimonials strip + Google rating line.
+   Compact on purpose: this is a teaser that sends visitors to /testimonials/,
+   so it takes roughly half the height of the full page version. Reviews are
+   clamped to four lines here only; the Testimonials page shows them in full. */
+.sc-section.sc-home-quotes { padding-block: clamp(1.75rem, 1.25rem + 2.5vw, 3.25rem); }
+.sc-home-quotes .sc-section__head { margin-bottom: 1.1rem; align-items: center; }
+.sc-home-quotes .sc-section__head h2 { font-size: clamp(1.35rem, 1.1rem + 1vw, 1.85rem); }
 .sc-home-quotes .sc-testimonials { margin: 0; }
-.sc-home-quotes .sc-testimonials__nav { margin-top: -.25rem; }
-.sc-rating { display: flex; align-items: center; flex-wrap: wrap; gap: .55rem; margin: .7rem 0 0; font-size: .95rem; color: var(--sc-muted); }
+.sc-home-quotes .sc-testimonials__nav { margin: 0 0 .65rem; }
+.sc-home-quotes .sc-testimonials__btn { width: 38px; height: 38px; font-size: 1rem; }
+.sc-home-quotes .sc-testimonials__grid { --sc-tgap: 1.1rem; padding-bottom: .4rem; }
+.sc-home-quotes .sc-quote { padding: 1.15rem 1.3rem 1rem; gap: .8rem; box-shadow: 0 1px 2px rgba(0,0,0,.04), 0 4px 14px rgba(0,0,0,.05); }
+.sc-home-quotes .sc-quote:hover { transform: translateY(-2px); }
+.sc-home-quotes .sc-quote__mark { position: static; display: block; height: 1.1rem; font-size: 2.6rem; line-height: .8; margin-bottom: -.1rem; }
+.sc-home-quotes .sc-quote__text { font-size: .95rem; line-height: 1.6; }
+.sc-home-quotes .sc-quote__text p { display: -webkit-box; -webkit-line-clamp: 4; line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+.sc-home-quotes .sc-quote__by { padding-top: .75rem; gap: .65rem; font-size: .88rem; }
+.sc-home-quotes .sc-quote__photo, .sc-home-quotes .sc-quote__avatar { width: 36px; height: 36px; flex-basis: 36px; font-size: .9rem; }
+.sc-home-quotes .sc-quote__who strong { font-size: .95rem; }
+.sc-home-quotes .sc-quote__meta { font-size: .8rem; }
+.sc-rating { display: flex; align-items: center; flex-wrap: wrap; gap: .5rem; margin: .45rem 0 0; font-size: .9rem; color: var(--sc-muted); }
 .sc-rating a { color: var(--sc-text); font-weight: 600; text-decoration: none; border-bottom: 1px solid var(--sc-border); }
 .sc-rating a:hover { border-bottom-color: var(--sc-red); }
-.sc-rating__stars { position: relative; display: inline-block; font-size: 1.1rem; letter-spacing: 2px; line-height: 1; color: var(--sc-border); white-space: nowrap; }
+.sc-rating__stars { position: relative; display: inline-block; font-size: 1rem; letter-spacing: 2px; line-height: 1; color: var(--sc-border); white-space: nowrap; }
 .sc-rating__stars::before { content: "\2605\2605\2605\2605\2605"; position: absolute; top: 0; left: 0; width: var(--sc-r, 100%); overflow: hidden; color: #f5b301; }
+@media (max-width: 640px) {
+	.sc-home-quotes .sc-section__head { align-items: flex-start; }
+	.sc-home-quotes .sc-quote__text p { -webkit-line-clamp: 5; line-clamp: 5; }
+}
 @media (prefers-reduced-motion: reduce) {
 	.sc-testimonials__grid { scroll-behavior: auto; }
 	.sc-quote, .sc-quote:hover { transition: none; transform: none; }

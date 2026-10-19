@@ -53,6 +53,13 @@ Owner contact for decisions: Agnes (website project lead).
 
 ## Log
 
+### 19 Oct 2026 — Compact homepage testimonials strip (CSS only) — committed, needs main.css upload
+
+- `main.css` only, scoped to `.sc-home-quotes`: less section padding,
+  smaller heading, tighter cards, inline quote mark, 36px avatars, smaller
+  arrows, reviews clamped to 4 lines (5 on phones) on the homepage only.
+  The /testimonials/ page keeps full-length cards.
+
 ### 19 Oct 2026 — Homepage testimonials strip + Google rating line — committed, needs deploy
 
 - `front-page.php`: new "What our clients say" section after the proof stats,
