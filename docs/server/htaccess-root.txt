@@ -51,7 +51,6 @@ RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 # ---------------------------------------------------------------------------
 <IfModule mod_expires.c>
   ExpiresActive On
-  ExpiresDefault                        "access plus 1 month"
 
   ExpiresByType text/css                "access plus 1 year"
   ExpiresByType application/javascript  "access plus 1 year"
@@ -158,7 +157,7 @@ RewriteRule . /index.php [L]
 # END seraphinite-accelerator
 
 # php -- BEGIN cPanel-generated handler, do not edit
-# Set the “ea-php80” package as the default “PHP” programming language.
+# Set the "ea-php80" package as the default "PHP" programming language.
 <IfModule mime_module>
   AddHandler application/x-httpd-ea-php80___lsphp .php .php8 .phtml
 </IfModule>

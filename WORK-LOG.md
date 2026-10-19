@@ -53,6 +53,19 @@ Owner contact for decisions: Agnes (website project lead).
 
 ## Log
 
+### 19 Oct 2026 — .htaccess step 1 live: ExpiresDefault removed
+
+- ROOT CAUSE of the earlier 500 errors: copying .htaccess text out of the
+  chat adds hidden characters the server rejects. The content itself was
+  fine. NEVER have the owner paste .htaccess from chat; deliver it as a
+  clean ASCII/LF file (Content Library download) to upload and rename, or
+  as a single in-place deletion in File Manager.
+- Live file = `docs/server/htaccess-root.txt` (28 Sep file minus
+  `ExpiresDefault`, curly quotes in the cPanel comment made plain ASCII).
+  Confirmed working by the owner.
+- Step 2 prepared as a download (images 180 days, not immutable; CSS/JS/
+  fonts stay 1 year immutable). Apply one step at a time, test after each.
+
 ### 19 Oct 2026 — Both new .htaccess versions caused 500; live file is the 28 Sep one
 
 - The full AND the conservative 19 Oct .htaccess both gave a site-wide 500.
