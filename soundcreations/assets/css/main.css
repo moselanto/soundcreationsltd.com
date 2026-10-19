@@ -2789,6 +2789,14 @@ h2.sc-home-projects__title { font-size: clamp(1.25rem, 2vw, 1.6rem); line-height
 .sc-quote__who strong { font-size: 1rem; }
 .sc-quote__meta { color: var(--sc-muted); font-size: .85rem; }
 .sc-quote__link { color: var(--sc-red); font-weight: 600; flex-basis: 100%; }
+/* Homepage testimonials strip + Google rating line. */
+.sc-home-quotes .sc-testimonials { margin: 0; }
+.sc-home-quotes .sc-testimonials__nav { margin-top: -.25rem; }
+.sc-rating { display: flex; align-items: center; flex-wrap: wrap; gap: .55rem; margin: .7rem 0 0; font-size: .95rem; color: var(--sc-muted); }
+.sc-rating a { color: var(--sc-text); font-weight: 600; text-decoration: none; border-bottom: 1px solid var(--sc-border); }
+.sc-rating a:hover { border-bottom-color: var(--sc-red); }
+.sc-rating__stars { position: relative; display: inline-block; font-size: 1.1rem; letter-spacing: 2px; line-height: 1; color: var(--sc-border); white-space: nowrap; }
+.sc-rating__stars::before { content: "\2605\2605\2605\2605\2605"; position: absolute; top: 0; left: 0; width: var(--sc-r, 100%); overflow: hidden; color: #f5b301; }
 @media (prefers-reduced-motion: reduce) {
 	.sc-testimonials__grid { scroll-behavior: auto; }
 	.sc-quote, .sc-quote:hover { transition: none; transform: none; }

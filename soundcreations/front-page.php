@@ -324,6 +324,54 @@ if ( count( $sc_stats ) > 0 ) :
 </section>
 <?php endif; ?>
 
+<?php
+/* Client testimonials strip. Social proof placed straight after the proof
+   stats and before the closing call to action, where it does the most work.
+   Reuses sc_testimonials_grid() (same carousel as /testimonials/), capped at
+   six. Renders nothing when no testimonial is published -- never sample
+   quotes. The rating line reads google_rating / google_review_count from
+   Settings and hides when the rating is blank. */
+$sc_home_quotes = function_exists( 'sc_testimonials_grid' ) ? sc_testimonials_grid( 6 ) : '';
+if ( '' !== $sc_home_quotes ) :
+	$sc_t_page   = get_page_by_path( 'testimonials' );
+	$sc_t_url    = $sc_t_page ? get_permalink( $sc_t_page ) : home_url( '/testimonials/' );
+	$sc_g_rating = trim( (string) sc_setting( 'google_rating', '' ) );
+	$sc_g_count  = trim( (string) sc_setting( 'google_review_count', '' ) );
+	$sc_g_url    = trim( (string) sc_setting( 'google_business', '' ) );
+	$sc_g_pct    = is_numeric( $sc_g_rating ) ? max( 0, min( 100, ( (float) $sc_g_rating / 5 ) * 100 ) ) : 0;
+	?>
+<section class="sc-section sc-section--surface sc-home-quotes" aria-labelledby="sc-quotes-title">
+	<div class="sc-container">
+		<div class="sc-section__head">
+			<div>
+				<p class="sc-eyebrow sc-eyebrow--home"><?php echo esc_html( sc_setting( 'home_testimonials_eyebrow', 'Testimonials' ) ); ?></p>
+				<h2 id="sc-quotes-title" style="margin:0;"><?php echo esc_html( sc_setting( 'home_testimonials_title', 'What our clients say' ) ); ?></h2>
+				<?php if ( '' !== $sc_g_rating ) : ?>
+					<p class="sc-rating">
+						<span class="sc-rating__stars" style="--sc-r:<?php echo esc_attr( round( $sc_g_pct, 1 ) ); ?>%;" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+						<?php
+						/* translators: 1: rating, e.g. 4.5. */
+						$sc_g_text = sprintf( __( '%s out of 5', 'soundcreations' ), $sc_g_rating );
+						if ( '' !== $sc_g_count ) {
+							/* translators: 1: rating, 2: number of reviews. */
+							$sc_g_text = sprintf( __( '%1$s out of 5 from %2$s Google reviews', 'soundcreations' ), $sc_g_rating, $sc_g_count );
+						}
+						?>
+						<?php if ( '' !== $sc_g_url ) : ?>
+							<a href="<?php echo esc_url( $sc_g_url ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( $sc_g_text ); ?></a>
+						<?php else : ?>
+							<span><?php echo esc_html( $sc_g_text ); ?></span>
+						<?php endif; ?>
+					</p>
+				<?php endif; ?>
+			</div>
+			<a class="sc-link-arrow" href="<?php echo esc_url( $sc_t_url ); ?>"><?php echo esc_html( sc_setting( 'home_testimonials_link_label', 'Read all reviews' ) ); ?> &rarr;</a>
+		</div>
+		<?php echo $sc_home_quotes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in helper. ?>
+	</div>
+</section>
+<?php endif; ?>
+
 <section class="sc-section">
 	<div class="sc-container">
 		<div class="sc-cta-band sc-cta-band--photo" style="background-image:url('<?php echo esc_url( sc_setting( 'home_cta_image', SC_THEME_URI . '/assets/img/cta-building.webp' ) ); ?>');">

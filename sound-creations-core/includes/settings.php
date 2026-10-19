@@ -41,6 +41,11 @@ function sc_core_settings_fields() {
 		// than a wrong one. Never enter a placeholder address here.
 		'__sec_locations'      => array( 'Locations and local SEO', 'heading' ),
 		'google_business'      => array( 'Google Business Profile URL', 'text' ),
+		// Shown beside the testimonials. Keep in step with the live Google profile;
+		// clear both to hide the rating line. Display only: no review schema is
+		// emitted, because Google ignores self-served reviews of a business.
+		'google_rating'        => array( 'Google rating (e.g. 4.5; blank = hide rating line)', 'text' ),
+		'google_review_count'  => array( 'Google review count (e.g. 143)', 'text' ),
 		'founding_year'        => array( 'Year founded (structured data, e.g. 2004)', 'text' ),
 		'org_description'      => array( 'Company description for Google structured data (keep in step with the Google Business Profile description)', 'textarea' ),
 		'geo_lat'              => array( 'Nairobi latitude (e.g. -1.2664)', 'text' ),
@@ -86,6 +91,11 @@ function sc_core_settings_fields() {
 			'home_partners_label'  => array( 'Partners strip: label', 'text' ),
 			'home_projects_eyebrow'=> array( 'Our Work (projects grid): eyebrow', 'text' ),
 			'home_projects_link_label' => array( 'Our Work (projects grid): "View all" link label', 'text' ),
+			// Homepage testimonials strip. Shown only when at least one Testimonial is
+			// published, so clearing all quotes removes the section entirely.
+			'home_testimonials_eyebrow'    => array( 'Testimonials strip: eyebrow', 'text' ),
+			'home_testimonials_title'      => array( 'Testimonials strip: heading', 'text' ),
+			'home_testimonials_link_label' => array( 'Testimonials strip: "Read all" link label', 'text' ),
 		'__sec_home_images'    => array( 'Homepage images', 'heading' ),
 		'home_hero_poster'     => array( 'Hero: poster image (shown before video loads)', 'image' ),
 		'home_svc1_img'        => array( 'What we do - Consultancy: photo', 'image' ),

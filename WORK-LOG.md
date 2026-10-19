@@ -53,6 +53,24 @@ Owner contact for decisions: Agnes (website project lead).
 
 ## Log
 
+### 19 Oct 2026 — Homepage testimonials strip + Google rating line — committed, needs deploy
+
+- `front-page.php`: new "What our clients say" section after the proof stats,
+  before the closing CTA. Reuses the testimonials carousel (max 6), with a
+  "Read all reviews" link to /testimonials/. Hidden when no testimonial is
+  published.
+- Rating line ("4.5 out of 5 from 143 Google reviews", partial gold stars)
+  reads new settings `google_rating` / `google_review_count` (Locations and
+  local SEO section) and links to `google_business`. Blank rating hides it.
+  These must be filled in wp-admin; values seen on Google on 19 Oct: 4.5, 143.
+- New settings: `home_testimonials_eyebrow`, `home_testimonials_title`,
+  `home_testimonials_link_label` (defaults: Testimonials / What our clients
+  say / Read all reviews).
+- No Review/AggregateRating schema on purpose: Google ignores self-served
+  reviews of a LocalBusiness and it can be treated as spam markup.
+- Upload together with the carousel commit (template-tags.php, main.css,
+  theme.js) plus front-page.php and sound-creations-core/includes/settings.php.
+
 ### 19 Oct 2026 — Testimonials page redesigned as a carousel — committed, needs theme deploy
 
 - `sc_testimonials_grid()` (template-tags.php): 3 cards per row on desktop,
