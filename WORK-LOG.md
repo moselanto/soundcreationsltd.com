@@ -53,7 +53,16 @@ Owner contact for decisions: Agnes (website project lead).
 
 ## Log
 
-### 19 Oct 2026 — PHP 8.0 -> 8.4 handler — owner to apply on server
+### 19 Oct 2026 — ea-php84 handler caused a 500 error — reverted to ea-php80
+
+- Pasting the `ea-php84` handler gave a site-wide 500 error. Most likely
+  cause: there is no EasyApache `ea-php84` package on this server; the 8.4
+  shown in cPanel comes from the CloudLinux PHP Selector.
+- Reference copy reverted to `ea-php80`. Do NOT hand-edit the cPanel handler
+  block. Switch PHP via MultiPHP Manager ("inherit") + PHP Selector, or ask
+  the host.
+
+### 19 Oct 2026 — PHP 8.0 -> 8.4 handler — SUPERSEDED (see entry above)
 
 - cPanel PHP Selector shows all five soundcreationsltd.com domains on PHP 8.4
   (account default), but the root `.htaccess` handler forced `ea-php80`, so
