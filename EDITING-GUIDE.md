@@ -63,7 +63,7 @@ removed in September 2026 rather than left on the page doing nothing.
 - "What we do" eyebrow, heading, intro. Only the eyebrow shows by default; the
   heading and intro appear as soon as you type something into them.
 - Solutions eyebrow and heading; partners strip label
-- Featured projects eyebrow and heading
+- Our Work (projects grid) eyebrow, heading and "View all projects" link label
 - The four proof stats — number, label, and a sub-note on stat 2
 - Closing call-to-action heading and text
 
@@ -80,9 +80,11 @@ whichever is correct.
 the closing CTA background.
 
 ### Not in Settings
-The **Solutions cards** and **Featured Projects** grids pull from real entries in
+The **Solutions cards** and the **Our Work** grid pull from real entries in
 the Solutions and Projects menus. Add, edit or reorder those and the homepage
-updates automatically.
+updates automatically. Our Work shows the first six projects by their
+**Order** field; each card shows the Featured image, title, Location field
+and Project Type, so set all three on the projects you want featured.
 
 ## 5. About page
 

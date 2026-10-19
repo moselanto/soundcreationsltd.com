@@ -215,70 +215,73 @@ $sc_hero_poster = sc_setting( 'home_hero_poster', SC_THEME_URI . '/assets/img/he
 	</div>
 </section>
 
-<section class="sc-section sc-section--surface">
+<?php
+// "Our Work" grid. This was a horizontal carousel of up to 8 projects showing
+// only title and location, with a hardcoded "View All Projects" label and an
+// inline script for the arrow buttons. It is now a plain responsive grid of
+// the first six projects (the editor's Order field decides which), each card
+// carrying image, title, location and project type, so a visitor can judge
+// relevance at a glance on a phone without swiping. Headline, eyebrow and
+// link label are all Settings fields. Images go through sc_theme_card_img(),
+// which is lazy + async with srcset -- none of these is ever the LCP image.
+$sc_work_url = get_post_type_archive_link( 'sc_project' );
+if ( empty( $sc_work_url ) ) {
+	$sc_work_url = home_url( '/projects/' );
+}
+?>
+<section class="sc-section sc-section--surface sc-work" aria-labelledby="sc-work-title">
 	<div class="sc-container">
 		<div class="sc-section__head">
 			<div>
-				<p class="sc-eyebrow sc-eyebrow--home"><?php echo esc_html( sc_setting( 'home_projects_eyebrow', 'Featured Projects' ) ); ?></p>
-				<h2 class="sc-home-projects__title" style="margin:0;"><?php echo esc_html( sc_setting( 'home_projects_title', 'Real spaces. Real results.' ) ); ?></h2>
+				<p class="sc-eyebrow sc-eyebrow--home"><?php echo esc_html( sc_setting( 'home_projects_eyebrow', 'Our Work' ) ); ?></p>
+				<h2 id="sc-work-title" class="sc-home-projects__title" style="margin:0;"><?php echo esc_html( sc_setting( 'home_projects_title', 'Real spaces. Real results.' ) ); ?></h2>
 			</div>
-			<a class="sc-link-arrow" href="<?php echo esc_url( home_url( '/projects/' ) ); ?>"><?php esc_html_e( 'View All Projects', 'soundcreations' ); ?> &rarr;</a>
+			<a class="sc-link-arrow" href="<?php echo esc_url( $sc_work_url ); ?>"><?php echo esc_html( sc_setting( 'home_projects_link_label', 'View all projects' ) ); ?> &rarr;</a>
 		</div>
-		<div class="sc-carousel" data-sc-carousel>
-			<button class="sc-carousel__btn sc-carousel__btn--prev" type="button" data-sc-prev aria-label="Previous">&lsaquo;</button>
-			<div class="sc-carousel__track">
+		<?php
+		$sc_pq = new WP_Query(
+			array(
+				'post_type'      => 'sc_project',
+				'post_status'    => 'publish',
+				'posts_per_page' => 6,
+				'orderby'        => array( 'menu_order' => 'ASC', 'title' => 'ASC' ),
+				'no_found_rows'  => true,
+			)
+		);
+		if ( $sc_pq->have_posts() ) :
+			?>
+			<ul class="sc-workgrid" role="list">
 				<?php
-				$sc_pq = new WP_Query(
-					array(
-						'post_type'      => 'sc_project',
-						'post_status'    => 'publish',
-						'posts_per_page' => 8,
-						'orderby'        => array( 'menu_order' => 'ASC', 'title' => 'ASC' ),
-						'no_found_rows'  => true,
-					)
-				);
-				if ( $sc_pq->have_posts() ) :
-					while ( $sc_pq->have_posts() ) :
-						$sc_pq->the_post();
-						$pid  = get_the_ID();
-						$img = sc_project_card_image( $pid );
-						$loc  = (string) get_post_meta( $pid, '_sc_location', true );
-						?>
-						<a class="sc-project" href="<?php the_permalink(); ?>"><span class="sc-project__media"><?php echo sc_theme_card_img( $img, get_the_title(), 400, 250, '(max-width: 600px) 85vw, 300px' ); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped in helper. ?></span><h3 class="sc-project__title"><?php echo esc_html( get_the_title() ); ?></h3><?php if ( '' !== $loc ) : ?><p class="sc-project__loc"><?php echo esc_html( $loc ); ?></p><?php endif; ?></a>
-						<?php
-					endwhile;
-					wp_reset_postdata();
-				else :
+				while ( $sc_pq->have_posts() ) :
+					$sc_pq->the_post();
+					$sc_pid  = get_the_ID();
+					$sc_pimg = sc_project_card_image( $sc_pid );
+					$sc_ploc = (string) get_post_meta( $sc_pid, '_sc_location', true );
+					if ( '' === $sc_ploc ) {
+						$sc_ploc = sc_primary_term_name( $sc_pid, 'sc_location', '' );
+					}
+					$sc_ptype = sc_primary_term_name( $sc_pid, 'sc_project_type', '' );
 					?>
-					<a class="sc-project" href="<?php echo esc_url( home_url( '/projects/' ) ); ?>"><span class="sc-project__media"><img src="<?php echo esc_url( SC_THEME_URI . '/assets/img/projects/boardroom.jpg' ); ?>" alt="Corporate Boardroom" loading="lazy" decoding="async" width="400" height="250"></span><h3 class="sc-project__title">Corporate Boardroom</h3><p class="sc-project__loc">Nairobi, Kenya</p></a>
-					<a class="sc-project" href="<?php echo esc_url( home_url( '/projects/' ) ); ?>"><span class="sc-project__media"><img src="<?php echo esc_url( SC_THEME_URI . '/assets/img/projects/worship.jpg' ); ?>" alt="House of Worship" loading="lazy" decoding="async" width="400" height="250"></span><h3 class="sc-project__title">House of Worship</h3><p class="sc-project__loc">Kigali, Rwanda</p></a>
-					<a class="sc-project" href="<?php echo esc_url( home_url( '/projects/' ) ); ?>"><span class="sc-project__media"><img src="<?php echo esc_url( SC_THEME_URI . '/assets/img/projects/conference.jpg' ); ?>" alt="Conference Centre" loading="lazy" decoding="async" width="400" height="250"></span><h3 class="sc-project__title">Conference Centre</h3><p class="sc-project__loc">Dubai, UAE</p></a>
-					<a class="sc-project" href="<?php echo esc_url( home_url( '/projects/' ) ); ?>"><span class="sc-project__media"><img src="<?php echo esc_url( SC_THEME_URI . '/assets/img/projects/performance.jpg' ); ?>" alt="Performance Venue" loading="lazy" decoding="async" width="400" height="250"></span><h3 class="sc-project__title">Performance Venue</h3><p class="sc-project__loc">Nairobi, Kenya</p></a>
+					<li>
+						<a class="sc-project sc-workcard" href="<?php the_permalink(); ?>">
+							<span class="sc-project__media"><?php echo sc_theme_card_img( $sc_pimg, get_the_title(), 400, 300, '(max-width: 600px) 92vw, (max-width: 900px) 46vw, 380px' ); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped in helper. ?></span>
+							<?php if ( '' !== $sc_ptype ) : ?><span class="sc-workcard__type"><?php echo esc_html( $sc_ptype ); ?></span><?php endif; ?>
+							<h3 class="sc-project__title"><?php echo esc_html( get_the_title() ); ?></h3>
+							<?php if ( '' !== $sc_ploc ) : ?><p class="sc-project__loc"><?php echo esc_html( $sc_ploc ); ?></p><?php endif; ?>
+						</a>
+					</li>
 					<?php
-				endif;
+				endwhile;
+				wp_reset_postdata();
 				?>
-			</div>
-			<button class="sc-carousel__btn sc-carousel__btn--next" type="button" data-sc-next aria-label="Next">&rsaquo;</button>
-		</div>
+			</ul>
+			<?php
+		endif;
+		// No fallback cards: the previous sample tiles ("Corporate Boardroom",
+		// "House of Worship" ...) were not real projects. With no published
+		// projects the heading and "View all" link still render, nothing else.
+		?>
 	</div>
-	<script>
-	(function(){
-		var roots = document.querySelectorAll('[data-sc-carousel]');
-		roots.forEach(function(root){
-			var track = root.querySelector('.sc-carousel__track');
-			if (track === null) { return; }
-			function step(){
-				var card = track.querySelector('.sc-project');
-				if (card === null) { return 320; }
-				return card.getBoundingClientRect().width + 20;
-			}
-			var prev = root.querySelector('[data-sc-prev]');
-			var next = root.querySelector('[data-sc-next]');
-			if (prev) { prev.addEventListener('click', function(){ track.scrollBy({ left: -step(), behavior: 'smooth' }); }); }
-			if (next) { next.addEventListener('click', function(){ track.scrollBy({ left: step(), behavior: 'smooth' }); }); }
-		});
-	})();
-	</script>
 </section>
 
 <?php

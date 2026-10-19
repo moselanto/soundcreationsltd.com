@@ -2784,3 +2784,17 @@ h2.sc-home-projects__title { font-size: clamp(1.25rem, 2vw, 1.6rem); line-height
 .sc-pfilter__actions { display: flex; flex-wrap: wrap; gap: .6rem; }
 .sc-pdir__count { color: var(--sc-muted); font-size: .9rem; margin: 0 0 1rem; }
 @media (max-width: 600px) { .sc-pfilter__field { min-width: 100%; } .sc-pfilter__actions { width: 100%; } .sc-pfilter__actions .sc-btn { flex: 1 1 auto; justify-content: center; } }
+
+
+/* ============================================================
+   Homepage "Our Work" grid (front-page.php). Reuses the .sc-project card
+   styles; only the container and the project-type label are new.
+   ============================================================ */
+.sc-workgrid { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.25rem; grid-template-columns: repeat(3, 1fr); }
+.sc-workgrid > li { display: flex; }
+.sc-workcard { display: flex; flex-direction: column; width: 100%; color: inherit; text-decoration: none; }
+.sc-workcard:focus-visible { outline: 2px solid var(--sc-red); outline-offset: 3px; }
+.sc-workcard__type { margin: .9rem 1.1rem 0; font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--sc-red); }
+.sc-workcard__type + .sc-project__title { margin-top: .3rem; }
+@media (max-width: 900px) { .sc-workgrid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .sc-workgrid { grid-template-columns: 1fr; } }
