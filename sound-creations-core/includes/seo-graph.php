@@ -256,6 +256,33 @@ function sc_seo_hours_spec() {
 	return $out;
 }
 
+/**
+ * The organisation logo for structured data.
+ *
+ * The graph used to send the 512px Site Icon, which is the square favicon,
+ * not the company logo; Google uses Organization.logo for the knowledge panel
+ * and brand surfaces, where a favicon reads poorly. The Customizer logo
+ * (custom_logo) is the WordPress-native place an editor sets the real logo,
+ * so it wins when set; the Site Icon stays as the fallback so nothing
+ * changes until someone uploads one. Filterable for a different source.
+ *
+ * @return string Absolute URL, or '' when neither is set.
+ */
+function sc_seo_logo_url() {
+	$url     = '';
+	$logo_id = (int) get_theme_mod( 'custom_logo' );
+	if ( $logo_id > 0 ) {
+		$src = wp_get_attachment_image_src( $logo_id, 'full' );
+		if ( $src ) {
+			$url = (string) $src[0];
+		}
+	}
+	if ( '' === $url ) {
+		$url = (string) get_site_icon_url( 512 );
+	}
+	return (string) apply_filters( 'sc_seo_logo_url', $url );
+}
+
 /* ============================================================
    SERVICE CATALOGUE
 
@@ -343,7 +370,7 @@ function sc_seo_node_organization() {
 		$org['slogan'] = $slogan;
 	}
 
-	$logo = get_site_icon_url( 512 );
+	$logo = sc_seo_logo_url();
 	if ( $logo ) {
 		$org['logo'] = array(
 			'@type' => 'ImageObject',
@@ -498,7 +525,7 @@ function sc_seo_nodes_branches() {
 	$nodes = array();
 	$org   = sc_seo_id( 'organization' );
 	$name  = sc_core_get( 'company_name', get_bloginfo( 'name' ) );
-	$logo  = get_site_icon_url( 512 );
+	$logo  = sc_seo_logo_url();
 	$hours = sc_seo_hours_spec();
 
 	foreach ( sc_seo_branches() as $slug => $branch ) {
@@ -908,6 +935,13 @@ function sc_seo_nodes_entities() {
 			'mainEntityOfPage' => $page,
 		);
 		$d = wp_strip_all_tags( get_the_excerpt( $pid ) );
+		// Solution and Service pages render from PHP templates with no
+		// excerpt, so the Service node shipped with no description at all.
+		// Reuse the page's own meta description chain (SEO field, summary,
+		// body, type template) so the node says what the page says.
+		if ( '' === trim( $d ) && function_exists( 'sc_seo_description' ) ) {
+			$d = wp_strip_all_tags( (string) sc_seo_description() );
+		}
 		if ( $d ) {
 			$node['description'] = $d;
 		}
