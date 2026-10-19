@@ -175,6 +175,9 @@ function sc_core_settings_fields() {
 			// Off by default: the company has not yet confirmed it wants individual
 			// products showcased on the site. Kept as an explicit opt-in so the
 			// directory cannot reappear just because products get published.
+			// Projects kept live for old links but hidden from every listing, sitemap
+			// and search engine (includes/unlisted.php). Owner decision 19 Oct 2026.
+			'unlisted_projects'       => array( 'Unlisted projects: slugs to hide from listings and Google, comma-separated (e.g. pcea-chuka). The page stays reachable by its link.', 'text' ),
 			'products_dir_enabled'    => array( 'Product directory: show on the Products page? Type "yes" to show it. Leave blank to keep it hidden.', 'text' ),
 
 			'__sec_testimonials'      => array( 'Testimonials page', 'heading' ),
