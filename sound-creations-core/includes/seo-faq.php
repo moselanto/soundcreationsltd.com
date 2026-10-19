@@ -211,8 +211,63 @@ add_filter(
    everything else and can point back at the WebPage they belong
    to via mainEntityOfPage.
    ============================================================ */
+/**
+ * Whether the template rendering this request will print the FAQ block.
+ *
+ * The block is appended through the_content, and several templates never
+ * call the_content() (About, FANE, Contact, Request a Consultation) or only
+ * call it when the post has body text (Solutions, Videos). On those pages
+ * FAQ pairs saved in the editor would reach the JSON-LD while staying
+ * invisible -- the schema-only FAQ pattern this file's header rules out.
+ * The schema prints in wp_head, before the body exists, so it cannot check
+ * the output; the template WordPress has already chosen ($template, set by
+ * template-loader.php before it is included) is the reliable signal.
+ *
+ * Unknown templates default to false: a missing rich result is recoverable,
+ * a structured-data manual action is not. A theme that renders the block
+ * another way can say so through the sc_faq_is_rendered filter.
+ *
+ * @param int $post_id Post being rendered.
+ * @return bool
+ */
+function sc_faq_is_rendered( $post_id ) {
+	global $template;
+	$file = is_string( $template ) ? basename( $template ) : '';
+
+	// Templates that call the_content() unconditionally inside the main loop.
+	$always = array(
+		'page.php',
+		'single.php',
+		'single-sc_brand.php',
+		'single-sc_product.php',
+		'single-sc_project.php',
+		'single-sc_service.php',
+		'template-elementor.php',
+	);
+	$visible = in_array( $file, $always, true );
+
+	// These two print the_content() only when there is body text, mirroring
+	// their own $sc_has_body / $sc_hasbody checks. The Solutions template also
+	// suppresses the body on the professional-audio solution and on the
+	// "CONTENT TO BE CONFIRMED" placeholder, so both are excluded here too.
+	if ( 'single-sc_resource.php' === $file || 'single-sc_solution.php' === $file ) {
+		$body    = trim( wp_strip_all_tags( (string) get_post_field( 'post_content', $post_id ) ) );
+		$visible = ( '' !== $body );
+		if ( 'single-sc_solution.php' === $file ) {
+			if ( false !== stripos( $body, 'CONTENT TO BE CONFIRMED' ) || 'professional-audio' === get_post_field( 'post_name', $post_id ) ) {
+				$visible = false;
+			}
+		}
+	}
+
+	return (bool) apply_filters( 'sc_faq_is_rendered', $visible, $post_id, $file );
+}
+
 function sc_seo_node_faq() {
 	if ( ! is_singular() ) {
+		return null;
+	}
+	if ( ! sc_faq_is_rendered( get_queried_object_id() ) ) {
 		return null;
 	}
 	$faqs = sc_faq_get();
