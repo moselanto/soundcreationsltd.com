@@ -192,6 +192,21 @@ while ( have_posts() ) :
 		</section>
 		<?php endif; ?>
 
+		<?php
+		// FAQs normally ride on the_content (sound-creations-core/includes/seo-faq.php),
+		// but this template skips the_content() when a solution has no body text, and
+		// always on the professional-audio layout. FAQs saved in the editor for
+		// Professional Audio and Installation were therefore invisible (found 19 Oct
+		// 2026). Render them directly in that case; seo-faq.php treats this template
+		// as always showing FAQs, so the FAQPage schema still matches the page.
+		if ( ! $sc_has_body && function_exists( 'sc_faq_render' ) ) {
+			$sc_faq_html = sc_faq_render( get_the_ID() );
+			if ( '' !== $sc_faq_html ) {
+				echo '<section class="sc-section sc-section--tight"><div class="sc-container">' . $sc_faq_html . '</div></section>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside sc_faq_render().
+			}
+		}
+		?>
+
 		<?php if ( 'acoustics' === $sc_sk ) : ?>
 			<section class="sc-section sc-section--tight sc-section--surface sc-acoustics">
 				<div class="sc-container">

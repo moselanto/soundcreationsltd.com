@@ -246,18 +246,19 @@ function sc_faq_is_rendered( $post_id ) {
 	);
 	$visible = in_array( $file, $always, true );
 
-	// These two print the_content() only when there is body text, mirroring
-	// their own $sc_has_body / $sc_hasbody checks. The Solutions template also
-	// suppresses the body on the professional-audio solution and on the
-	// "CONTENT TO BE CONFIRMED" placeholder, so both are excluded here too.
-	if ( 'single-sc_resource.php' === $file || 'single-sc_solution.php' === $file ) {
+	// The Videos template prints the_content() only when there is body text,
+	// mirroring its own $sc_hasbody check.
+	if ( 'single-sc_resource.php' === $file ) {
 		$body    = trim( wp_strip_all_tags( (string) get_post_field( 'post_content', $post_id ) ) );
 		$visible = ( '' !== $body );
-		if ( 'single-sc_solution.php' === $file ) {
-			if ( false !== stripos( $body, 'CONTENT TO BE CONFIRMED' ) || 'professional-audio' === get_post_field( 'post_name', $post_id ) ) {
-				$visible = false;
-			}
-		}
+	}
+
+	// The Solutions template prints the FAQ block either through the_content()
+	// (when there is body text) or directly via sc_faq_render() when the body
+	// is skipped (empty, placeholder, or the professional-audio layout), since
+	// 19 Oct 2026. Either way the FAQs are visible, so the schema may follow.
+	if ( 'single-sc_solution.php' === $file ) {
+		$visible = true;
 	}
 
 	return (bool) apply_filters( 'sc_faq_is_rendered', $visible, $post_id, $file );
