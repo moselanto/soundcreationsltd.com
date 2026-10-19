@@ -518,7 +518,16 @@ function sc_testimonials_grid( $limit = -1 ) {
 	if ( count( $items ) === 0 ) {
 		return '';
 	}
-	$out = '<section class="sc-testimonials" aria-label="' . esc_attr__( 'Client testimonials', 'soundcreations' ) . '"><div class="sc-testimonials__grid">';
+	// Carousel: three cards per row on desktop, two on tablet, one on phones;
+	// the rest scroll sideways. Pure CSS scroll-snap, so it works without JS
+	// (swipe / trackpad / keyboard). theme.js only wires the arrow buttons and
+	// hides them when everything already fits, so no inline script is added.
+	$out  = '<section class="sc-testimonials" aria-roledescription="carousel" aria-label="' . esc_attr__( 'Client testimonials', 'soundcreations' ) . '" data-sc-tcarousel>';
+	$out .= '<div class="sc-testimonials__nav">';
+	$out .= '<button type="button" class="sc-testimonials__btn" data-sc-tprev aria-label="' . esc_attr__( 'Previous testimonials', 'soundcreations' ) . '"><span aria-hidden="true">&larr;</span></button>';
+	$out .= '<button type="button" class="sc-testimonials__btn" data-sc-tnext aria-label="' . esc_attr__( 'Next testimonials', 'soundcreations' ) . '"><span aria-hidden="true">&rarr;</span></button>';
+	$out .= '</div>';
+	$out .= '<div class="sc-testimonials__grid" data-sc-ttrack tabindex="0">';
 	foreach ( $items as $item ) {
 		$quote = trim( wp_strip_all_tags( (string) $item->post_content ) );
 		if ( '' === $quote ) {
@@ -530,15 +539,28 @@ function sc_testimonials_grid( $limit = -1 ) {
 		$link = (string) get_post_meta( $item->ID, '_sc_project_url', true );
 		$meta = implode( ', ', array_filter( array( $role, $org, $loc ), 'strlen' ) );
 
+		$name = get_the_title( $item );
+		// Names on imported reviews can arrive in capitals; show them in title
+		// case so every card reads consistently. Display only; data untouched.
+		if ( function_exists( 'mb_convert_case' ) && $name === mb_strtoupper( $name ) ) {
+			$name = mb_convert_case( mb_strtolower( $name ), MB_CASE_TITLE );
+		}
+		$initial = function_exists( 'mb_substr' ) ? mb_substr( $name, 0, 1 ) : substr( $name, 0, 1 );
+
 		$out .= '<figure class="sc-quote">';
+		$out .= '<span class="sc-quote__mark" aria-hidden="true">&ldquo;</span>';
+		$out .= '<blockquote class="sc-quote__text"><p>' . nl2br( esc_html( $quote ) ) . '</p></blockquote>';
+		$out .= '<figcaption class="sc-quote__by">';
 		if ( has_post_thumbnail( $item->ID ) ) {
 			$out .= get_the_post_thumbnail( $item->ID, 'thumbnail', array( 'class' => 'sc-quote__photo', 'loading' => 'lazy', 'decoding' => 'async', 'alt' => '' ) );
+		} else {
+			$out .= '<span class="sc-quote__avatar" aria-hidden="true">' . esc_html( $initial ) . '</span>';
 		}
-		$out .= '<blockquote class="sc-quote__text"><p>' . nl2br( esc_html( $quote ) ) . '</p></blockquote>';
-		$out .= '<figcaption class="sc-quote__by"><strong>' . esc_html( get_the_title( $item ) ) . '</strong>';
+		$out .= '<span class="sc-quote__who"><strong>' . esc_html( $name ) . '</strong>';
 		if ( '' !== $meta ) {
 			$out .= '<span class="sc-quote__meta">' . esc_html( $meta ) . '</span>';
 		}
+		$out .= '</span>';
 		if ( '' !== $link ) {
 			$out .= '<a class="sc-quote__link" href="' . esc_url( $link ) . '">' . esc_html__( 'View the project', 'soundcreations' ) . ' <span aria-hidden="true">&rarr;</span></a>';
 		}

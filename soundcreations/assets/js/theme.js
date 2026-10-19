@@ -317,3 +317,47 @@
 		window.addEventListener('load', init);
 	}
 })();
+
+/* Testimonials carousel (page-testimonials.php, sc_testimonials_grid()).
+   The track is native CSS scroll-snap, so it already works by swipe,
+   trackpad and keyboard. This only drives the arrow buttons: each click moves
+   one "page" of visible cards, buttons disable at either end, and the whole
+   nav hides when every card already fits. No inline script, so no CSP change. */
+(function () {
+	'use strict';
+	function initCarousel(root) {
+		var track = root.querySelector('[data-sc-ttrack]');
+		var prev = root.querySelector('[data-sc-tprev]');
+		var next = root.querySelector('[data-sc-tnext]');
+		var nav = root.querySelector('.sc-testimonials__nav');
+		if (!track || !prev || !next) { return; }
+		function update() {
+			var max = track.scrollWidth - track.clientWidth;
+			if (nav) { nav.hidden = max <= 4; }
+			prev.disabled = track.scrollLeft <= 4;
+			next.disabled = track.scrollLeft >= max - 4;
+		}
+		function go(dir) {
+			track.scrollBy({ left: dir * track.clientWidth, behavior: 'smooth' });
+		}
+		prev.addEventListener('click', function () { go(-1); });
+		next.addEventListener('click', function () { go(1); });
+		track.addEventListener('keydown', function (e) {
+			if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
+			if (e.key === 'ArrowRight') { e.preventDefault(); go(1); }
+		});
+		var t;
+		track.addEventListener('scroll', function () { window.clearTimeout(t); t = window.setTimeout(update, 60); }, { passive: true });
+		window.addEventListener('resize', update);
+		update();
+	}
+	function boot() {
+		var all = document.querySelectorAll('[data-sc-tcarousel]');
+		for (var i = 0; i < all.length; i++) { initCarousel(all[i]); }
+	}
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', boot);
+	} else {
+		boot();
+	}
+})();

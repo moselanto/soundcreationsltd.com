@@ -53,6 +53,18 @@ Owner contact for decisions: Agnes (website project lead).
 
 ## Log
 
+### 19 Oct 2026 — Testimonials page redesigned as a carousel — committed, needs theme deploy
+
+- `sc_testimonials_grid()` (template-tags.php): 3 cards per row on desktop,
+  2 on tablet, 1 with a peek on phones; the rest scroll left/right. Cards
+  have a quote mark, initial avatar (or photo), name in title case, meta.
+- `main.css`: native CSS scroll-snap track, arrow buttons, hover lift,
+  reduced-motion support. Works without JS (swipe/trackpad/keyboard).
+- `theme.js`: arrow buttons page through cards, disable at the ends and
+  hide when all cards fit. No inline script, no CSP change.
+- No star ratings shown: individual Google star ratings were not verified.
+- Not live until the updated `soundcreations` theme files are uploaded.
+
 ### 19 Oct 2026 — Four Google reviews published as testimonials
 
 - Published in wp-admin > Testimonials (verbatim text, reviewer name as
