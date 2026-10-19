@@ -37,7 +37,10 @@ RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
   AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css
   AddOutputFilterByType DEFLATE application/javascript application/x-javascript
   AddOutputFilterByType DEFLATE application/json application/xml
-  AddOutputFilterByType DEFLATE image/svg+xml
+  AddOutputFilterByType DEFLATE image/svg+xml image/x-icon
+  AddOutputFilterByType DEFLATE text/javascript application/ld+json
+  AddOutputFilterByType DEFLATE application/rss+xml application/atom+xml
+  AddOutputFilterByType DEFLATE font/ttf font/otf
 </IfModule>
 
 # ---------------------------------------------------------------------------
@@ -62,10 +65,16 @@ RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
   ExpiresByType image/webp              "access plus 180 days"
   ExpiresByType image/svg+xml           "access plus 180 days"
   ExpiresByType image/x-icon            "access plus 180 days"
+  ExpiresByType image/avif              "access plus 180 days"
 
   ExpiresByType font/woff2              "access plus 1 year"
   ExpiresByType font/woff               "access plus 1 year"
   ExpiresByType application/font-woff2  "access plus 1 year"
+  ExpiresByType font/ttf                "access plus 1 year"
+  ExpiresByType font/otf                "access plus 1 year"
+
+  # Company profile and FANE catalogue PDFs get replaced in place.
+  ExpiresByType application/pdf         "access plus 1 week"
 
   # Shorter on purpose: the hero video is due to be re-encoded and re-uploaded
   # over the same filename. A 1-year cache would leave visitors stuck on the
@@ -77,13 +86,13 @@ RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 </IfModule>
 
 <IfModule mod_headers.c>
-  <FilesMatch "\.(css|js|woff|woff2)$">
+  <FilesMatch "\.(css|js|woff|woff2|ttf|otf)$">
     Header set Cache-Control "public, max-age=31536000, immutable"
   </FilesMatch>
 
   # Images: 180 days, not immutable. Theme images and replaced media keep
   # the same filename, so a 1-year immutable cache hides updated photos.
-  <FilesMatch "\.(jpg|jpeg|png|gif|webp|svg|ico)$">
+  <FilesMatch "\.(jpg|jpeg|png|gif|webp|avif|svg|ico)$">
     Header set Cache-Control "public, max-age=15552000"
   </FilesMatch>
 
@@ -91,8 +100,12 @@ RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
     Header set Cache-Control "public, max-age=2592000"
   </FilesMatch>
 
+  <FilesMatch "\.pdf$">
+    Header set Cache-Control "public, max-age=604800"
+  </FilesMatch>
+
   # Cookies are pointless on static files and block some proxy caches.
-  <FilesMatch "\.(css|js|jpg|jpeg|png|gif|webp|svg|ico|woff|woff2|mp4)$">
+  <FilesMatch "\.(css|js|jpg|jpeg|png|gif|webp|avif|svg|ico|woff|woff2|ttf|otf|mp4|pdf)$">
     Header unset Set-Cookie
   </FilesMatch>
 </IfModule>
@@ -105,7 +118,7 @@ FileETag MTime Size
 #    PHP pages already receive these from the theme - see note at top.
 # ---------------------------------------------------------------------------
 <IfModule mod_headers.c>
-  <FilesMatch "\.(css|js|jpg|jpeg|png|gif|webp|svg|ico|woff|woff2|mp4)$">
+  <FilesMatch "\.(css|js|jpg|jpeg|png|gif|webp|avif|svg|ico|woff|woff2|ttf|otf|mp4|pdf)$">
     Header set X-Content-Type-Options "nosniff"
     Header set Referrer-Policy "strict-origin-when-cross-origin"
     Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
@@ -134,6 +147,9 @@ RedirectMatch 404 /\.(?!well-known)
 # ---------------------------------------------------------------------------
 <IfModule mod_mime.c>
   AddType image/webp                 .webp
+  AddType image/avif                 .avif
+  AddType font/ttf                   .ttf
+  AddType font/otf                   .otf
   AddType font/woff2                 .woff2
   AddType video/mp4                  .mp4
   AddType image/svg+xml              .svg

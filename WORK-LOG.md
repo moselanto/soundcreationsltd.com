@@ -53,6 +53,12 @@ Owner contact for decisions: Agnes (website project lead).
 
 ## Log
 
+### 19 Oct 2026 — .htaccess step 3 live: AVIF, TTF/OTF, PDF, wider compression
+
+- Owner confirmed the site works. Reference copy updated to match.
+- Step 4 prepared as a download: block more sensitive files (wp-config
+  sample, .user.ini/php.ini, backup/archive extensions, composer/npm files).
+
 ### 19 Oct 2026 — .htaccess step 2 live: images 180 days, not immutable
 
 - Owner confirmed the site reloads fine. Reference copy updated to match.
