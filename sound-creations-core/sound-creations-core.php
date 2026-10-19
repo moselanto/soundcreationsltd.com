@@ -22,6 +22,7 @@ define( 'SC_CORE_SEED_VERSION', '10' );
 define( 'SC_CORE_DIR', plugin_dir_path( __FILE__ ) );
 
 require_once SC_CORE_DIR . 'includes/post-types.php';
+require_once SC_CORE_DIR . 'includes/legacy-redirects.php';
 require_once SC_CORE_DIR . 'includes/taxonomies.php';
 require_once SC_CORE_DIR . 'includes/settings.php';
 require_once SC_CORE_DIR . 'includes/starter-setup.php';
