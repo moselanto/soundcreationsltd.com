@@ -53,6 +53,15 @@ Owner contact for decisions: Agnes (website project lead).
 
 ## Log
 
+### 19 Oct 2026 — .htaccess step 4 live: more sensitive files blocked
+
+- Owner confirmed the site works. Root reference copy updated to match.
+- Step 5 prepared as a download: a minimal `wp-content/uploads/.htaccess`
+  (FilesMatch + Require all denied only; the earlier version with Options
+  and php_flag lines is withdrawn). Reference: docs/server/htaccess-uploads.txt.
+- Remaining after step 5: HTTPS-before-/newwebsite/ reorder (optional),
+  PHP 8.4 switch via cPanel MultiPHP Manager or the host (not .htaccess).
+
 ### 19 Oct 2026 — .htaccess step 3 live: AVIF, TTF/OTF, PDF, wider compression
 
 - Owner confirmed the site works. Reference copy updated to match.

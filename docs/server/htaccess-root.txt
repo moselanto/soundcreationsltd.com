@@ -131,11 +131,16 @@ FileETag MTime Size
 Options -Indexes
 ServerSignature Off
 
-<FilesMatch "^(wp-config\.php|\.htaccess|\.htpasswd|readme\.html|license\.txt|debug\.log|error_log)$">
+<FilesMatch "^(wp-config\.php|wp-config-sample\.php|\.htaccess|\.htpasswd|\.user\.ini|php\.ini|readme\.html|license\.txt|debug\.log|error_log)$">
   Require all denied
 </FilesMatch>
 
-<FilesMatch "\.(bak|old|orig|save|swp|sql|log|ini|sh)$">
+<FilesMatch "\.(bak|backup|old|orig|save|swp|sql|log|ini|sh|tar|tgz)$">
+  Require all denied
+</FilesMatch>
+
+# Developer / package-manager files that should never be public.
+<FilesMatch "^(composer\.json|composer\.lock|package\.json|package-lock\.json|yarn\.lock)$">
   Require all denied
 </FilesMatch>
 

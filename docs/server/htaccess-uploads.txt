@@ -1,22 +1,17 @@
 # ============================================================================
-# Sound Creations Ltd - uploads folder
-# File: /public_html/wp-content/uploads/.htaccess   (a NEW, separate file)
+# Sound Creations Ltd - uploads folder protection
+# File: /public_html/wp-content/uploads/.htaccess
 # Added: 2026-10-19
 #
-# The uploads folder only ever holds media and documents. If an attacker ever
-# manages to upload a PHP file (through a vulnerable plugin, for example),
-# this stops the server from running it. It is the single most effective
-# file-level hardening step for WordPress and does not affect images, video,
-# PDFs or the enquiry-form attachments.
+# The uploads folder should only ever hold media and documents. If a script
+# ever gets uploaded here (for example through a vulnerable plugin), this
+# stops the server from running it. Images, video, PDFs and enquiry-form
+# attachments are not affected.
+#
+# Uses only "FilesMatch + Require all denied", the same kind of rule the
+# root .htaccess already runs on this server.
 # ============================================================================
 
-<FilesMatch "\.(php[0-9]?|phtml|phar|pht|phps|cgi|pl|py|sh|asp|aspx|jsp)$">
+<FilesMatch "\.(php|php3|php4|php5|php7|php8|phtml|phar|pht|phps|cgi|pl|py|sh|asp|aspx|jsp)$">
   Require all denied
 </FilesMatch>
-
-# Belt and braces: even if the handler is reached, do not execute scripts here.
-<IfModule mod_php.c>
-  php_flag engine off
-</IfModule>
-
-Options -Indexes -ExecCGI
