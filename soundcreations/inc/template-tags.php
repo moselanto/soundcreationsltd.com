@@ -494,3 +494,54 @@ function sc_project_card_image( $post_id ) {
 	}
 	return SC_THEME_URI . '/assets/img/projects/boardroom.jpg';
 }
+
+
+/**
+ * Grid of client testimonials for the Testimonials page.
+ *
+ * Returns an empty string when there are no published testimonials, so the
+ * section disappears entirely instead of showing an empty frame or sample
+ * copy. Data comes from Core (sc_core_testimonials); this only renders it.
+ *
+ * Each quote is a <figure>/<blockquote>/<figcaption>, the semantic pattern
+ * screen readers announce as a quotation with its attribution.
+ *
+ * @param int $limit Maximum quotes to show; -1 for all.
+ * @return string Escaped HTML.
+ */
+function sc_testimonials_grid( $limit = -1 ) {
+	if ( function_exists( 'sc_core_testimonials' ) === false ) {
+		return '';
+	}
+	$items = sc_core_testimonials( $limit );
+	if ( count( $items ) === 0 ) {
+		return '';
+	}
+	$out = '<section class="sc-testimonials" aria-label="' . esc_attr__( 'Client testimonials', 'soundcreations' ) . '"><div class="sc-testimonials__grid">';
+	foreach ( $items as $item ) {
+		$quote = trim( wp_strip_all_tags( (string) $item->post_content ) );
+		if ( '' === $quote ) {
+			continue;
+		}
+		$role = (string) get_post_meta( $item->ID, '_sc_role', true );
+		$org  = (string) get_post_meta( $item->ID, '_sc_organisation', true );
+		$loc  = (string) get_post_meta( $item->ID, '_sc_location', true );
+		$link = (string) get_post_meta( $item->ID, '_sc_project_url', true );
+		$meta = implode( ', ', array_filter( array( $role, $org, $loc ), 'strlen' ) );
+
+		$out .= '<figure class="sc-quote">';
+		if ( has_post_thumbnail( $item->ID ) ) {
+			$out .= get_the_post_thumbnail( $item->ID, 'thumbnail', array( 'class' => 'sc-quote__photo', 'loading' => 'lazy', 'decoding' => 'async', 'alt' => '' ) );
+		}
+		$out .= '<blockquote class="sc-quote__text"><p>' . nl2br( esc_html( $quote ) ) . '</p></blockquote>';
+		$out .= '<figcaption class="sc-quote__by"><strong>' . esc_html( get_the_title( $item ) ) . '</strong>';
+		if ( '' !== $meta ) {
+			$out .= '<span class="sc-quote__meta">' . esc_html( $meta ) . '</span>';
+		}
+		if ( '' !== $link ) {
+			$out .= '<a class="sc-quote__link" href="' . esc_url( $link ) . '">' . esc_html__( 'View the project', 'soundcreations' ) . ' <span aria-hidden="true">&rarr;</span></a>';
+		}
+		$out .= '</figcaption></figure>';
+	}
+	return $out . '</div></section>';
+}

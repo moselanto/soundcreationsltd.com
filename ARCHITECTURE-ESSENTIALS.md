@@ -46,6 +46,9 @@ Public post types (all with archives unless noted):
 
 Private post type: `sc_enquiry` — lead storage, admin-only, excluded from search.
 
+Non-public post type: `sc_testimonial` — client quotes, rendered only on the
+single `/testimonials/` page; no URL of its own, never seeded with sample quotes.
+
 Taxonomies: `sc_product_category`, `sc_brand_tax`, `sc_industry`,
 `sc_application`, `sc_project_type`, `sc_location`, `sc_solution_area`.
 

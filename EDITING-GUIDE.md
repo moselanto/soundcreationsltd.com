@@ -189,6 +189,7 @@ Form fields live in the theme code, not Settings. See section 13.
 | **Videos** | /videos/ | YouTube video URL, Download file URL |
 | **FANE Resources** | /fane-resources/ | FANE-specific technical material |
 | **Case Studies** | /case-studies/ | Long-form write-ups |
+| **Testimonials** | /testimonials/ only | Title = person's name, editor = the quote, Role, Organisation, Location, Related project link, optional photo (Featured image) |
 
 **Project formatting:** blank line between paragraphs in Challenge / Solution /
 Result; one item per line in Technology renders as a checklist; gallery
@@ -198,6 +199,18 @@ selection order is display order.
 
 **Categorising:** Product Category, Brand, Industry, Application, Project Type,
 Location, Solution Area. These power the filtered views.
+
+### Testimonials
+
+**Testimonials** in the wp-admin menu. Each entry is one client quote: put the
+person's name in the title, the quote in the editor, and their role,
+organisation and location in the Testimonial Details box. Use the **Order**
+field to choose which quote appears first.
+
+Quotes appear on the **Testimonials** page (`/testimonials/`). Its heading and
+intro are in **Sound Creations → Settings → Testimonials page**. Until at least
+one testimonial is published the quote grid is hidden and the page is kept out
+of Google automatically. Only publish real quotes you have permission to use.
 
 ## 12. Search engine listings (SEO)
 

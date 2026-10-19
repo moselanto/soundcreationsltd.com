@@ -63,6 +63,37 @@ function sc_core_register_post_types() {
 		)
 	);
 
+	// Testimonials: client quotes for the single canonical /testimonials/ page.
+	// Deliberately NOT public. A quote has no reason to exist as its own URL --
+	// the old site's testimonials-v-1..v-9 pages showed what happens when every
+	// variant gets an address: duplicates that compete in search and then rot
+	// into 404s. Editors manage quotes here; the theme renders them only on the
+	// Testimonials page, and an empty list renders nothing at all (no sample
+	// quotes, ever -- an invented testimonial is a trust and legal liability).
+	register_post_type(
+		'sc_testimonial',
+		array(
+			'labels'              => array(
+				'name'          => 'Testimonials',
+				'singular_name' => 'Testimonial',
+				'add_new_item'  => 'Add New Testimonial',
+				'edit_item'     => 'Edit Testimonial',
+				'menu_name'     => 'Testimonials',
+				'title_placeholder' => 'Name of the person quoted',
+			),
+			'public'              => false,
+			'publicly_queryable'  => false,
+			'exclude_from_search' => true,
+			'show_ui'             => true,
+			'show_in_rest'        => true,
+			'has_archive'         => false,
+			'rewrite'             => false,
+			'query_var'           => false,
+			'menu_icon'           => 'dashicons-format-quote',
+			'supports'            => array( 'title', 'editor', 'thumbnail', 'page-attributes' ),
+		)
+	);
+
 	// Enquiries: private storage so no lead is ever lost.
 	register_post_type(
 		'sc_enquiry',
@@ -131,3 +162,47 @@ function sc_core_products_archive_title( $parts ) {
 	return $parts;
 }
 add_filter( 'document_title_parts', 'sc_core_products_archive_title' );
+
+/**
+ * Published testimonials, in the editor's chosen order.
+ *
+ * Query logic lives here rather than in the template so a re-theme keeps the
+ * same ordering rules. Order is the post "Order" field first (so the team can
+ * pin the strongest quote to the top), then newest first.
+ *
+ * @param int $limit Maximum number to return; -1 for all.
+ * @return WP_Post[]
+ */
+function sc_core_testimonials( $limit = -1 ) {
+	$posts = get_posts(
+		array(
+			'post_type'        => 'sc_testimonial',
+			'post_status'      => 'publish',
+			'posts_per_page'   => (int) $limit,
+			'orderby'          => array(
+				'menu_order' => 'ASC',
+				'date'       => 'DESC',
+			),
+			'no_found_rows'    => true,
+			'suppress_filters' => false,
+		)
+	);
+	return is_array( $posts ) ? $posts : array();
+}
+
+/**
+ * URL of the one canonical testimonials page.
+ *
+ * Every legacy testimonials variant redirects here, so it resolves the real
+ * page permalink (survives a slug edit or a subdirectory move) and only falls
+ * back to the conventional path when the page has not been created yet.
+ *
+ * @return string
+ */
+function sc_core_testimonials_url() {
+	$page = get_page_by_path( 'testimonials', OBJECT, 'page' );
+	if ( $page instanceof WP_Post && 'publish' === $page->post_status ) {
+		return (string) get_permalink( $page );
+	}
+	return home_url( '/testimonials/' );
+}

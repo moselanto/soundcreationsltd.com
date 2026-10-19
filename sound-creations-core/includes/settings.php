@@ -158,6 +158,11 @@ function sc_core_settings_fields() {
 			'fane_linkedin'        => array( 'FANE LinkedIn URL (blank = company LinkedIn)', 'text' ),
 			'fane_whatsapp'        => array( 'FANE WhatsApp number, digits only (blank = company WhatsApp)', 'text' ),
 
+			'__sec_testimonials'      => array( 'Testimonials page', 'heading' ),
+			'testimonials_eyebrow'    => array( 'Testimonials hero: eyebrow', 'text' ),
+			'testimonials_title'      => array( 'Testimonials hero: headline', 'text' ),
+			'testimonials_lead'       => array( 'Testimonials hero: intro', 'wysiwyg' ),
+
 			'__sec_resources'         => array( 'Resources / Videos page', 'heading' ),
 			'resources_eyebrow'       => array( 'Resources hero: eyebrow', 'text' ),
 			'resources_title'         => array( 'Resources hero: headline', 'text' ),

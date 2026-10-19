@@ -208,6 +208,7 @@ HTML;
 		array( 'Request a Consultation', 'request-a-consultation', 'Tell us about your space and application and our technical team will help you specify the right system.' ),
 		array( 'Become a Dealer', 'become-a-dealer', 'Partner with Sound Creations across East Africa.' ),
 		array( 'Request a Quote', 'request-a-quote', 'Request pricing and availability from a specialist.' ),
+		array( 'Testimonials', 'testimonials', 'What our clients say about working with Sound Creations.' ),
 		array( 'Privacy Policy', 'privacy-policy', $privacy ),
 		array( 'Terms and Conditions', 'terms', $terms ),
 		array( 'Warranty', 'warranty', $warranty ),
@@ -433,7 +434,10 @@ add_action(
  * Idempotent: only creates a page whose slug is missing. Returns the number created.
  */
 function sc_core_ensure_core_pages() {
-	$slugs   = array( 'privacy-policy', 'terms', 'warranty', 'cookie-policy' );
+	// 'testimonials' joined this list with seed version 10: it is the single
+	// canonical destination every legacy testimonials-v-N URL redirects to, so
+	// it must exist on every install without anyone re-running Starter Setup.
+	$slugs   = array( 'privacy-policy', 'terms', 'warranty', 'cookie-policy', 'testimonials' );
 	$created = 0;
 	foreach ( sc_core_starter_pages() as $pg ) {
 		list( $title, $slug, $content ) = $pg;

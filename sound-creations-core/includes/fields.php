@@ -54,6 +54,15 @@ function sc_core_field_groups() {
 				array( 'gallery', 'Photos (gallery)', 'gallery', 'Click Add / edit photos to pick from the Media Library. Selection order is the display order.' ),
 			),
 		),
+		'sc_testimonial' => array(
+			'title'  => 'Testimonial Details',
+			'fields' => array(
+				array( 'role', 'Role / title', 'text', 'e.g. Head of Operations. The title above is the person\'s name; the editor holds the quote itself.' ),
+				array( 'organisation', 'Organisation / venue', 'text', 'e.g. All Saints Cathedral' ),
+				array( 'location', 'Location', 'text', 'e.g. Nairobi, Kenya' ),
+				array( 'project_url', 'Related project (optional)', 'url', 'Link to the matching project page, if there is one.' ),
+			),
+		),
 		'sc_resource' => array(
 			'title'  => 'Resource / Video Details',
 			'fields' => array(

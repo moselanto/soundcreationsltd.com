@@ -425,6 +425,13 @@ function sc_seo_is_thin_archive() {
 	if ( is_tax( sc_seo_thin_taxonomies() ) ) {
 		return true;
 	}
+	// The Testimonials page is seeded on every install but stays empty until
+	// the team adds real quotes. An empty page is the definition of thin, so it
+	// is kept out of the index until there is at least one published quote,
+	// then indexes itself automatically -- nobody has to remember to flip it.
+	if ( is_page( 'testimonials' ) && function_exists( 'sc_core_testimonials' ) && count( sc_core_testimonials( 1 ) ) === 0 ) {
+		return true;
+	}
 	return false;
 }
 

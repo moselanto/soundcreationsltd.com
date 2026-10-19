@@ -107,6 +107,23 @@ version, and the Enquiries plugin registers a capability-restricted version at
 `init` priority 20 if Core is inactive, so leads are never dropped because a
 plugin was switched off.
 
+### 3.2a Testimonials
+
+`sc_testimonial` holds client quotes. It is `public => false` with no rewrite
+and no archive on purpose: a quote does not need its own URL, and the old
+site's `testimonials-v-1..v-9` pages showed how per-variant URLs turn into
+duplicate content and then 404s. The title is the person's name, the editor is
+the quote, and the `role`, `organisation`, `location` and `project_url` fields
+live in `sc_core_field_groups()`.
+
+Quotes are rendered only on the canonical **Testimonials** page
+(`page-testimonials.php`, slug `testimonials`), which `sc_core_ensure_core_pages()`
+creates on every install (seed version 10). Core supplies
+`sc_core_testimonials()` and `sc_core_testimonials_url()`; the theme's
+`sc_testimonials_grid()` renders them and returns nothing when there are none.
+No sample quotes are ever seeded. While the list is empty the page is
+`noindex,follow` via `sc_seo_is_thin_archive()`.
+
 ### 3.3 Taxonomies
 
 All hierarchical, public, REST-enabled, with an admin column:

@@ -2756,3 +2756,18 @@ h2.sc-home-projects__title { font-size: clamp(1.25rem, 2vw, 1.6rem); line-height
 	.sc-tabbar__item, .sc-tabbar__icon { transition: none; }
 	.sc-wa__panel, .sc-wa__scrim, .sc-wa__fab::after { animation: none; }
 }
+
+/* ============================================================
+   Testimonials page (page-testimonials.php). Token-driven so the dark and
+   light themes both work without extra rules.
+   ============================================================ */
+.sc-testimonials { margin: 1.5rem 0 2rem; }
+.sc-testimonials__grid { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+.sc-quote { margin: 0; padding: 1.4rem 1.5rem; border: 1px solid var(--sc-border); border-radius: var(--sc-radius-lg); background: var(--sc-bg); display: flex; flex-direction: column; gap: .9rem; }
+.sc-quote__photo { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; }
+.sc-quote__text { margin: 0; padding: 0 0 0 1rem; border-left: 3px solid var(--sc-red); font-size: 1rem; line-height: 1.6; }
+.sc-quote__text p { margin: 0; }
+.sc-quote__by { display: flex; flex-direction: column; gap: .2rem; font-size: .9rem; margin-top: auto; }
+.sc-quote__meta { color: var(--sc-muted); }
+.sc-quote__link { color: var(--sc-red); font-weight: 600; margin-top: .3rem; }
+.sc-testimonials__cta { margin: 1.5rem 0 3rem; }
