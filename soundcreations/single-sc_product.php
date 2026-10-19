@@ -19,7 +19,7 @@ while ( have_posts() ) :
 	$sc_cats      = get_the_terms( get_the_ID(), 'sc_product_category' );
 	?>
 	<div class="sc-container sc-page">
-		<?php echo sc_breadcrumb( array( array( 'Home', home_url( '/' ) ), array( 'Products', get_post_type_archive_link( 'sc_product' ) ), array( get_the_title(), '' ) ) ); ?>
+		<?php echo sc_breadcrumb( array( array( 'Home', home_url( '/' ) ), array( 'Brands', get_post_type_archive_link( 'sc_brand' ) ), array( get_the_title(), '' ) ) ); ?>
 		<div class="sc-detail">
 			<div class="sc-detail__main">
 				<p class="sc-eyebrow"><?php echo esc_html( $sc_brand ? $sc_brand : __( 'Product', 'soundcreations' ) ); ?></p>

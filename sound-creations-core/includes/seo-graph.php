@@ -729,6 +729,20 @@ function sc_seo_node_breadcrumb() {
 					'item' => get_permalink( $anc ),
 				);
 			}
+		} elseif ( 'sc_product' === $pt ) {
+			// /products/ 301s to /brands/ (sc_core_redirect_legacy_paths and the
+			// standing "products are not showcased" decision), so a crumb at the
+			// product archive would point Google at a redirect. Products sit
+			// under the Brands page they are listed from instead, matching the
+			// visible trail in single-sc_product.php.
+			$brands = get_post_type_object( 'sc_brand' );
+			$link   = get_post_type_archive_link( 'sc_brand' );
+			if ( $brands && $link ) {
+				$crumbs[] = array(
+					'name' => $brands->labels->name,
+					'item' => $link,
+				);
+			}
 		} elseif ( $pto && ! empty( $pto->has_archive ) ) {
 			$crumbs[] = array(
 				'name' => $pto->labels->name,
