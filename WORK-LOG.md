@@ -9,7 +9,7 @@ Owner contact for decisions: Agnes (website project lead).
 
 ---
 
-## Current status (last updated 19 Oct 2026)
+## Current status (last updated 19 Oct 2026, 23:00 EAT)
 
 ### Standing decisions — do not reverse without the owner's confirmation
 
@@ -50,25 +50,35 @@ Owner contact for decisions: Agnes (website project lead).
    Manager ("inherit") / PHP Selector or ask the host; never hand-edit the
    cPanel handler block in .htaccess.
 2. **`php -l` has never been run on the Oct 2026 commits.** Run it across the tree.
-3. **Search Console (retry from 20 Oct):** request indexing for
-   `/solutions/sound-isolation/`, `/solutions/professional-audio/`,
-   `/solutions/installation/` and `/` (19 Oct attempts hit Google errors and the
-   daily quota; boardroom page was queued OK). Rerun Rich Results Test on
-   professional-audio and installation (FAQPage present in live JSON-LD).
-   Check the Pages report once processed.
-4. **Owner answers needed:** free site visit? live streaming? mosques? repairs
-   of non-supplied equipment? Bose conferencing models stocked; any boardroom
-   project; mosque/temple, sports, studio projects; stocked model ranges
-   (Opera, IG, SQ, X32). See CONTENT-DRAFTS.md and CLIENT-KEYWORDS.md.
-5. **Google Business Profile:** replies drafted in `docs/seo/GBP-REVIEW-REPLIES.md`
-   (100+ reviews unanswered). Post after the owner confirms the parking and
-   in-store noise lines and whether to reply to Moses Njeru Munyi. Photos last
-   added ~2,100 days ago: use the shot list.
+3. **Search Console (retry from 20 Oct; a one-shot assistant task is set for
+   20 Oct ~10:00 EAT):** request indexing for `/solutions/sound-isolation/`,
+   `/solutions/professional-audio/`, `/solutions/installation/`, `/` and
+   `/about/`, then the pages changed by CONTENT-ADDITIONS-2 (church, education,
+   hospitality, acoustics, `/service/consultancy/`, `/service/integration/`, the
+   8 brand pages) as daily quota allows. 19 Oct attempts hit Google errors and
+   the daily quota; boardroom page was queued OK. Never submit `pcea-chuka`.
+   Rerun Rich Results Test on professional-audio and installation (FAQPage
+   present in live JSON-LD). Check the Pages report once processed.
+4. **Owner answers (answered 19 Oct):** site visits, live streaming, mosques/
+   worship spaces, installing client-bought equipment and repairing
+   non-supplied equipment are all offered "depending on client needs" (never
+   write "free"). Ranges (Bose conferencing, dB Technologies, Allen & Heath,
+   Behringer) are supplied to order, not stocked. Still unknown: the "Aid"
+   brand's manufacturer/website (Aid page names no product lines) and whether
+   Rockfon Sonar / Mono Acoustic may be named (left out). Any boardroom,
+   mosque/temple, sports or studio project to cite.
+5. **Google Business Profile:** all 8 drafted replies in
+   `docs/seo/GBP-REVIEW-REPLIES.md` were submitted 19 Oct (Brandon, Aalawy,
+   Michael, Triad, TechGuru published; Dennis, Asifa, Moses pending Google
+   review - confirm). 100+ older reviews still unanswered. Photos last added
+   ~2,100 days ago and no posts: waiting on owner photos (use the shot list),
+   then weekly posts. Set up a review-request routine for recent clients.
 6. **Dealership certificates:** owner to send; add to /distribution/ and brand pages.
 7. **Manufacturer listings show old numbers** (Allen & Heath +254 20 2572752/3,
    Bose +254 720 886 900): ask them to update to +254 715 754 758 if agreed.
-8. **Brand pages:** expand copy per CLIENT-KEYWORDS.md section 6 (model
-   families, manufacturer-listing proof) once stocked ranges are confirmed.
+8. **Brand pages:** done 19 Oct (partnership sections + "<Brand> in Kenya"
+   sections for Shure, Behringer, Midas, Rockfon, Barrisol, Asona, Aid, Sommer
+   Cable). Add certificate images when the owner sends them (item 6).
 9. **AI visibility:** baseline 19 Oct (ChatGPT logged-out, Gemini) recorded
    below; Perplexity and Copilot not tested (sign-in). Re-test in ~4 weeks.
 10. **Mobile speed not verified** (PageSpeed); regenerate thumbnails once for WebP.
@@ -78,6 +88,39 @@ Owner contact for decisions: Agnes (website project lead).
 ---
 
 ## Log
+
+### 19 Oct 2026 (late) — CONTENT-ADDITIONS-2 published + two template fixes — all live
+
+- **Published in wp-admin** (from `docs/seo/CONTENT-ADDITIONS-2.md`, `b037293`):
+  appended sections on church, education, hospitality, professional audio,
+  acoustics, `/service/consultancy/`, `/service/integration/` and 8 brand pages
+  (Shure, Behringer, Midas, Rockfon, Barrisol, Asona, Aid, Sommer Cable). New FAQ
+  pairs added to the FAQ meta boxes (church's two were skipped as duplicates of
+  ones already there; acoustics' 7th FAQ sits in the body under "More
+  questions"). Prestige Plaza and COVO links use `/projects/prestige-plaza/`
+  and `/projects/covo-bnd/`. Rockfon product names and Aid product lines left
+  out (unverified). All checked on the live pages.
+- **Homepage:** Settings -> "What we do: intro" replaced with the 65-word AV
+  company paragraph. Old value, for rollback: "If it sounds good, it's Sound
+  Creations. From acoustic design and system engineering to equipment,
+  integration, commissioning and support, we deliver world-class technology and
+  expertise across Africa and the Middle East."
+- **About (post 22):** body now = old one-line intro + H2 "About Sound
+  Creations" + the 113-word AI-ready company summary.
+- **`ccb3b6e` single-sc_solution.php:** the professional-audio layout used to
+  hide the whole body. It now renders the body from the first heading onward
+  (the two old 2010s-era intro paragraphs above it stay hidden on purpose).
+  On that page FAQs now come through the_content, not the direct render.
+  Uploaded and verified live: new section shows, 6 FAQs, no duplicates.
+- **`be380ce` page-about.php:** renders the About editor body (section
+  `#about-company`) above Company Profiles when it has text. Uploaded and
+  verified live.
+- **Also earlier on 19 Oct, in wp-admin (no code):** partnership-proof
+  sections on /distribution/ and the Bose, Allen & Heath, dB Technologies and
+  FANE brand pages; LinkedIn setting -> https://www.linkedin.com/company/soundcreationsltd;
+  extra FAQs for live streaming, mosques, client-bought equipment and repairs.
+- **Not yet done:** `php -l` still not run on `ccb3b6e`/`be380ce` (no PHP in the
+  assistant sandbox); both pages render without errors.
 
 ### 19 Oct 2026 — SEO/AEO/GEO phase 1 summary (evening)
 
