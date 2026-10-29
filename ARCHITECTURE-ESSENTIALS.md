@@ -10,6 +10,11 @@ If the site were re-themed tomorrow, the content types, editorial fields,
 business settings, SEO output and the entire enquiry system would survive
 untouched. That is the whole reason for the four-package split.
 
+**Elementor (since 29 Oct 2026):** pages, header and footer are moving to
+Elementor (owner decision; see `PRD.md` section 7 and `AGENTS.md` rule 8).
+Theme widgets reuse the hand-built markup. The homepage hero and the enquiry
+forms stay hand-coded.
+
 ## The four packages
 
 ```

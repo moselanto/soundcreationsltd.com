@@ -56,9 +56,24 @@ this repository. Do not add them.
    problem another way or raise it explicitly. Do not quietly widen an upload
    allowlist, raise a rate limit, relax a capability or drop a header.
 6. **Never log, email or display an enquirer's PII outside the admin.**
-7. **No new dependencies without a stated reason.** No page builder, no
-   WooCommerce, no third-party form plugin, no SEO plugin. Each was rejected
-   deliberately; see [`PRD.md`](PRD.md) section 7.
+7. **No new dependencies without a stated reason.** No WooCommerce, no
+   third-party form plugin, no SEO plugin. Each was rejected deliberately; see
+   [`PRD.md`](PRD.md) section 7.
+8. **Elementor is allowed (owner decision, 29 Oct 2026), within limits.**
+   The earlier "no page builder" rule is reversed. Pages, header and footer
+   are to be editable in Elementor, following the smilecommunitycentre.org
+   approach. Rules for working with it:
+   - **The homepage hero stays hand-coded** in `front-page.php` (LCP element,
+     preloaded in `enqueue.php`). Do not turn it into an Elementor widget.
+   - **Enquiry forms stay hand-coded** in `sound-creations-enquiries`. An
+     Elementor section may embed a form via its shortcode, never rebuild it
+     with Elementor Forms or any other form widget.
+   - Theme widgets render the **same markup and CSS classes** as the
+     hand-built sections, so the design does not fork.
+   - Widgets are presentation and live in the theme. Content types, settings,
+     SEO and redirects stay in Core.
+   - Every Elementor-driven template needs a **safe fallback**: if Elementor
+     is inactive or a template is missing, the hand-built output renders.
 
 ## 3. Coding standards
 

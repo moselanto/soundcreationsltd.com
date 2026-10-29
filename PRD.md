@@ -164,7 +164,7 @@ The website therefore has to do three things a product listing cannot:
 
 | Decision | Why |
 | --- | --- |
-| Custom theme, no page builder | Builders add weight, lock-in and attack surface for a site with a small, well-understood set of layouts |
+| ~~Custom theme, no page builder~~ -> Custom theme **plus Elementor** (changed 29 Oct 2026) | The original concern (weight, lock-in, attack surface) still applies, so it is managed rather than ignored: every existing section becomes a theme-registered Elementor widget that renders the same hand-built markup, settings stay in Core, and the hero and enquiry forms stay hand-coded. Reason for the change: editors must be able to build and rearrange pages without a developer (goal in section 4, success measure "editor self-sufficiency") |
 | Content model in a plugin, not the theme | A re-theme must never destroy the content model, the settings or the SEO output |
 | Own enquiry system instead of a form plugin | Needed per-type routing, private capability-restricted storage, sector-specific fields and layered anti-spam — and wanted no third-party plugin holding every lead |
 | Store the lead, then mail it | Email is the unreliable step; storage is not |
