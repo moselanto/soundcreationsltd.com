@@ -89,6 +89,32 @@ Owner contact for decisions: Agnes (website project lead).
 
 ## Log
 
+### 29 Oct 2026 - Featured event: Advancing Audio Masterclass 2027 - committed, needs upload
+
+- Client (Terry, 28 Oct) asked for the masterclass link on the site. Built as a
+  reusable, settings-driven **Featured event** block, not a one-off:
+  - announcement strip above the utility band on every page (`sc_event_bar()`);
+  - homepage section under the hero, anchor `#sc-event`: poster, dates, venue,
+    fee, five mentors, Register button + Instagram button (`sc_event_feature()`);
+  - `[sc_event]` shortcode for any page (e.g. a dedicated `/masterclass/` page).
+- All copy in Settings -> **Featured event**; defaults (from the poster) live in
+  `sc_default_settings()`, so it works on upload with no admin step. Register
+  link: https://store.pesapal.com/advancingaudiomasterclass2027 (new tab,
+  `noopener noreferrer`). Type `no` in "Show featured event" to hide; it **hides
+  itself automatically after 28 Mar 2027** (`event_end_date`).
+- Core 0.5.33: new `includes/event-schema.php` emits EducationEvent JSON-LD on
+  the homepage only while the event is live (no organizer claimed: the poster names none).
+- GA4: new `event_register_click` event (leads.js); mark as a key event if wanted.
+- Poster bundled at `soundcreations/assets/img/events/` (900px WebP + JPG).
+- **Upload:** theme `inc/event.php` (new), `functions.php`, `header.php`,
+  `front-page.php`, `inc/template-tags.php`, `assets/css/main.css`,
+  `assets/js/leads.js`, `assets/img/events/` (new folder); Core
+  `includes/event-schema.php` (new), `includes/settings.php`,
+  `sound-creations-core.php`.
+- `php -l` NOT run (no PHP in the agent sandbox); brace balance checked by script.
+  Verify: strip + section at mobile/desktop in dark and light themes; Register
+  opens Pesapal in a new tab; Rich Results Test on `/` shows the Event.
+
 ### 19 Oct 2026 (late) — CONTENT-ADDITIONS-2 published + two template fixes — all live
 
 - **Published in wp-admin** (from `docs/seo/CONTENT-ADDITIONS-2.md`, `b037293`):

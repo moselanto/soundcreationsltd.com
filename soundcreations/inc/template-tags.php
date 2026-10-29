@@ -160,6 +160,31 @@ function sc_default_settings() {
 		'resources_title' => 'Videos & resources.', // archive-sc_resource.php
 		'resources_videos_title' => 'Videos', // archive-sc_resource.php
 
+		// Featured event (inc/event.php). Facts copied from the organiser's poster
+		// (Oct 2026); edit or clear in Sound Creations -> Settings -> Featured event.
+		'event_enabled'      => 'yes',
+		'event_eyebrow'      => 'Upcoming masterclass',
+		'event_title'        => 'Advancing Audio Masterclass 2027',
+		'event_lead'         => 'Three days of live-sound training in Nairobi with internationally acclaimed FOH, monitor and system engineers whose credits include Madonna, Stephen Marley, Cardi B, Tamar Braxton and Saturday Night Live.',
+		'event_dates_label'  => '26 - 28 March 2027',
+		'event_start_date'   => '2027-03-26',
+		'event_end_date'     => '2027-03-28',
+		'event_venue'        => 'Sarit Expo Centre',
+		'event_city'         => 'Nairobi, Kenya',
+		'event_fee_label'    => 'USD 200',
+		'event_fee_amount'   => '200',
+		'event_fee_currency' => 'USD',
+		'event_url'          => 'https://store.pesapal.com/advancingaudiomasterclass2027',
+		'event_cta_label'    => 'Register now',
+		'event_social_url'   => 'https://www.instagram.com/p/De-eNIypPfQ/',
+		'event_social_label' => 'View on Instagram',
+		'event_bar_tag'      => 'Masterclass',
+		'event_bar_text'     => 'Advancing Audio Masterclass 2027 - 26 to 28 March, Sarit Expo Centre, Nairobi',
+		'event_mentors_title'=> 'Your mentors',
+		'event_mentors'      => "Byron Belle | Project Lead, Live Audio Engineer | Tamar Braxton, Ashanti, Eric Benet\nBurton Ishmael | FOH Mixer, System Design, Software & Product Development | NBC Emmy Award (SNL); FOH for Madonna, Post Malone, Kanye, H.E.R., Bryson Tiller, Big Sean, PND\nAnthony Torres | Monitor / Playback Engineer | Cardi B, K Michelle, Ms Lauryn Hill, Ricky Martin\nVeer Dhaniram | FOH & Production Manager | Stephen Marley, Marley Brothers\nJason \"Redz\" Reynolds | FOH / Monitor Engineer | TLC, Salt-N-Pepa, Stephen Marley, En Vogue",
+		'event_note'         => 'Registration and payment are handled securely by Pesapal.',
+		'event_poster_img'   => ( defined( 'SC_THEME_URI' ) ? SC_THEME_URI : get_template_directory_uri() ) . '/assets/img/events/advancing-audio-masterclass-2027.webp',
+
 	);
 }
 

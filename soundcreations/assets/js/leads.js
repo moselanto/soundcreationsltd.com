@@ -7,6 +7,7 @@
  *   generate_lead   - an enquiry form was received (the enquiries plugin
  *                     redirects back with ?sc_sent=1 after a successful send).
  *   phone_click     - a tel: link was tapped.
+ *   event_register_click - a featured-event registration link (inc/event.php).
  * Mark whatsapp_click and generate_lead as key events in GA4 Admin.
  */
 ( function () {
@@ -54,6 +55,9 @@
 				else if ( a.closest( 'header' ) ) { where = 'header'; }
 				else if ( a.closest( 'footer' ) ) { where = 'footer'; }
 				track( 'whatsapp_click', { link_location: where } );
+			} else if ( a.hasAttribute( 'data-sc-event-cta' ) ) {
+				// Featured-event registration (inc/event.php): outbound to the organiser's checkout.
+				track( 'event_register_click', { link_location: a.getAttribute( 'data-sc-event-cta' ), link_url: href } );
 			} else if ( /^tel:/i.test( href ) ) {
 				var loc = a.closest( '.sc-tabbar' ) ? 'mobile_bar' : ( a.closest( 'header' ) ? 'header' : ( a.closest( 'footer' ) ? 'footer' : 'page_link' ) );
 				track( 'phone_click', { link_location: loc } );

@@ -29,6 +29,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 </div>
 <a class="sc-skip-link" href="#sc-main"><?php esc_html_e( 'Skip to content', 'soundcreations' ); ?></a>
 
+<?php
+// Featured-event strip (inc/event.php). Renders nothing when no event is live.
+if ( function_exists( 'sc_event_bar' ) ) {
+	sc_event_bar();
+}
+?>
+
 <div class="sc-utility">
 	<div class="sc-container sc-utility__inner">
 		<div class="sc-utility__zone sc-utility__zone--left"><span class="sc-utility__regions"><?php echo esc_html( sc_setting( 'regions' ) ); ?></span></div>

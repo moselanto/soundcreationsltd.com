@@ -180,6 +180,32 @@ function sc_core_settings_fields() {
 			'unlisted_projects'       => array( 'Unlisted projects: slugs to hide from listings and Google, comma-separated (e.g. pcea-chuka). The page stays reachable by its link.', 'text' ),
 			'products_dir_enabled'    => array( 'Product directory: show on the Products page? Type "yes" to show it. Leave blank to keep it hidden.', 'text' ),
 
+			// Featured event (theme inc/event.php + Core includes/event-schema.php).
+			// Hides itself the day after the end date, so an old promotion never lingers.
+			'__sec_event'             => array( 'Featured event (announcement strip, homepage section, [sc_event] shortcode)', 'heading' ),
+			'event_enabled'           => array( 'Show featured event? Type "no" to hide it now. It also hides automatically after the end date.', 'text' ),
+			'event_title'             => array( 'Event: name', 'text' ),
+			'event_eyebrow'           => array( 'Event section: eyebrow', 'text' ),
+			'event_lead'              => array( 'Event section: intro', 'wysiwyg' ),
+			'event_dates_label'       => array( 'Event: dates as shown (e.g. 26 - 28 March 2027)', 'text' ),
+			'event_start_date'        => array( 'Event: start date, YYYY-MM-DD (Google event listing)', 'text' ),
+			'event_end_date'          => array( 'Event: end date, YYYY-MM-DD (the promotion hides after this day)', 'text' ),
+			'event_venue'             => array( 'Event: venue', 'text' ),
+			'event_city'              => array( 'Event: city and country', 'text' ),
+			'event_fee_label'         => array( 'Event: access fee as shown (e.g. USD 200)', 'text' ),
+			'event_fee_amount'        => array( 'Event: fee, number only (Google event listing, e.g. 200)', 'text' ),
+			'event_fee_currency'      => array( 'Event: fee currency code (e.g. USD, KES)', 'text' ),
+			'event_url'               => array( 'Event: registration link (opens in a new tab)', 'text' ),
+			'event_cta_label'         => array( 'Event: registration button label', 'text' ),
+			'event_social_url'        => array( 'Event: social post link (blank = no second button)', 'text' ),
+			'event_social_label'      => array( 'Event: social post button label', 'text' ),
+			'event_poster_img'        => array( 'Event: poster image', 'image' ),
+			'event_mentors_title'     => array( 'Event: mentors heading', 'text' ),
+			'event_mentors'           => array( 'Event: mentors (one per line: Name | Role | Credits)', 'textarea' ),
+			'event_note'              => array( 'Event: small print under the buttons', 'text' ),
+			'event_bar_tag'           => array( 'Announcement strip: label (e.g. Masterclass)', 'text' ),
+			'event_bar_text'          => array( 'Announcement strip: text (blank = event name)', 'text' ),
+
 			'__sec_testimonials'      => array( 'Testimonials page', 'heading' ),
 			'testimonials_eyebrow'    => array( 'Testimonials hero: eyebrow', 'text' ),
 			'testimonials_title'      => array( 'Testimonials hero: headline', 'text' ),
@@ -230,7 +256,7 @@ function sc_core_sanitize_settings( $input ) {
 			continue;
 		}
 		$val = trim( (string) $input[ $key ] );
-		if ( in_array( $key, array( 'facebook', 'x', 'linkedin', 'youtube', 'instagram', 'tiktok', 'google_business', 'fane_facebook', 'fane_x', 'fane_linkedin', 'fane_youtube', 'fane_instagram', 'fane_tiktok' ), true ) || 'image' === $type ) {
+		if ( in_array( $key, array( 'facebook', 'x', 'linkedin', 'youtube', 'instagram', 'tiktok', 'google_business', 'fane_facebook', 'fane_x', 'fane_linkedin', 'fane_youtube', 'fane_instagram', 'fane_tiktok', 'event_url', 'event_social_url' ), true ) || 'image' === $type ) {
 			$clean[ $key ] = esc_url_raw( $val );
 		} elseif ( 'email' === $key ) {
 			$clean[ $key ] = sanitize_email( $val );
