@@ -207,6 +207,12 @@ function sc_core_settings_fields() {
 			'event_bar_tag'           => array( 'Announcement strip: label (e.g. Masterclass)', 'text' ),
 			'event_bar_text'          => array( 'Announcement strip: text (blank = event name)', 'text' ),
 
+			// Elementor header/footer (theme inc/elementor/builder.php). Blank = the
+			// built-in header/footer. A missing or empty template also falls back.
+			'__sec_elementor'         => array( 'Elementor header & footer', 'heading' ),
+			'el_header_template'      => array( 'Site-wide header (Elementor template). Pages can override this in their "Header & footer" box.', 'eltemplate' ),
+			'el_footer_template'      => array( 'Site-wide footer (Elementor template). Pages can override this in their "Header & footer" box.', 'eltemplate' ),
+
 			'__sec_testimonials'      => array( 'Testimonials page', 'heading' ),
 			'testimonials_eyebrow'    => array( 'Testimonials hero: eyebrow', 'text' ),
 			'testimonials_title'      => array( 'Testimonials hero: headline', 'text' ),
@@ -259,6 +265,9 @@ function sc_core_sanitize_settings( $input ) {
 		$val = trim( (string) $input[ $key ] );
 		if ( in_array( $key, array( 'facebook', 'x', 'linkedin', 'youtube', 'instagram', 'tiktok', 'google_business', 'fane_facebook', 'fane_x', 'fane_linkedin', 'fane_youtube', 'fane_instagram', 'fane_tiktok', 'event_url', 'event_social_url' ), true ) || 'image' === $type ) {
 			$clean[ $key ] = esc_url_raw( $val );
+		} elseif ( 'eltemplate' === $type ) {
+			// A template post ID or nothing; anything else is dropped.
+			$clean[ $key ] = ctype_digit( $val ) ? $val : '';
 		} elseif ( 'email' === $key ) {
 			$clean[ $key ] = sanitize_email( $val );
 		} elseif ( 'wysiwyg' === $type ) {
@@ -342,6 +351,18 @@ function sc_core_render_settings_page() {
 						esc_html( $sc_btn ),
 						$sc_prev
 					);
+				} elseif ( 'eltemplate' === $type ) {
+					$sc_tpls = function_exists( 'sc_builder_template_choices' ) ? sc_builder_template_choices() : array();
+					echo '<tr><th scope="row"><label for="sc_' . esc_attr( $key ) . '">' . esc_html( $label ) . '</label></th><td><select id="sc_' . esc_attr( $key ) . '" name="soundcreations_settings[' . esc_attr( $key ) . ']">';
+					echo '<option value="">' . esc_html__( 'Built-in (theme)', 'sc-core' ) . '</option>';
+					foreach ( $sc_tpls as $sc_tid => $sc_tname ) {
+						echo '<option value="' . esc_attr( (string) $sc_tid ) . '"' . selected( (string) $value, (string) $sc_tid, false ) . '>' . esc_html( $sc_tname ) . '</option>';
+					}
+					echo '</select>';
+					if ( ! $sc_tpls ) {
+						echo '<p class="description">' . esc_html__( 'No Elementor templates yet. Create one under Templates > Saved Templates (type Section or Container), then pick it here.', 'sc-core' ) . '</p>';
+					}
+					echo '</td></tr>';
 				} else {
 					printf(
 						'<tr><th scope="row"><label for="sc_%1$s">%2$s</label></th><td><input type="text" id="sc_%1$s" name="soundcreations_settings[%1$s]" value="%3$s" placeholder="%4$s" class="regular-text" style="width:34rem;max-width:100%%;"></td></tr>',

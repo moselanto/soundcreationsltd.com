@@ -89,6 +89,36 @@ Owner contact for decisions: Agnes (website project lead).
 
 ## Log
 
+### 29 Oct 2026 - Elementor rebuild, phase 1 (branch `feature/elementor-rebuild`) - NOT merged, not live
+
+Owner approved Elementor (PRD/AGENTS updated on `main`, `30718f2`). Hero and
+enquiry forms stay hand-coded. Phase 1 = foundation, no visual change:
+
+- `inc/sections.php`: the seven homepage sections below the hero moved
+  verbatim out of `front-page.php` into `sc_section_*()` functions, plus
+  `sc_render_section()` and a `[sc_section name="..."]` shortcode.
+- `sc_setting_overrides()` (template-tags): per-placement copy overrides, so a
+  widget can change one heading without touching site-wide Settings.
+- `inc/elementor/widgets.php` + `widget-classes.php`: "Sound Creations" panel
+  with 14 widgets: the 7 sections, Featured event, Enquiry form (embeds the
+  hand-coded form only), and header/footer blocks (Site logo, Primary menu
+  using the theme drawer markup, Phone & email, Social icons, Consultation button).
+- `inc/elementor/builder.php`: Elementor header/footer (free Elementor, no Pro).
+  Site-wide pick in Settings -> "Elementor header & footer"; per-page
+  "Header & footer" box (site setting / built-in / hide / template). Falls back
+  to the built-in header/footer if Elementor is off or the template is missing
+  or empty. Mobile tab bar always prints.
+- Core 0.5.35: new `eltemplate` settings field type (template dropdown).
+- **Phase 2 (next):** page-hero widget and widgets for About, Solutions,
+  Projects, FANE, Videos, Contact sections; Redux theme options (colours,
+  logos, custom CSS) with a built-in fallback screen; starter Elementor
+  layouts for every page with one-click apply; Elementor page-settings panel
+  for the header/footer choice.
+- **Test on staging before merging:** homepage identical with Elementor off
+  and on; each widget in the editor; an Elementor header with the Primary
+  menu widget on mobile (drawer opens/closes); forms still submit and route.
+  `php -l` NOT run (no PHP in the agent sandbox); brace balance checked.
+
 ### 29 Oct 2026 (later) - Masterclass moved off the homepage to /masterclass/ - committed, needs upload
 
 - Owner decision: keep the top announcement strip, but the event section must

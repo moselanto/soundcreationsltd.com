@@ -20,6 +20,11 @@ $sc_email   = sc_setting( 'email' );
 ?>
 </main>
 
+<?php
+// Elementor footer when one is chosen (inc/elementor/builder.php); otherwise
+// the built-in footer. The mobile tab bar below always prints.
+if ( ! ( function_exists( 'sc_builder_render' ) && sc_builder_render( 'footer' ) ) ) :
+	?>
 <footer class="sc-footer">
 	<div class="sc-container">
 		<div class="sc-footer__grid">
@@ -95,6 +100,7 @@ $sc_email   = sc_setting( 'email' );
 		</div>
 	</div>
 </footer>
+<?php endif; ?>
 
 <?php
 /* WhatsApp chat card: see inc/whatsapp-chat.php (printed via wp_footer). */

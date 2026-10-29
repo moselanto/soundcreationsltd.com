@@ -36,6 +36,11 @@ if ( function_exists( 'sc_event_bar' ) ) {
 }
 ?>
 
+<?php
+// Elementor header when one is chosen (inc/elementor/builder.php); otherwise
+// the built-in utility band + header below, exactly as before.
+if ( ! ( function_exists( 'sc_builder_render' ) && sc_builder_render( 'header' ) ) ) :
+	?>
 <div class="sc-utility">
 	<div class="sc-container sc-utility__inner">
 		<div class="sc-utility__zone sc-utility__zone--left"><span class="sc-utility__regions"><?php echo esc_html( sc_setting( 'regions' ) ); ?></span></div>
@@ -101,6 +106,7 @@ if ( function_exists( 'sc_event_bar' ) ) {
 	</div>
 <div class="sc-nav-scrim" data-sc-menu-close aria-hidden="true"></div>
 	</header>
+<?php endif; ?>
 
 <main id="sc-main">
 <?php

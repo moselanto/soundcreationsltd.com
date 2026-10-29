@@ -15,6 +15,14 @@ Elementor (owner decision; see `PRD.md` section 7 and `AGENTS.md` rule 8).
 Theme widgets reuse the hand-built markup. The homepage hero and the enquiry
 forms stay hand-coded.
 
+| Elementor piece | File |
+| --- | --- |
+| Homepage sections (shared by template, widgets, `[sc_section]`) | `soundcreations/inc/sections.php` |
+| Widget panel + per-section editable fields | `soundcreations/inc/elementor/widgets.php` |
+| Widget classes | `soundcreations/inc/elementor/widget-classes.php` |
+| Elementor header/footer + per-page box + fallback | `soundcreations/inc/elementor/builder.php` |
+| Per-placement copy overrides | `sc_setting_overrides()` in `soundcreations/inc/template-tags.php` |
+
 ## The four packages
 
 ```
