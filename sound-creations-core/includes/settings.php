@@ -182,9 +182,10 @@ function sc_core_settings_fields() {
 
 			// Featured event (theme inc/event.php + Core includes/event-schema.php).
 			// Hides itself the day after the end date, so an old promotion never lingers.
-			'__sec_event'             => array( 'Featured event (announcement strip, homepage section, [sc_event] shortcode)', 'heading' ),
+			'__sec_event'             => array( 'Featured event (announcement strip, /masterclass/ page, [sc_event] shortcode)', 'heading' ),
 			'event_enabled'           => array( 'Show featured event? Type "no" to hide it now. It also hides automatically after the end date.', 'text' ),
 			'event_title'             => array( 'Event: name', 'text' ),
+			'event_page_path'         => array( 'Event: page path (default /masterclass/; the announcement strip links here)', 'text' ),
 			'event_eyebrow'           => array( 'Event section: eyebrow', 'text' ),
 			'event_lead'              => array( 'Event section: intro', 'wysiwyg' ),
 			'event_dates_label'       => array( 'Event: dates as shown (e.g. 26 - 28 March 2027)', 'text' ),

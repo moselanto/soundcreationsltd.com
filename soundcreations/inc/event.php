@@ -4,10 +4,14 @@
  *
  * Three surfaces, all driven by the "Featured event" block in
  * Sound Creations -> Settings, so nothing about the event is hardcoded:
- *  - sc_event_bar():     slim announcement strip above the utility band, every page;
- *  - sc_event_feature(): full feature section (poster, details, mentors, CTA),
- *                        rendered on the homepage under the hero;
- *  - [sc_event]:         the same feature section for any page or post.
+ *  - sc_event_bar():     slim announcement strip above the utility band, every page,
+ *                        linking to the event's own page;
+ *  - the event page:     /masterclass/ (page-masterclass.php), created by Core;
+ *  - [sc_event]:         the same feature section for any other page or post.
+ *
+ * Not on the homepage, by the owner's decision (29 Oct 2026): the section sat
+ * between the hero and "What we do" and pushed the company's own story down.
+ * The strip carries the promotion site-wide; the details live on their own page.
  *
  * Why the event switches itself off: a promotion that outlives its event is
  * worse than none -- it tells visitors the site is not maintained. So the
@@ -53,6 +57,23 @@ function sc_event_is_live() {
 }
 
 /**
+ * URL of the event's own page. Path is a setting so a future event can live
+ * at a different slug; derived from home_url() so the install location is free.
+ *
+ * @return string
+ */
+function sc_event_page_url() {
+	$sc_path = trim( (string) sc_setting( 'event_page_path', '/masterclass/' ) );
+	if ( '' === $sc_path ) {
+		$sc_path = '/masterclass/';
+	}
+	if ( 0 === strpos( $sc_path, 'http' ) ) {
+		return $sc_path;
+	}
+	return home_url( '/' . trim( $sc_path, '/' ) . '/' );
+}
+
+/**
  * Parse the mentors textarea: one per line, "Name | Role | Credits".
  *
  * @return array<int, array{name:string, role:string, credits:string}>
@@ -95,9 +116,9 @@ function sc_event_bar() {
 	if ( '' === $sc_text ) {
 		$sc_text = (string) sc_setting( 'event_title', '' );
 	}
-	// On the homepage the strip jumps to the feature section; elsewhere it
-	// goes to the homepage section so visitors see the details before paying.
-	$sc_more = is_front_page() ? '#sc-event' : home_url( '/#sc-event' );
+	// The strip's text goes to the event's own page so visitors see the
+	// details before paying; the CTA goes straight to registration.
+	$sc_more = sc_event_page_url();
 	?>
 	<div class="sc-eventbar" role="region" aria-label="<?php esc_attr_e( 'Featured event', 'soundcreations' ); ?>">
 		<div class="sc-container sc-eventbar__inner">
@@ -112,10 +133,12 @@ function sc_event_bar() {
 /**
  * Full feature section. Returns markup so it can serve the shortcode too.
  *
- * @param string $where GA4 link_location for the CTA (homepage / shortcode).
+ * @param string $where GA4 link_location for the CTA (event_page / shortcode).
+ * @param string $sc_h  Heading level for the event name: h1 on the event's own page.
  * @return string
  */
-function sc_event_feature_html( $where = 'home_feature' ) {
+function sc_event_feature_html( $where = 'shortcode', $sc_h = 'h2' ) {
+	$sc_h = ( 'h1' === $sc_h ) ? 'h1' : 'h2';
 	if ( ! sc_event_is_live() ) {
 		return '';
 	}
@@ -139,7 +162,7 @@ function sc_event_feature_html( $where = 'home_feature' ) {
 			<?php endif; ?>
 			<div class="sc-event__body">
 				<p class="sc-eyebrow sc-eyebrow--home"><?php echo esc_html( sc_setting( 'event_eyebrow', 'Upcoming event' ) ); ?></p>
-				<h2 id="sc-event-title" class="sc-event__title"><?php echo esc_html( $sc_title ); ?></h2>
+				<<?php echo esc_html( $sc_h ); ?> id="sc-event-title" class="sc-event__title"><?php echo esc_html( $sc_title ); ?></<?php echo esc_html( $sc_h ); ?>>
 				<?php $sc_lead = trim( (string) sc_setting( 'event_lead', '' ) ); if ( '' !== $sc_lead ) : ?>
 					<p class="sc-lead sc-event__lead"><?php echo sc_rich_e( $sc_lead ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- wp_kses_post in helper. ?></p>
 				<?php endif; ?>
@@ -181,14 +204,17 @@ function sc_event_feature_html( $where = 'home_feature' ) {
 }
 
 /**
- * Echo the feature section (homepage).
+ * Echo the feature section.
+ *
+ * @param string $where GA4 link_location.
+ * @param string $sc_h  Heading level for the event name.
  */
-function sc_event_feature() {
-	echo sc_event_feature_html( 'home_feature' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped while building.
+function sc_event_feature( $where = 'shortcode', $sc_h = 'h2' ) {
+	echo sc_event_feature_html( $where, $sc_h ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped while building.
 }
 
-// [sc_event] -- drop the same section into any page (e.g. a dedicated
-// /masterclass/ page). Renders nothing once the event has ended.
+// [sc_event] -- drop the same section into any other page. Renders nothing
+// once the event has ended.
 add_shortcode(
 	'sc_event',
 	function () {

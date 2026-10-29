@@ -2,7 +2,7 @@
 /**
  * Event structured data for the featured event (Settings -> Featured event).
  *
- * Emitted on the homepage only, and only while the theme says the event is
+ * Emitted on the event's own page only (/masterclass/), and only while the theme says the event is
  * live (sc_event_is_live(): switched on, has a registration link, not yet
  * ended). That keeps the JSON-LD and the visible section in lock-step --
  * Google penalises markup describing content the page does not show.
@@ -41,7 +41,7 @@ function sc_core_event_schema() {
 		'startDate'           => $start,
 		'eventStatus'         => 'https://schema.org/EventScheduled',
 		'eventAttendanceMode' => 'https://schema.org/OfflineEventAttendanceMode',
-		'url'                 => home_url( '/#sc-event' ),
+		'url'                 => function_exists( 'sc_event_page_url' ) ? sc_event_page_url() : home_url( '/masterclass/' ),
 	);
 	if ( preg_match( '/^\d{4}-\d{2}-\d{2}$/', $end ) === 1 ) {
 		$node['endDate'] = $end;
@@ -98,7 +98,7 @@ function sc_core_event_schema() {
 add_action(
 	'wp_head',
 	function () {
-		if ( ! is_front_page() ) {
+		if ( ! sc_core_is_event_page() ) {
 			return;
 		}
 		$node = sc_core_event_schema();
@@ -108,4 +108,51 @@ add_action(
 		echo '<script type="application/ld+json">' . wp_json_encode( $node, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG ) . '</script>' . "\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON encoded with JSON_HEX_TAG, cannot break out of the script element.
 	},
 	30
+);
+
+/**
+ * Whether the current request is the featured event's own page.
+ *
+ * @return bool
+ */
+function sc_core_is_event_page() {
+	if ( ! is_page() ) {
+		return false;
+	}
+	$path = trim( (string) sc_core_get( 'event_page_path', '/masterclass/' ), '/' );
+	if ( '' === $path ) {
+		$path = 'masterclass';
+	}
+	$page = get_queried_object();
+	return ( $page instanceof WP_Post ) && get_page_uri( $page ) === $path;
+}
+
+/**
+ * Create the /masterclass/ page once, so the announcement strip never links
+ * to a 404 and nobody has to add the page by hand. Runs on the first admin
+ * load after upload. Never overwrites: if a page already sits at that path
+ * (published, draft or trashed) it is left exactly as it is. Body is left
+ * empty on purpose -- the template renders the event from Settings, and any
+ * text typed into the page later appears under it.
+ */
+add_action(
+	'admin_init',
+	function () {
+		if ( '1' === get_option( 'sc_core_event_page_v1' ) || ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+		if ( null === get_page_by_path( 'masterclass', OBJECT, 'page' ) ) {
+			wp_insert_post(
+				array(
+					'post_title'   => 'Advancing Audio Masterclass 2027',
+					'post_name'    => 'masterclass',
+					'post_content' => '',
+					'post_status'  => 'publish',
+					'post_type'    => 'page',
+				)
+			);
+		}
+		update_option( 'sc_core_event_page_v1', '1', false );
+	},
+	15
 );

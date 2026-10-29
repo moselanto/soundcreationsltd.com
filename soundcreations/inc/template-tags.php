@@ -165,6 +165,7 @@ function sc_default_settings() {
 		'event_enabled'      => 'yes',
 		'event_eyebrow'      => 'Upcoming masterclass',
 		'event_title'        => 'Advancing Audio Masterclass 2027',
+		'event_page_path'    => '/masterclass/',
 		'event_lead'         => 'Three days of live-sound training in Nairobi with internationally acclaimed FOH, monitor and system engineers whose credits include Madonna, Stephen Marley, Cardi B, Tamar Braxton and Saturday Night Live.',
 		'event_dates_label'  => '26 - 28 March 2027',
 		'event_start_date'   => '2027-03-26',

@@ -56,15 +56,6 @@ $sc_hero_poster = sc_setting( 'home_hero_poster', SC_THEME_URI . '/assets/img/he
 	</div>
 </section>
 
-<?php
-// Featured event (e.g. Advancing Audio Masterclass 2027), directly under the
-// hero so it is the first thing after the fold. Driven entirely by Settings ->
-// Featured event; renders nothing when switched off or once the event ends.
-if ( function_exists( 'sc_event_feature' ) ) {
-	sc_event_feature();
-}
-?>
-
 <section class="sc-section" id="services">
 	<div class="sc-container">
 		<div class="sc-sechead">

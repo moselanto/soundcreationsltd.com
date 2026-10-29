@@ -89,6 +89,26 @@ Owner contact for decisions: Agnes (website project lead).
 
 ## Log
 
+### 29 Oct 2026 (later) - Masterclass moved off the homepage to /masterclass/ - committed, needs upload
+
+- Owner decision: keep the top announcement strip, but the event section must
+  NOT sit on the homepage (it pushed "What we do" down). Removed from
+  `front-page.php`; the event now has its own page.
+- New `soundcreations/page-masterclass.php` (picked by slug): event section with
+  the event name as the h1, then any text typed in the page editor. After the
+  end date it shows a short "registration has closed" note + Contact button.
+- Core 0.5.34 (`includes/event-schema.php`): creates the `masterclass` page once
+  on the first wp-admin load after upload (flag `sc_core_event_page_v1`; never
+  overwrites an existing page). Event JSON-LD now emits on that page, not `/`.
+- Strip text links to the page (`sc_event_page_url()`, setting
+  `event_page_path`, default `/masterclass/`); its Register link still goes
+  straight to Pesapal.
+- **Upload:** theme `front-page.php`, `page-masterclass.php` (new),
+  `inc/event.php`, `inc/template-tags.php`; Core `includes/event-schema.php`,
+  `includes/settings.php`, `sound-creations-core.php`. Then open wp-admin once
+  so the page is created, and optionally add "Masterclass" to the Primary menu.
+- `php -l` NOT run (no PHP in the agent sandbox); brace balance checked.
+
 ### 29 Oct 2026 - Featured event: Advancing Audio Masterclass 2027 - committed, needs upload
 
 - Client (Terry, 28 Oct) asked for the masterclass link on the site. Built as a
