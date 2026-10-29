@@ -61,8 +61,12 @@ $sc_hero_poster = sc_setting( 'home_hero_poster', SC_THEME_URI . '/assets/img/he
 // and the [sc_section] shortcode render the identical markup. The hero above
 // stays hand-coded on purpose (owner decision 29 Oct 2026): it is the LCP
 // element and enqueue.php preloads its poster for this template.
-foreach ( array_keys( sc_sections() ) as $sc_sec ) {
-	echo sc_render_section( $sc_sec ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside each section.
+//
+// When the Home page is built with Elementor, its Elementor layout replaces
+// the built-in sections (the hero above still prints). Otherwise, or with
+// Elementor off, the built-in sections print exactly as before.
+if ( ! sc_el_page_content() ) {
+	echo sc_render_page_sections( 'home' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped inside each section.
 }
 
 get_footer();

@@ -21,6 +21,13 @@ if ( defined( 'ABSPATH' ) === false ) {
 
 get_header();
 
+// Pages built with Elementor render their Elementor layout full width, with
+// no theme title or breadcrumb (the layout carries its own Page banner).
+if ( sc_el_page_content() ) {
+	get_footer();
+	return;
+}
+
 while ( have_posts() ) :
 	the_post();
 

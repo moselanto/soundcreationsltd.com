@@ -9,5 +9,8 @@ if ( defined( 'ABSPATH' ) === false ) {
 	exit;
 }
 get_header();
-get_template_part( 'template-parts/contact-page' );
+// Built with Elementor? Show that layout. Otherwise the built-in Contact page.
+if ( ! sc_el_page_content() ) {
+	get_template_part( 'template-parts/contact-page' );
+}
 get_footer();

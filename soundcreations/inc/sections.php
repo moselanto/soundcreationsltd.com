@@ -391,21 +391,63 @@ function sc_section_cta() {
 }
 
 /**
- * The section list: slug => array( label, render function ).
- * Single source for the shortcode and the Elementor widgets.
+ * The section list: key => array( label, render function, page ).
+ * Single source for the templates, the shortcode and the Elementor widgets.
+ * Homepage sections are defined here; the other pages' sections come from
+ * sc_page_sections_registry() in inc/sections-pages.php.
  *
  * @return array
  */
 function sc_sections() {
-	return array(
-		'services'     => array( __( 'What we do (services)', 'soundcreations' ), 'sc_section_services' ),
-		'solutions'    => array( __( 'Our solutions', 'soundcreations' ), 'sc_section_solutions' ),
-		'partners'     => array( __( 'Technology partners strip', 'soundcreations' ), 'sc_section_partners' ),
-		'work'         => array( __( 'Our work (projects grid)', 'soundcreations' ), 'sc_section_work' ),
-		'stats'        => array( __( 'Proof statistics', 'soundcreations' ), 'sc_section_stats' ),
-		'testimonials' => array( __( 'Testimonials strip', 'soundcreations' ), 'sc_section_testimonials' ),
-		'cta'          => array( __( 'Closing call to action', 'soundcreations' ), 'sc_section_cta' ),
+	static $sc_all = null;
+	if ( null !== $sc_all ) {
+		return $sc_all;
+	}
+	$sc_all = array(
+		'services'     => array( __( 'Home: what we do (services)', 'soundcreations' ), 'sc_section_services', 'home' ),
+		'solutions'    => array( __( 'Home: our solutions', 'soundcreations' ), 'sc_section_solutions', 'home' ),
+		'partners'     => array( __( 'Home: technology partners strip', 'soundcreations' ), 'sc_section_partners', 'home' ),
+		'work'         => array( __( 'Home: our work (projects grid)', 'soundcreations' ), 'sc_section_work', 'home' ),
+		'stats'        => array( __( 'Home: proof statistics', 'soundcreations' ), 'sc_section_stats', 'home' ),
+		'testimonials' => array( __( 'Home: testimonials strip', 'soundcreations' ), 'sc_section_testimonials', 'home' ),
+		'cta'          => array( __( 'Home: closing call to action', 'soundcreations' ), 'sc_section_cta', 'home' ),
 	);
+	if ( function_exists( 'sc_page_sections_registry' ) ) {
+		foreach ( sc_page_sections_registry() as $sc_k => $sc_def ) {
+			$sc_all[ $sc_k ] = array( $sc_def[0], $sc_def[1], $sc_def[2] );
+		}
+	}
+	return $sc_all;
+}
+
+/**
+ * Section keys of one page, in display order.
+ *
+ * @param string $page home|about|solpage|projpage|fane|videos|contact.
+ * @return string[]
+ */
+function sc_section_keys( $page ) {
+	$sc_out = array();
+	foreach ( sc_sections() as $sc_k => $sc_def ) {
+		if ( $page === $sc_def[2] ) {
+			$sc_out[] = $sc_k;
+		}
+	}
+	return $sc_out;
+}
+
+/**
+ * Render every built-in section of one page, in order.
+ *
+ * @param string $page Page key.
+ * @return string
+ */
+function sc_render_page_sections( $page ) {
+	$sc_html = '';
+	foreach ( sc_section_keys( $page ) as $sc_k ) {
+		$sc_html .= sc_render_section( $sc_k );
+	}
+	return $sc_html;
 }
 
 /**

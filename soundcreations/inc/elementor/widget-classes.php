@@ -19,21 +19,23 @@ use Elementor\Widget_Base;
  * @return string[]
  */
 function sc_el_widget_class_names() {
-	return array(
-		'SC_EW_Services',
-		'SC_EW_Solutions',
-		'SC_EW_Partners',
-		'SC_EW_Work',
-		'SC_EW_Stats',
-		'SC_EW_Testimonials',
-		'SC_EW_Cta',
-		'SC_EW_Event',
-		'SC_EW_Enquiry_Form',
-		'SC_EW_Logo',
-		'SC_EW_Menu',
-		'SC_EW_Contact',
-		'SC_EW_Social',
-		'SC_EW_Consult_Button',
+	$sc_names = array();
+	// One widget per section (homepage and every other page), generated below.
+	foreach ( array_keys( sc_sections() ) as $sc_k ) {
+		$sc_names[] = 'SC_EW_S_' . $sc_k;
+	}
+	return array_merge(
+		$sc_names,
+		array(
+			'SC_EW_Page_Banner',
+			'SC_EW_Event',
+			'SC_EW_Enquiry_Form',
+			'SC_EW_Logo',
+			'SC_EW_Menu',
+			'SC_EW_Contact',
+			'SC_EW_Social',
+			'SC_EW_Consult_Button',
+		)
 	);
 }
 
@@ -72,8 +74,7 @@ abstract class SC_EW_Section extends SC_EW_Base {
 	}
 
 	protected function register_controls() {
-		$fields = sc_el_section_fields();
-		$fields = isset( $fields[ $this->sc_section ] ) ? $fields[ $this->sc_section ] : array();
+		$fields = sc_el_fields_for( $this->sc_section );
 		$this->start_controls_section(
 			'sc_content',
 			array(
@@ -108,8 +109,7 @@ abstract class SC_EW_Section extends SC_EW_Base {
 	}
 
 	protected function render() {
-		$fields    = sc_el_section_fields();
-		$fields    = isset( $fields[ $this->sc_section ] ) ? $fields[ $this->sc_section ] : array();
+		$fields    = sc_el_fields_for( $this->sc_section );
 		$settings  = $this->get_settings_for_display();
 		$overrides = array();
 		foreach ( $fields as $key => $def ) {
@@ -130,26 +130,181 @@ abstract class SC_EW_Section extends SC_EW_Base {
 	}
 }
 
-final class SC_EW_Services extends SC_EW_Section {
+// Generated: one widget class per section key in sc_sections().
+final class SC_EW_S_services extends SC_EW_Section {
 	protected $sc_section = 'services';
 }
-final class SC_EW_Solutions extends SC_EW_Section {
+final class SC_EW_S_solutions extends SC_EW_Section {
 	protected $sc_section = 'solutions';
 }
-final class SC_EW_Partners extends SC_EW_Section {
+final class SC_EW_S_partners extends SC_EW_Section {
 	protected $sc_section = 'partners';
 }
-final class SC_EW_Work extends SC_EW_Section {
+final class SC_EW_S_work extends SC_EW_Section {
 	protected $sc_section = 'work';
 }
-final class SC_EW_Stats extends SC_EW_Section {
+final class SC_EW_S_stats extends SC_EW_Section {
 	protected $sc_section = 'stats';
 }
-final class SC_EW_Testimonials extends SC_EW_Section {
+final class SC_EW_S_testimonials extends SC_EW_Section {
 	protected $sc_section = 'testimonials';
 }
-final class SC_EW_Cta extends SC_EW_Section {
+final class SC_EW_S_cta extends SC_EW_Section {
 	protected $sc_section = 'cta';
+}
+final class SC_EW_S_about_hero extends SC_EW_Section {
+	protected $sc_section = 'about_hero';
+}
+final class SC_EW_S_about_process extends SC_EW_Section {
+	protected $sc_section = 'about_process';
+}
+final class SC_EW_S_about_brands extends SC_EW_Section {
+	protected $sc_section = 'about_brands';
+}
+final class SC_EW_S_about_company extends SC_EW_Section {
+	protected $sc_section = 'about_company';
+}
+final class SC_EW_S_about_profiles extends SC_EW_Section {
+	protected $sc_section = 'about_profiles';
+}
+final class SC_EW_S_solpage_hero extends SC_EW_Section {
+	protected $sc_section = 'solpage_hero';
+}
+final class SC_EW_S_solpage_grid extends SC_EW_Section {
+	protected $sc_section = 'solpage_grid';
+}
+final class SC_EW_S_solpage_sectors extends SC_EW_Section {
+	protected $sc_section = 'solpage_sectors';
+}
+final class SC_EW_S_solpage_projects extends SC_EW_Section {
+	protected $sc_section = 'solpage_projects';
+}
+final class SC_EW_S_solpage_cta extends SC_EW_Section {
+	protected $sc_section = 'solpage_cta';
+}
+final class SC_EW_S_projpage_hero extends SC_EW_Section {
+	protected $sc_section = 'projpage_hero';
+}
+final class SC_EW_S_projpage_grid extends SC_EW_Section {
+	protected $sc_section = 'projpage_grid';
+}
+final class SC_EW_S_projpage_stats extends SC_EW_Section {
+	protected $sc_section = 'projpage_stats';
+}
+final class SC_EW_S_projpage_cta extends SC_EW_Section {
+	protected $sc_section = 'projpage_cta';
+}
+final class SC_EW_S_fane_hero extends SC_EW_Section {
+	protected $sc_section = 'fane_hero';
+}
+final class SC_EW_S_fane_catalogue extends SC_EW_Section {
+	protected $sc_section = 'fane_catalogue';
+}
+final class SC_EW_S_fane_heritage extends SC_EW_Section {
+	protected $sc_section = 'fane_heritage';
+}
+final class SC_EW_S_fane_difference extends SC_EW_Section {
+	protected $sc_section = 'fane_difference';
+}
+final class SC_EW_S_fane_social extends SC_EW_Section {
+	protected $sc_section = 'fane_social';
+}
+final class SC_EW_S_videos_hero extends SC_EW_Section {
+	protected $sc_section = 'videos_hero';
+}
+final class SC_EW_S_videos_videos extends SC_EW_Section {
+	protected $sc_section = 'videos_videos';
+}
+final class SC_EW_S_videos_downloads extends SC_EW_Section {
+	protected $sc_section = 'videos_downloads';
+}
+final class SC_EW_S_videos_empty extends SC_EW_Section {
+	protected $sc_section = 'videos_empty';
+}
+final class SC_EW_S_videos_cta extends SC_EW_Section {
+	protected $sc_section = 'videos_cta';
+}
+final class SC_EW_S_contact_hero extends SC_EW_Section {
+	protected $sc_section = 'contact_hero';
+}
+final class SC_EW_S_contact_main extends SC_EW_Section {
+	protected $sc_section = 'contact_main';
+}
+
+/**
+ * Page banner: the same hero band the Solutions and Videos pages use
+ * (.sc-support-hero), for any Elementor page. Title defaults to the page title.
+ */
+final class SC_EW_Page_Banner extends SC_EW_Base {
+	public function get_name() {
+		return 'sc_page_banner';
+	}
+	public function get_title() {
+		return __( 'Page banner', 'soundcreations' );
+	}
+	public function get_icon() {
+		return 'eicon-header';
+	}
+	protected function register_controls() {
+		$this->start_controls_section( 'sc_content', array( 'label' => __( 'Banner', 'soundcreations' ) ) );
+		$this->add_control( 'eyebrow', array( 'label' => __( 'Eyebrow', 'soundcreations' ), 'type' => Controls_Manager::TEXT, 'label_block' => true ) );
+		$this->add_control( 'title', array( 'label' => __( 'Heading (empty = page title)', 'soundcreations' ), 'type' => Controls_Manager::TEXT, 'label_block' => true ) );
+		$this->add_control( 'lead', array( 'label' => __( 'Intro', 'soundcreations' ), 'type' => Controls_Manager::TEXTAREA ) );
+		$this->add_control( 'image', array( 'label' => __( 'Background photo', 'soundcreations' ), 'type' => Controls_Manager::MEDIA ) );
+		$this->add_control(
+			'tag',
+			array(
+				'label'   => __( 'Heading level', 'soundcreations' ),
+				'type'    => Controls_Manager::SELECT,
+				'default' => 'h1',
+				'options' => array(
+					'h1' => 'H1',
+					'h2' => 'H2',
+				),
+			)
+		);
+		$this->add_control(
+			'crumb',
+			array(
+				'label'        => __( 'Show breadcrumb', 'soundcreations' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'return_value' => 'yes',
+				'default'      => 'yes',
+			)
+		);
+		$this->add_control( 'btn_label', array( 'label' => __( 'Button label (optional)', 'soundcreations' ), 'type' => Controls_Manager::TEXT ) );
+		$this->add_control( 'btn_link', array( 'label' => __( 'Button link', 'soundcreations' ), 'type' => Controls_Manager::URL ) );
+		$this->end_controls_section();
+	}
+	protected function render() {
+		$s     = $this->get_settings_for_display();
+		$title = trim( (string) ( isset( $s['title'] ) ? $s['title'] : '' ) );
+		if ( '' === $title ) {
+			$title = (string) get_the_title( get_queried_object_id() );
+		}
+		$img = '';
+		if ( ! empty( $s['image']['url'] ) && false === strpos( (string) $s['image']['url'], 'placeholder' ) ) {
+			$img = (string) $s['image']['url'];
+		}
+		$tag = ( isset( $s['tag'] ) && 'h2' === $s['tag'] ) ? 'h2' : 'h1';
+		echo '<section class="sc-support-hero sc-el-banner"' . ( '' !== $img ? ' style="background-image:url(\'' . esc_url( $img ) . '\');"' : '' ) . '>';
+		echo '<span class="sc-support-hero__scrim" aria-hidden="true"></span><div class="sc-container sc-support-hero__inner">';
+		if ( isset( $s['crumb'] ) && 'yes' === $s['crumb'] ) {
+			echo '<nav class="sc-crumb" aria-label="' . esc_attr__( 'Breadcrumb', 'soundcreations' ) . '"><a href="' . esc_url( home_url( '/' ) ) . '">' . esc_html__( 'Home', 'soundcreations' ) . '</a> <span aria-hidden="true">&rsaquo;</span> <span class="sc-crumb__cur">' . esc_html( $title ) . '</span></nav>';
+		}
+		if ( ! empty( $s['eyebrow'] ) ) {
+			echo '<p class="sc-eyebrow">' . esc_html( (string) $s['eyebrow'] ) . '</p>';
+		}
+		echo '<' . $tag . ' class="sc-support-hero__title">' . esc_html( $title ) . '</' . $tag . '>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $tag is h1 or h2 only.
+		if ( ! empty( $s['lead'] ) ) {
+			echo '<p class="sc-lead sc-support-hero__lead">' . esc_html( (string) $s['lead'] ) . '</p>';
+		}
+		if ( ! empty( $s['btn_label'] ) && ! empty( $s['btn_link']['url'] ) ) {
+			$ext = ! empty( $s['btn_link']['is_external'] );
+			echo '<p><a class="sc-btn sc-btn--primary" href="' . esc_url( (string) $s['btn_link']['url'] ) . '"' . ( $ext ? ' target="_blank" rel="noopener noreferrer"' : '' ) . '>' . esc_html( (string) $s['btn_label'] ) . '</a></p>';
+		}
+		echo '</div></section>';
+	}
 }
 
 /**
@@ -273,8 +428,8 @@ final class SC_EW_Logo extends SC_EW_Block {
 	protected function render() {
 		// Same two-logo markup as header.php: CSS shows the right one per theme.
 		echo '<a href="' . esc_url( home_url( '/' ) ) . '" class="sc-logo" rel="home">'
-			. '<img class="sc-logo__img sc-logo__img--dark" src="' . esc_url( SC_THEME_URI . '/assets/img/logo-white.webp' ) . '" alt="' . esc_attr( get_bloginfo( 'name' ) ) . '" width="309" height="115">'
-			. '<img class="sc-logo__img sc-logo__img--light" src="' . esc_url( SC_THEME_URI . '/assets/img/logo-color.webp' ) . '" alt="' . esc_attr( get_bloginfo( 'name' ) ) . '" width="309" height="115">'
+			. '<img class="sc-logo__img sc-logo__img--dark" src="' . esc_url( sc_logo_url( 'dark' ) ) . '" alt="' . esc_attr( get_bloginfo( 'name' ) ) . '" width="309" height="115">'
+			. '<img class="sc-logo__img sc-logo__img--light" src="' . esc_url( sc_logo_url( 'light' ) ) . '" alt="' . esc_attr( get_bloginfo( 'name' ) ) . '" width="309" height="115">'
 			. '</a>';
 	}
 }

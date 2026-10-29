@@ -54,8 +54,8 @@ if ( ! ( function_exists( 'sc_builder_render' ) && sc_builder_render( 'header' )
 		<div class="sc-brand">
 			<?php
 			echo '<a href="' . esc_url( home_url( '/' ) ) . '" class="sc-logo" rel="home">'
-			. '<img class="sc-logo__img sc-logo__img--dark" src="' . esc_url( SC_THEME_URI . '/assets/img/logo-white.webp' ) . '" alt="' . esc_attr( get_bloginfo( 'name' ) ) . '" width="309" height="115">'
-			. '<img class="sc-logo__img sc-logo__img--light" src="' . esc_url( SC_THEME_URI . '/assets/img/logo-color.webp' ) . '" alt="' . esc_attr( get_bloginfo( 'name' ) ) . '" width="309" height="115">'
+			. '<img class="sc-logo__img sc-logo__img--dark" src="' . esc_url( sc_logo_url( 'dark' ) ) . '" alt="' . esc_attr( get_bloginfo( 'name' ) ) . '" width="309" height="115">'
+			. '<img class="sc-logo__img sc-logo__img--light" src="' . esc_url( sc_logo_url( 'light' ) ) . '" alt="' . esc_attr( get_bloginfo( 'name' ) ) . '" width="309" height="115">'
 			. '</a>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- first-party logo markup.
 			?>
 		</div>

@@ -19,6 +19,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 get_header();
 
+// Built with Elementor? Show that layout instead (the Featured event widget
+// renders the same section).
+if ( sc_el_page_content() ) {
+	get_footer();
+	return;
+}
+
 $sc_live = function_exists( 'sc_event_is_live' ) && sc_event_is_live();
 
 if ( $sc_live ) {

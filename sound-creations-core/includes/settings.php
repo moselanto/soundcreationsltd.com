@@ -207,12 +207,6 @@ function sc_core_settings_fields() {
 			'event_bar_tag'           => array( 'Announcement strip: label (e.g. Masterclass)', 'text' ),
 			'event_bar_text'          => array( 'Announcement strip: text (blank = event name)', 'text' ),
 
-			// Elementor header/footer (theme inc/elementor/builder.php). Blank = the
-			// built-in header/footer. A missing or empty template also falls back.
-			'__sec_elementor'         => array( 'Elementor header & footer', 'heading' ),
-			'el_header_template'      => array( 'Site-wide header (Elementor template). Pages can override this in their "Header & footer" box.', 'eltemplate' ),
-			'el_footer_template'      => array( 'Site-wide footer (Elementor template). Pages can override this in their "Header & footer" box.', 'eltemplate' ),
-
 			'__sec_testimonials'      => array( 'Testimonials page', 'heading' ),
 			'testimonials_eyebrow'    => array( 'Testimonials hero: eyebrow', 'text' ),
 			'testimonials_title'      => array( 'Testimonials hero: headline', 'text' ),

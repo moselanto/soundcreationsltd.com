@@ -74,6 +74,44 @@ function sc_el_section_fields() {
 	);
 }
 
+/**
+ * Editable fields for one section widget. Homepage sections use the curated
+ * list above; page sections use the Settings keys found in their markup
+ * (sc_page_sections_registry()), labelled from the Core settings screen.
+ *
+ * @param string $section Section key.
+ * @return array key => array( label, type )
+ */
+function sc_el_fields_for( $section ) {
+	$sc_cur = sc_el_section_fields();
+	if ( isset( $sc_cur[ $section ] ) ) {
+		return $sc_cur[ $section ];
+	}
+	$sc_reg = function_exists( 'sc_page_sections_registry' ) ? sc_page_sections_registry() : array();
+	if ( empty( $sc_reg[ $section ][3] ) ) {
+		return array();
+	}
+	$sc_defs = function_exists( 'sc_core_settings_fields' ) ? sc_core_settings_fields() : array();
+	$sc_out  = array();
+	foreach ( $sc_reg[ $section ][3] as $sc_key ) {
+		$sc_label = isset( $sc_defs[ $sc_key ][0] ) ? $sc_defs[ $sc_key ][0] : ucfirst( str_replace( '_', ' ', $sc_key ) );
+		$sc_t     = isset( $sc_defs[ $sc_key ][1] ) ? $sc_defs[ $sc_key ][1] : 'text';
+		if ( 'heading' === $sc_t || 'eltemplate' === $sc_t ) {
+			continue;
+		}
+		$sc_type = 'text';
+		if ( 'image' === $sc_t && ( '_img' === substr( $sc_key, -4 ) || false !== strpos( $sc_key, 'image' ) ) ) {
+			$sc_type = 'image';
+		} elseif ( 'image' === $sc_t ) {
+			$sc_type = 'text'; // File links (PDFs) stay plain URL boxes.
+		} elseif ( in_array( $sc_t, array( 'textarea', 'wysiwyg' ), true ) ) {
+			$sc_type = 'textarea';
+		}
+		$sc_out[ $sc_key ] = array( $sc_label, $sc_type );
+	}
+	return $sc_out;
+}
+
 add_action(
 	'elementor/elements/categories_registered',
 	function ( $elements_manager ) {

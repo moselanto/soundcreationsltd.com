@@ -4,8 +4,7 @@
  *
  * Same approach as smilecommunitycentre.org: a header or footer is an ordinary
  * Elementor template (Templates > Saved Templates, type "Section" or
- * "Container"). Sound Creations -> Settings -> "Elementor header & footer"
- * picks the site-wide header and footer; any page can pick its own, use the
+ * "Container"). Appearance -> Theme Options picks the site-wide header and footer; any page can pick its own, use the
  * built-in one, or hide it, in the "Header & footer" box on the edit screen.
  *
  * Safe fallback, always: when nothing is chosen, Elementor is off, or the
@@ -82,7 +81,9 @@ function sc_builder_choice( $where ) {
 			return $own;
 		}
 	}
-	return (string) sc_setting( 'el_' . $where . '_template', '' );
+	// Site-wide choice: Theme Options (Appearance > Theme Options).
+	$site = function_exists( 'sc_theme_opt' ) ? (string) sc_theme_opt( $where . '_template', '' ) : '';
+	return $site;
 }
 
 /**
