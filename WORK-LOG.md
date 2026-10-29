@@ -89,6 +89,42 @@ Owner contact for decisions: Agnes (website project lead).
 
 ## Log
 
+### 29 Oct 2026 - Elementor rebuild, phase 2 - committed directly to `main`, needs upload
+
+PR #2 (phase 1) was already merged when phase 2 started, so phase 2 went
+straight to `main` as the owner asked. Hero and enquiry forms stay hand-coded.
+
+- `inc/sections-pages.php` (generated): every section of About, Solutions,
+  Projects, FANE, Videos and Contact moved verbatim into `sc_section_*()`
+  functions (26 sections); each page's shared setup is in `sc_pv_{page}()`.
+  Templates now call `sc_render_page_sections()`.
+- Widgets: one per section (33 total, homepage + pages) with text/image boxes
+  generated from the Settings keys each section reads, plus a new **Page
+  banner** widget. 41 Sound Creations widgets register in Elementor 4.3.5.
+- `inc/theme-options.php`: Appearance > **Theme Options** (Redux when the
+  Redux plugin is active, built-in fallback screen otherwise): header/footer
+  template, archive layout pages, brand colours, logos, custom CSS. Header/
+  footer pickers moved here from Core Settings (Core 0.5.36).
+- `inc/elementor/pages.php`: any page built with Elementor renders its layout
+  full width (Home keeps the hand-coded hero above it). Solutions, Projects and
+  Videos listings can use a private "layout page" chosen in Theme Options.
+- `inc/elementor/page-settings.php`: Header & footer choice in Elementor's
+  page settings, synced with the WordPress-editor box.
+- `inc/elementor/starter-layouts.php`: Appearance > **Starter layouts**,
+  one click per page (Home, About, FANE, Contact, Masterclass, Solutions,
+  Projects, Videos). Never overwrites an Elementor page; keeps old editor text
+  (`_sc_pre_elementor`, `_sc_about_body`); Undo button returns the built-in design.
+- **Verified in a real WordPress 6.x install (SQLite) in the agent sandbox:**
+  `php -l` clean on all 80+ PHP files; with Elementor off every page renders
+  byte-identical HTML to the previous `main` (home, about, fane, contact,
+  masterclass, consultation, solutions, projects, videos, a plain page); with
+  Elementor 4.3.5 on, all pages 200 with no PHP errors, all starter layouts
+  apply and render, re-apply refuses, Undo works, theme options CSS output
+  strips tags.
+- **Upload:** whole `soundcreations/` theme folder and Core
+  `includes/settings.php` + `sound-creations-core.php`. Nothing changes on the
+  live site until someone applies a starter layout or sets Theme Options.
+
 ### 29 Oct 2026 - Elementor rebuild, phase 1 (branch `feature/elementor-rebuild`) - NOT merged, not live
 
 Owner approved Elementor (PRD/AGENTS updated on `main`, `30718f2`). Hero and

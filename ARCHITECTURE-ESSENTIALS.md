@@ -22,6 +22,11 @@ forms stay hand-coded.
 | Widget classes | `soundcreations/inc/elementor/widget-classes.php` |
 | Elementor header/footer + per-page box + fallback | `soundcreations/inc/elementor/builder.php` |
 | Per-placement copy overrides | `sc_setting_overrides()` in `soundcreations/inc/template-tags.php` |
+| About / Solutions / Projects / FANE / Videos / Contact sections | `soundcreations/inc/sections-pages.php` |
+| Elementor-built pages, archive layout pages | `soundcreations/inc/elementor/pages.php` |
+| Header & footer in Elementor page settings | `soundcreations/inc/elementor/page-settings.php` |
+| Starter layouts (Appearance > Starter layouts) | `soundcreations/inc/elementor/starter-layouts.php` |
+| Theme Options (Redux + fallback): colours, logos, CSS, header/footer, archive layouts | `soundcreations/inc/theme-options.php` |
 
 ## The four packages
 
