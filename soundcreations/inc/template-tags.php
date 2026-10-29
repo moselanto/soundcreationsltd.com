@@ -190,9 +190,38 @@ function sc_default_settings() {
 }
 
 /**
- * Read one setting, preferring the saved option, then the brief default.
+ * Stack of per-placement setting overrides (Elementor widgets, [sc_section]).
+ * A stack, not a global, so a section rendered inside another keeps its own.
+ *
+ * @param string     $op   push|pop|top.
+ * @param array|null $item key => value overrides when pushing.
+ * @return array|null The active overrides for 'top'.
+ */
+function sc_setting_overrides( $op = 'top', $item = null ) {
+	static $stack = array();
+	if ( 'push' === $op ) {
+		$stack[] = (array) $item;
+		return null;
+	}
+	if ( 'pop' === $op ) {
+		array_pop( $stack );
+		return null;
+	}
+	return $stack ? $stack[ count( $stack ) - 1 ] : null;
+}
+
+/**
+ * Read one setting, preferring a per-placement override, then the saved
+ * option, then the brief default.
  */
 function sc_setting( $key, $default = '' ) {
+	// Per-placement override (an Elementor widget or [sc_section] changing one
+	// heading for that placement only). Empty values fall through, so clearing
+	// a widget box restores the site-wide setting.
+	$sc_top = sc_setting_overrides();
+	if ( is_array( $sc_top ) && isset( $sc_top[ $key ] ) && '' !== $sc_top[ $key ] ) {
+		return $sc_top[ $key ];
+	}
 	$opts = get_option( 'soundcreations_settings', array() );
 	if ( is_array( $opts ) && isset( $opts[ $key ] ) && '' !== $opts[ $key ] ) {
 		return $opts[ $key ];

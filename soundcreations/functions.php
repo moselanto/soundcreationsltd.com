@@ -29,5 +29,8 @@ require_once SC_THEME_DIR . '/inc/whatsapp-chat.php';
 require_once SC_THEME_DIR . '/inc/login.php';
 require_once SC_THEME_DIR . '/inc/shortcodes.php';
 require_once SC_THEME_DIR . '/inc/event.php';
+require_once SC_THEME_DIR . '/inc/sections.php';
+require_once SC_THEME_DIR . '/inc/elementor/builder.php';
+require_once SC_THEME_DIR . '/inc/elementor/widgets.php';
 require_once SC_THEME_DIR . '/inc/hardening.php';
 require_once SC_THEME_DIR . '/inc/customizer.php';

@@ -2896,3 +2896,18 @@ h2.sc-home-projects__title { font-size: clamp(1.25rem, 2vw, 1.6rem); line-height
   .sc-event__actions .sc-btn { flex: 1 1 100%; justify-content: center; }
 }
 @media (prefers-reduced-motion: reduce) { .sc-event__poster, .sc-event__poster:hover { transition: none; transform: none; } }
+
+
+/* ============================================================
+   Elementor rebuild (inc/elementor/). Wrappers for Elementor-built
+   headers/footers and the small header blocks. Section widgets reuse
+   the existing .sc-section styles, so nothing else is needed here.
+   ============================================================ */
+.sc-el-header { position: relative; z-index: 50; background: var(--sc-header-bg); border-bottom: 1px solid var(--sc-border); }
+.sc-el-footer { background: var(--sc-surface); border-top: 1px solid var(--sc-border); }
+.sc-el-contact { font-size: .9rem; color: var(--sc-muted); }
+.sc-el-contact a { color: inherit; text-decoration: none; }
+.sc-el-contact a:hover { color: var(--sc-text); }
+.sc-el-social { display: inline-flex; gap: .5rem; align-items: center; }
+/* Full-width sections inside Elementor: let .sc-section own its padding. */
+.elementor-widget-container > .sc-section:first-child { margin-top: 0; }
