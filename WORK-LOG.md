@@ -89,6 +89,22 @@ Owner contact for decisions: Agnes (website project lead).
 
 ## Log
 
+### 10 Nov 2026 - Terry's AEO question list mapped to pages (docs only)
+
+- Terry (Marketing) sent "WEB AEO.docx": about 110 customer questions in 12
+  groups. New `docs/seo/AEO-QUESTIONS.md` maps each group to one target page,
+  marks what is already answered, and gives answers ready to paste in for the
+  gaps (A1-A42). No prices, no product showcasing; unconfirmed items are marked [CONFIRM].
+- Blockers listed there: the FAQ box allows only 6 questions per page (B1),
+  About shows no FAQs (B2), there is no mosque page (B3), and the owner needs to
+  confirm lighting brands (B4), Ortega/Meinl (B5) and DiGiCo/Nexo/Nord/Chauvet (B6).
+- B1 + B2 done in code the same day (needs upload): FAQ box now has 10 slots
+  (`seo-faq.php`), and About prints its FAQs (`page-about.php`, added to the
+  FAQ-visible template list). Core 0.5.39. **Upload:** Core
+  `includes/seo-faq.php` + `sound-creations-core.php`; theme `page-about.php`.
+  `php -l` NOT run (no PHP in the sandbox).
+- Next: paste the FAQs in wp-admin, then the mosque and architects pages.
+
 ### 10 Nov 2026 - "How to buy" UI/UX pass 2 - committed, needs upload
 
 From the owner's full-page screenshot of the live homepage: the heading broke

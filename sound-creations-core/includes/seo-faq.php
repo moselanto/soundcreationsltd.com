@@ -27,9 +27,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/** How many Q/A rows the editor offers per page. */
+/**
+ * How many Q/A rows the editor offers per page.
+ *
+ * Raised from 6 to 10 on 10 Nov 2026: Terry's AEO question list
+ * (docs/seo/AEO-QUESTIONS.md) needs more answers on pages whose box was
+ * already full (church, distribution, conferencing). Stored rows are not
+ * touched; the editor simply shows four more empty slots.
+ */
 function sc_faq_slots() {
-	return 6;
+	return 10;
 }
 
 /** Post types that can carry an FAQ block. */
@@ -237,6 +244,7 @@ function sc_faq_is_rendered( $post_id ) {
 	// Templates that call the_content() unconditionally inside the main loop.
 	$always = array(
 		'page.php',
+		'page-about.php', // Prints sc_faq_render() after its sections since 10 Nov 2026.
 		'single.php',
 		'single-sc_brand.php',
 		'single-sc_product.php',
