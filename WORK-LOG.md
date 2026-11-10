@@ -89,6 +89,27 @@ Owner contact for decisions: Agnes (website project lead).
 
 ## Log
 
+### 10 Nov 2026 - 33 AEO FAQs published in wp-admin (from AEO-QUESTIONS.md) - LIVE
+
+- Confirmed live before publishing: How to buy pass 2 (77fb6d6) and Core 0.5.39
+  (10 FAQ slots, FAQs on About) were uploaded; About loads normally.
+- Added to FAQ boxes (existing FAQs untouched), each checked on its live page:
+  Professional Audio 4 (A2, A3, A24, A25), Church 4 (A4-A7), Conferencing 2
+  (A13-A14), Hospitality `/solutions/hospitality-commercial-audio/` 3
+  (A15-A17), Education `/solutions/education-auditorium-sound-systems/` 2
+  (A19-A20), Acoustics 3 (A21-A23), After-Sale 3 (A33-A35), one "where can I
+  buy X in Kenya" each on Allen & Heath, Bose Professional, FANE, Shure (says
+  "dealer") and dB Technologies, About 7 (A36-A42, plus "one-year warranty
+  after installation", already stated on the About page).
+- Skipped as near-duplicates: A1 (Professional Audio already has "What PA
+  system do I need for my venue?") and A18 (Education already has "What sound
+  system does a school hall need?").
+- Did not fit: A26 (subwoofer vs full-range). Professional Audio now uses all
+  10 slots; move it to a live-sound or lighting page later.
+- Still open from AEO-QUESTIONS.md: mosque page (A8-A12), architects and
+  contractors page (A28-A31), A32 (servicing interval), owner items B4-B6.
+  Next: request indexing in Search Console for the 13 changed pages.
+
 ### 10 Nov 2026 - Terry's AEO question list mapped to pages (docs only)
 
 - Terry (Marketing) sent "WEB AEO.docx": about 110 customer questions in 12
