@@ -118,6 +118,82 @@ function sc_section_services() {
 }
 
 /**
+ * "How to buy" - two clear routes: plan a project, or price a single item.
+ *
+ * Added 10 Nov 2026 after an AI assistant review of the site (shared by the
+ * client) concluded that a visitor wanting one microphone or cable "will
+ * likely need to rely on phone lines". The company has decided NOT to run an
+ * online shop or publish prices, so the fix is not a cart: it is making the
+ * quote route for single items explicit and fast, in plain text that people
+ * and AI assistants can both read. Every route is an existing channel
+ * (WhatsApp, phone, showroom); nothing here sells, lists prices or showcases
+ * individual products (standing decision: products are not showcased).
+ *
+ * All copy is in Sound Creations -> Settings (Homepage content). Clearing the
+ * heading hides the whole section.
+ */
+function sc_section_buy() {
+	$sc_b_title = trim( (string) sc_setting( 'home_buy_title', 'Planning an installation, or need a single item?' ) );
+	if ( '' === $sc_b_title ) {
+		return;
+	}
+	$sc_b_wa     = function_exists( 'sc_whatsapp_url' ) ? (string) sc_whatsapp_url() : '';
+	$sc_b_prefil = (string) sc_setting( 'home_buy_wa_prefill', 'Hello Sound Creations, I would like a price for: ' );
+	$sc_b_phone  = (string) sc_setting( 'phone', '' );
+	$sc_b_tel    = preg_replace( '/[^0-9+]/', '', (string) sc_setting( 'phone_link', $sc_b_phone ) );
+	$sc_b_addr   = trim( (string) sc_setting( 'address', '' ) );
+	// The Google Business Profile link opens the map pin with reviews and
+	// directions; a plain Maps search on the address is the fallback.
+	$sc_b_map = trim( (string) sc_setting( 'google_business', '' ) );
+	if ( '' === $sc_b_map && '' !== $sc_b_addr ) {
+		$sc_b_map = 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode( $sc_b_addr );
+	}
+	$sc_b_hours = array_filter( array( (string) sc_setting( 'hours_week', '' ), (string) sc_setting( 'hours_sat', '' ) ) );
+	?>
+<section class="sc-section sc-buy" id="how-to-buy" aria-labelledby="sc-buy-title">
+	<div class="sc-container">
+		<div class="sc-sechead">
+			<div>
+				<p class="sc-eyebrow sc-eyebrow--home"><?php echo esc_html( sc_setting( 'home_buy_eyebrow', 'How to buy' ) ); ?></p>
+				<h2 id="sc-buy-title" style="margin:0;"><?php echo esc_html( $sc_b_title ); ?></h2>
+				<?php $sc_b_lead = trim( (string) sc_setting( 'home_buy_lead', 'We quote every order directly, from one cable to a complete system, so you get the right model and a current price from our team.' ) ); if ( '' !== $sc_b_lead ) : ?><p class="sc-lead" style="margin:.4rem 0 0;"><?php echo sc_rich_e( $sc_b_lead ); ?></p><?php endif; ?>
+			</div>
+		</div>
+		<div class="sc-buy__grid">
+			<div class="sc-buy__card">
+				<h3><?php echo esc_html( sc_setting( 'home_buy_project_title', 'Plan a project' ) ); ?></h3>
+				<p><?php echo sc_rich_e( sc_setting( 'home_buy_project_text', 'For churches, mosques, schools, hotels, venues and offices. Tell us about your space and we will arrange a consultation and site visit, then design, supply, install and support the system.' ) ); ?></p>
+				<div class="sc-buy__actions">
+					<a class="sc-btn sc-btn--primary" href="<?php echo esc_url( home_url( '/request-a-consultation/' ) ); ?>"><?php echo esc_html( sc_setting( 'home_buy_project_cta', 'Request a Consultation' ) ); ?></a>
+				</div>
+			</div>
+			<div class="sc-buy__card">
+				<h3><?php echo esc_html( sc_setting( 'home_buy_item_title', 'Buy a single item' ) ); ?></h3>
+				<p><?php echo sc_rich_e( sc_setting( 'home_buy_item_text', 'Microphones, speakers, mixers, cables and accessories. Send us the brand and model, or tell us what you need it for, and our team will reply with a price and availability.' ) ); ?></p>
+				<div class="sc-buy__actions">
+					<?php if ( '' !== $sc_b_wa ) : ?>
+						<a class="sc-btn sc-btn--primary" href="<?php echo esc_url( $sc_b_wa . '?text=' . rawurlencode( $sc_b_prefil ) ); ?>" target="_blank" rel="noopener noreferrer nofollow"><?php echo esc_html( sc_setting( 'home_buy_wa_label', 'Get a price on WhatsApp' ) ); ?></a>
+					<?php endif; ?>
+					<?php if ( '' !== $sc_b_tel ) : ?>
+						<a class="sc-btn sc-btn--ghost" href="<?php echo esc_url( 'tel:' . $sc_b_tel ); ?>"><?php /* translators: %s: phone number. */ printf( esc_html__( 'Call %s', 'soundcreations' ), esc_html( $sc_b_phone ) ); ?></a>
+					<?php endif; ?>
+				</div>
+				<?php if ( '' !== $sc_b_addr ) : ?>
+					<p class="sc-buy__visit">
+						<strong><?php echo esc_html( sc_setting( 'home_buy_visit_label', 'Or visit our showroom:' ) ); ?></strong>
+						<?php echo esc_html( $sc_b_addr ); ?>
+						<?php if ( count( $sc_b_hours ) > 0 ) : ?><span class="sc-buy__hours"><?php echo esc_html( implode( ' · ', $sc_b_hours ) ); ?></span><?php endif; ?>
+						<?php if ( '' !== $sc_b_map ) : ?><a class="sc-link-arrow" href="<?php echo esc_url( $sc_b_map ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Get directions', 'soundcreations' ); ?> &rarr;</a><?php endif; ?>
+					</p>
+				<?php endif; ?>
+			</div>
+		</div>
+	</div>
+</section>
+	<?php
+}
+
+/**
  * "Our Solutions" - solution cards pulled live from the Solutions post type.
  */
 function sc_section_solutions() {
@@ -405,6 +481,7 @@ function sc_sections() {
 	}
 	$sc_all = array(
 		'services'     => array( __( 'Home: what we do (services)', 'soundcreations' ), 'sc_section_services', 'home' ),
+		'buy'          => array( __( 'Home: how to buy (project or single item)', 'soundcreations' ), 'sc_section_buy', 'home' ),
 		'solutions'    => array( __( 'Home: our solutions', 'soundcreations' ), 'sc_section_solutions', 'home' ),
 		'partners'     => array( __( 'Home: technology partners strip', 'soundcreations' ), 'sc_section_partners', 'home' ),
 		'work'         => array( __( 'Home: our work (projects grid)', 'soundcreations' ), 'sc_section_work', 'home' ),

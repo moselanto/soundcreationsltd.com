@@ -9,7 +9,7 @@ Owner contact for decisions: Agnes (website project lead).
 
 ---
 
-## Current status (last updated 19 Oct 2026, 23:00 EAT)
+## Current status (last updated 10 Nov 2026; see the newest log entries for 29 Oct and 10 Nov work)
 
 ### Standing decisions — do not reverse without the owner's confirmation
 
@@ -88,6 +88,35 @@ Owner contact for decisions: Agnes (website project lead).
 ---
 
 ## Log
+
+### 10 Nov 2026 - Homepage "How to buy" section (answers the AI review verdict) - committed, needs upload
+
+- Why: Mr Nipul shared an AI assistant review (4.2/5) whose verdict said a
+  visitor wanting a single microphone or cable "will likely need to rely on
+  phone lines". The company has already declined an online shop and published
+  prices, so those two points stay as they are. The fix makes the quote route
+  for single items explicit, quick and readable by AI assistants.
+- New `sc_section_buy()` (`inc/sections.php`), shown on the homepage right after
+  "What we do" (anchor `#how-to-buy`): two cards, **Plan a project** (Request a
+  Consultation) and **Buy a single item** (WhatsApp button with the message
+  "Hello Sound Creations, I would like a price for: " ready to send, a Call
+  button, and the showroom address, hours and a Get directions link to the
+  Google Business Profile, or a Maps search if that is blank).
+- No prices, cart or product listings (standing decisions kept). GA4 already
+  counts these clicks as whatsapp_click / phone_click (leads.js).
+- All copy is in Settings -> Homepage content (`home_buy_*`); a blank heading
+  hides the section. There is also an Elementor widget ("Home: how to buy").
+- Core 0.5.37 (settings fields), theme 0.12.0; CSS appended to `main.css`.
+- **Upload:** theme `inc/sections.php`, `inc/template-tags.php`,
+  `inc/elementor/widgets.php`, `assets/css/main.css`, `style.css`; Core
+  `includes/settings.php`, `sound-creations-core.php`.
+- `php -l` NOT run (no PHP in the agent sandbox); bracket balance matches the
+  previous files. Verify: homepage at mobile/desktop in dark and light, the
+  WhatsApp button opens with the message filled in, and Call dials.
+- Suggested follow-up in wp-admin (no code): add an FAQ "Can I buy a single
+  item from Sound Creations?" (answer: yes, send the brand and model on
+  WhatsApp or call, or visit the showroom) to /distribution/ so AI assistants
+  pick up the answer.
 
 ### 29 Oct 2026 - Elementor rebuild, phase 2 - committed directly to `main`, needs upload
 

@@ -38,6 +38,16 @@ function sc_el_section_fields() {
 			'home_whatwedo_title'   => array( __( 'Heading', 'soundcreations' ), 'text' ),
 			'home_whatwedo_lead'    => array( __( 'Intro', 'soundcreations' ), 'textarea' ),
 		),
+		'buy'          => array(
+			'home_buy_eyebrow'       => array( __( 'Eyebrow', 'soundcreations' ), 'text' ),
+			'home_buy_title'         => array( __( 'Heading', 'soundcreations' ), 'text' ),
+			'home_buy_lead'          => array( __( 'Intro', 'soundcreations' ), 'textarea' ),
+			'home_buy_project_title' => array( __( 'Project card: heading', 'soundcreations' ), 'text' ),
+			'home_buy_project_text'  => array( __( 'Project card: text', 'soundcreations' ), 'textarea' ),
+			'home_buy_item_title'    => array( __( 'Single item card: heading', 'soundcreations' ), 'text' ),
+			'home_buy_item_text'     => array( __( 'Single item card: text', 'soundcreations' ), 'textarea' ),
+			'home_buy_wa_label'      => array( __( 'WhatsApp button label', 'soundcreations' ), 'text' ),
+		),
 		'solutions'    => array(
 			'home_solutions_eyebrow' => array( __( 'Eyebrow', 'soundcreations' ), 'text' ),
 			'home_solutions_title'   => array( __( 'Heading', 'soundcreations' ), 'text' ),

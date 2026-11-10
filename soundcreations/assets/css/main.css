@@ -2911,3 +2911,17 @@ h2.sc-home-projects__title { font-size: clamp(1.25rem, 2vw, 1.6rem); line-height
 .sc-el-social { display: inline-flex; gap: .5rem; align-items: center; }
 /* Full-width sections inside Elementor: let .sc-section own its padding. */
 .elementor-widget-container > .sc-section:first-child { margin-top: 0; }
+
+/* How to buy (homepage, 10 Nov 2026): project route vs single-item quote route. */
+.sc-buy__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; margin-top: 1.5rem; }
+.sc-buy__card { background: var(--sc-surface); border: 1px solid var(--sc-border); border-radius: var(--sc-radius-lg); padding: clamp(1.25rem, 1rem + 1vw, 2rem); display: flex; flex-direction: column; gap: .75rem; }
+.sc-buy__card h3 { margin: 0; }
+.sc-buy__card p { color: var(--sc-muted); margin: 0; }
+.sc-buy__actions { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: auto; padding-top: .25rem; }
+.sc-buy__visit { font-size: .92rem; border-top: 1px solid var(--sc-border); padding-top: .75rem; display: flex; flex-wrap: wrap; gap: .25rem .5rem; align-items: baseline; }
+.sc-buy__visit strong { color: var(--sc-text); }
+.sc-buy__hours { flex-basis: 100%; }
+@media (max-width: 782px) {
+	.sc-buy__grid { grid-template-columns: 1fr; }
+	.sc-buy__actions .sc-btn { flex: 1 1 100%; text-align: center; }
+}
