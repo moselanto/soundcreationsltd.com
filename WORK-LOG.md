@@ -9,7 +9,7 @@ Owner contact for decisions: Agnes (website project lead).
 
 ---
 
-## Current status (last updated 10 Nov 2026; see the newest log entries for 29 Oct and 10 Nov work)
+## Current status (last updated 10 Nov 2026, 12:00 EAT)
 
 ### Standing decisions — do not reverse without the owner's confirmation
 
@@ -25,6 +25,11 @@ Owner contact for decisions: Agnes (website project lead).
   page Google crawled goes to its best new equivalent, per
   `docs/seo/LEGACY-REDIRECTS.md` (implemented in `d2e7337`). Change targets in
   that doc and the map in `includes/legacy-redirects.php` together.
+- **No online shop and no published prices.** Single items are quoted directly
+  by WhatsApp, phone or at the Mpaka Plaza showroom (homepage "How to buy",
+  /distribution/ FAQ). Do not add a cart or price lists.
+- **FAQs are answer-first, max 10 per page**, and follow
+  `docs/seo/AEO-QUESTIONS.md` (one page per topic, no duplicates across pages).
 - **Commits go directly to `main`** (owner's instruction), one logical change
   per commit.
 - **PCEA Chuka case study is unlisted.** `/projects/pcea-chuka/` stays
@@ -44,46 +49,45 @@ Owner contact for decisions: Agnes (website project lead).
 - **Never paste .htaccess from chat** (hidden characters caused 500 errors);
   deliver clean files to upload, one change at a time.
 
+### Live as of 10 Nov 2026
+
+- Theme 0.12.1 and Core 0.5.39 are on the server (owner uploads confirmed 10 Nov).
+- Homepage "How to buy" section (pass 2 layout), the single-item FAQ on
+  /distribution/, 33 AEO FAQs on 13 pages including About, and the
+  /masterclass/ page (Advancing Audio Masterclass 2027, 26-28 Mar 2027).
+- Elementor phase 2 code is uploaded but switched off: no starter layout
+  applied and Theme Options not set, so pages still use the built-in design.
+
 ### Open items / next steps
 
-1. **Server PHP is 8.0.30** (no security updates). Switch via cPanel MultiPHP
-   Manager ("inherit") / PHP Selector or ask the host; never hand-edit the
-   cPanel handler block in .htaccess.
-2. **`php -l` has never been run on the Oct 2026 commits.** Run it across the tree.
-3. **Search Console (retry from 20 Oct; a one-shot assistant task is set for
-   20 Oct ~10:00 EAT):** request indexing for `/solutions/sound-isolation/`,
-   `/solutions/professional-audio/`, `/solutions/installation/`, `/` and
-   `/about/`, then the pages changed by CONTENT-ADDITIONS-2 (church, education,
-   hospitality, acoustics, `/service/consultancy/`, `/service/integration/`, the
-   8 brand pages) as daily quota allows. 19 Oct attempts hit Google errors and
-   the daily quota; boardroom page was queued OK. Never submit `pcea-chuka`.
-   Rerun Rich Results Test on professional-audio and installation (FAQPage
-   present in live JSON-LD). Check the Pages report once processed.
-4. **Owner answers (answered 19 Oct):** site visits, live streaming, mosques/
-   worship spaces, installing client-bought equipment and repairing
-   non-supplied equipment are all offered "depending on client needs" (never
-   write "free"). Ranges (Bose conferencing, dB Technologies, Allen & Heath,
-   Behringer) are supplied to order, not stocked. Still unknown: the "Aid"
-   brand's manufacturer/website (Aid page names no product lines) and whether
-   Rockfon Sonar / Mono Acoustic may be named (left out). Any boardroom,
-   mosque/temple, sports or studio project to cite.
-5. **Google Business Profile:** all 8 drafted replies in
-   `docs/seo/GBP-REVIEW-REPLIES.md` were submitted 19 Oct (Brandon, Aalawy,
-   Michael, Triad, TechGuru published; Dennis, Asifa, Moses pending Google
-   review - confirm). 100+ older reviews still unanswered. Photos last added
-   ~2,100 days ago and no posts: waiting on owner photos (use the shot list),
-   then weekly posts. Set up a review-request routine for recent clients.
-6. **Dealership certificates:** owner to send; add to /distribution/ and brand pages.
-7. **Manufacturer listings show old numbers** (Allen & Heath +254 20 2572752/3,
-   Bose +254 720 886 900): ask them to update to +254 715 754 758 if agreed.
-8. **Brand pages:** done 19 Oct (partnership sections + "<Brand> in Kenya"
-   sections for Shure, Behringer, Midas, Rockfon, Barrisol, Asona, Aid, Sommer
-   Cable). Add certificate images when the owner sends them (item 6).
-9. **AI visibility:** baseline 19 Oct (ChatGPT logged-out, Gemini) recorded
-   below; Perplexity and Copilot not tested (sign-in). Re-test in ~4 weeks.
-10. **Mobile speed not verified** (PageSpeed); regenerate thumbnails once for WebP.
-11. **Rank Math hook/meta names** in Core were taken from docs, not verified.
-12. **Before-and-after project photos** are a content task.
+1. **Search Console:** request indexing for `/`, `/about/`, `/distribution/`
+   and the 13 pages changed on 10 Nov (professional audio, church, conferencing,
+   hospitality, education, acoustics, after-sale, 5 brand pages), plus the 19 Oct
+   list still pending. Re-run the Rich Results Test on About and /distribution/.
+   Never submit `pcea-chuka`.
+2. **Owner decisions (AEO, see docs/seo/AEO-QUESTIONS.md):** go-ahead for the
+   mosque page and the architects/contractors page; lighting brands (Chauvet?)
+   and whether lighting is installed; Ortega Guitars / Meinl dealership; DiGiCo,
+   Nexo, Nord dealerships; recommended servicing interval (A32).
+3. **Office number** +254 111 940711 (in Terry's signature) is not on the site:
+   owner to say whether to add it.
+4. **How to buy, step 3** says "Confirm and collect from our showroom": owner to
+   confirm, or edit in Settings if delivery is also offered.
+5. **Server PHP is 8.0.30** (no security updates). Switch via cPanel MultiPHP
+   Manager / PHP Selector or ask the host; never hand-edit the handler block.
+6. **`php -l` has never been run** on the Oct-Nov 2026 commits (no PHP in the
+   assistant sandbox). The uploaded pages render without errors, but lint the tree.
+7. **Reply to Terry** with feedback on the AEO document (Moses promised one).
+8. **Google Business Profile:** confirm the 3 pending review replies, answer the
+   100+ older reviews, add photos (shot list) and weekly posts.
+9. **Dealership certificates:** owner to send; add to /distribution/ and brand pages.
+10. **Manufacturer listings show old numbers** (Allen & Heath, Bose): ask them to
+    update to +254 715 754 758 if agreed.
+11. **AI visibility:** re-test ChatGPT/Gemini about 4 weeks after 10 Nov
+    (baseline 19 Oct below); add Perplexity and Copilot.
+12. **Mobile speed (PageSpeed)** not verified; regenerate thumbnails once for WebP.
+13. **Rank Math hook/meta names** in Core were taken from docs, not verified.
+14. **Before-and-after project photos** are a content task.
 
 ---
 

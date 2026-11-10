@@ -66,6 +66,12 @@ removed in September 2026 rather than left on the page doing nothing.
 - Our Work (projects grid) eyebrow, heading and "View all projects" link label
 - The four proof stats — number, label, and a sub-note on stat 2
 - Closing call-to-action heading and text
+- **How to buy** (added Nov 2026, right after "What we do"): eyebrow, heading,
+  intro; for each card a small label, heading, text and steps (one step per
+  line; leave the steps empty to hide them); the WhatsApp button label and the
+  message the visitor starts with; the showroom line label. The phone number,
+  address and hours come from the main contact settings. **Clearing the How to
+  buy heading hides the whole section.** Do not add prices here (company decision).
 
 **About the proof stats:** these now work. Until September 2026 the numbers
 were written into the template, so editing these fields changed nothing. Each
@@ -235,6 +241,15 @@ Meta descriptions, titles, social share previews and structured data are
 generated automatically from your content — there is no SEO plugin to configure.
 The most useful thing you can do is fill in the **one-line summary** and
 **excerpt** fields, since those feed the descriptions Google shows.
+
+### FAQs (answers for Google and AI assistants)
+
+Every page, solution, service, brand and project has an **FAQ** box under the
+editor with **10** question/answer slots (6 before Nov 2026). The questions show
+on the page and are sent to Google as FAQ data. The About page shows its FAQs
+below its sections. Keep answers short and factual, put the answer in the first
+sentence, and never add prices. The marketing team's question list, with the
+page each question belongs on, is in `docs/seo/AEO-QUESTIONS.md`.
 
 ## 13. Not editable from the admin (developer changes)
 

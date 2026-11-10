@@ -18,6 +18,27 @@ Rules for these answers (same as every other SEO doc here):
 Status key: **Live** = already answered on the site · **Gap** = add (answer below)
 · **Owner** = needs a fact or decision first · **Code** = needs a template change
 
+## Status (updated 10 Nov 2026)
+
+| Item | Status |
+| --- | --- |
+| B1 FAQ box 10 slots, B2 FAQs on About | **Live** (Core 0.5.39, `9fb4f33`) |
+| A2, A3, A24, A25 (Professional Audio) | **Live** |
+| A4-A7 (Church) | **Live** |
+| A13-A14 (Conferencing) | **Live** |
+| A15-A17 (`/solutions/hospitality-commercial-audio/`) | **Live** |
+| A19-A20 (`/solutions/education-auditorium-sound-systems/`) | **Live** |
+| A21-A23 (Acoustics) | **Live** |
+| A27 on Allen & Heath, Bose Professional, FANE, Shure, dB Technologies | **Live** |
+| A33-A35 (After-Sale) | **Live** |
+| A36-A42 (About) | **Live** |
+| Single-item FAQ on `/distribution/` | **Live** |
+| A1, A18 | Skipped: near-duplicates of existing FAQs |
+| A26 | Waiting: Professional Audio is full (10/10); put it on a live-sound/lighting page |
+| A8-A12 mosque page, A28-A31 architects/contractors page | Waiting for the owner's go-ahead |
+| A32 servicing interval, B4-B6 | Waiting for owner answers |
+
+
 ---
 
 ## 0. Blockers to clear first

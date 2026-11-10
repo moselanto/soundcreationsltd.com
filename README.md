@@ -15,9 +15,9 @@ Professional audio, acoustics, lighting, distribution and AV integration across 
 ![PHP](https://img.shields.io/badge/PHP-8.0%2B-777BB4?logo=php&logoColor=white)
 ![No page builder](https://img.shields.io/badge/Build-hand--coded%2C%20no%20page%20builder-111114)
 ![Schema](https://img.shields.io/badge/SEO-unified%20JSON--LD%20%40graph-4C2A85)
-![Parent theme](https://img.shields.io/badge/Theme-v0.10.11-624489)
+![Parent theme](https://img.shields.io/badge/Theme-v0.12.1-624489)
 ![Child theme](https://img.shields.io/badge/Child-v0.1.0-46305F)
-![Core](https://img.shields.io/badge/SC%20Core-v0.5.25-BA0B0B)
+![Core](https://img.shields.io/badge/SC%20Core-v0.5.39-BA0B0B)
 ![Enquiries](https://img.shields.io/badge/SC%20Enquiries-v0.2.0-BA0B0B)
 ![Security](https://img.shields.io/badge/Security-audited-2e7d32)
 ![License](https://img.shields.io/badge/License-GPLv2%2B-blue)
@@ -56,9 +56,9 @@ This repository holds the **first-party WordPress code only**: one custom theme,
 
 | Package | Folder | Version | Role |
 | --- | --- | --- | --- |
-| **Sound Creations** (parent theme) | [`soundcreations/`](soundcreations) | 0.10.11 | Dark-first, editorial, hand-built presentation layer: templates, design tokens, CSS, JS, loader, hardening |
+| **Sound Creations** (parent theme) | [`soundcreations/`](soundcreations) | 0.12.1 | Dark-first, editorial, hand-built presentation layer: templates, design tokens, CSS, JS, loader, hardening |
 | **Sound Creations Child** | [`soundcreations-child/`](soundcreations-child) | 0.1.0 | **Active theme.** Update-safe layer for site-specific CSS overrides |
-| **Sound Creations Core** (plugin) | [`sound-creations-core/`](sound-creations-core) | 0.5.25 | Content types, taxonomies, editorial fields, central business-settings store, SEO and structured data, starter setup |
+| **Sound Creations Core** (plugin) | [`sound-creations-core/`](sound-creations-core) | 0.5.39 | Content types, taxonomies, editorial fields, central business-settings store, SEO and structured data, starter setup |
 | **Sound Creations Enquiries** (plugin) | [`sound-creations-enquiries/`](sound-creations-enquiries) | 0.2.0 | Full B2B enquiry system: seven forms, validation, anti-spam, private lead storage, routing and notifications |
 
 > **The one rule:** business logic lives in plugins, presentation lives in the theme. If the site were re-themed tomorrow, the content types, editorial fields, business settings, SEO output and the entire enquiry system would survive untouched.
@@ -264,6 +264,8 @@ All forms share one handler: nonce check, validation, signal-based spam scoring,
 - **Keyword-led title templates** for every page type (solutions, services, brands, projects, videos) targeting searches such as *sound systems Kenya, AV installation Nairobi, acoustic treatment Kenya, church sound system, conference systems* and *FANE Africa*.
 - **One unified JSON-LD `@graph`** connecting `Organization`, `LocalBusiness`, `WebSite` + `SearchAction`, `BreadcrumbList`, `Service`, `OfferCatalog`, `Product` + `Offer`, `Brand`, `FAQPage`, `VideoObject`, `ItemList` and `OpeningHoursSpecification`, with `areaServed` covering Kenya, Rwanda, the DRC and the UAE.
 - **FAQ engine** that outputs visible FAQs and matching `FAQPage` schema from the same source.
+- **AEO coverage:** up to 10 FAQs per page (About included since Nov 2026), mapped to the marketing team's customer-question list in [`docs/seo/AEO-QUESTIONS.md`](docs/seo/AEO-QUESTIONS.md).
+- **How to buy** homepage section: a project route (consultation) and a single-item quote route (WhatsApp, call, showroom). There is no online shop and no published prices, by company decision.
 - Open Graph and Twitter meta, one H1 per page and the WordPress XML sitemap at `/wp-sitemap.xml`.
 
 ## Performance and security
