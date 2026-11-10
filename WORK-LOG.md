@@ -89,7 +89,7 @@ Owner contact for decisions: Agnes (website project lead).
 
 ## Log
 
-### 10 Nov 2026 - Homepage "How to buy" section (answers the AI review verdict) - committed, needs upload
+### 10 Nov 2026 - Homepage "How to buy" section (answers the AI review verdict) - LIVE (uploaded 10 Nov, text checked on the live homepage)
 
 - Why: Mr Nipul shared an AI assistant review (4.2/5) whose verdict said a
   visitor wanting a single microphone or cable "will likely need to rely on
