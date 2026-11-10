@@ -47,6 +47,8 @@ function sc_el_section_fields() {
 			'home_buy_item_title'    => array( __( 'Single item card: heading', 'soundcreations' ), 'text' ),
 			'home_buy_item_text'     => array( __( 'Single item card: text', 'soundcreations' ), 'textarea' ),
 			'home_buy_wa_label'      => array( __( 'WhatsApp button label', 'soundcreations' ), 'text' ),
+			'home_buy_project_steps' => array( __( 'Project card: steps (one per line)', 'soundcreations' ), 'textarea' ),
+			'home_buy_item_steps'    => array( __( 'Single item card: steps (one per line)', 'soundcreations' ), 'textarea' ),
 		),
 		'solutions'    => array(
 			'home_solutions_eyebrow' => array( __( 'Eyebrow', 'soundcreations' ), 'text' ),

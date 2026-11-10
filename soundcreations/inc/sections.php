@@ -149,45 +149,84 @@ function sc_section_buy() {
 		$sc_b_map = 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode( $sc_b_addr );
 	}
 	$sc_b_hours = array_filter( array( (string) sc_setting( 'hours_week', '' ), (string) sc_setting( 'hours_sat', '' ) ) );
+	// Three short steps per card (one per line in Settings) show visitors what
+	// happens after they click, which was the gap the AI review described.
+	// Blank = no step list. Steps describe the existing process only.
+	$sc_b_steps = static function ( $key, $default ) {
+		$lines = preg_split( '/\r\n|\r|\n/', (string) sc_setting( $key, $default ) );
+		return array_values( array_filter( array_map( 'trim', (array) $lines ), 'strlen' ) );
+	};
+	$sc_b_psteps = $sc_b_steps( 'home_buy_project_steps', "Consultation and site visit\nSystem design and quotation\nSupply, installation, training and support" );
+	$sc_b_isteps = $sc_b_steps( 'home_buy_item_steps', "Send the brand and model, or what you need it for\nWe reply with a price and availability\nConfirm and collect from our showroom" );
+	$sc_b_ico = array(
+		'project' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18"/><path d="M5 21V8l7-5 7 5v13"/><path d="M9 21v-6h6v6"/></svg>',
+		'item'    => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><path d="M12 17v5"/><path d="M8 22h8"/></svg>',
+		'wa'      => '<svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path fill="currentColor" d="M16 3.2A12.8 12.8 0 0 0 5 22.5L3.2 28.8l6.5-1.7A12.8 12.8 0 1 0 16 3.2zm0 23.3c-2 0-3.9-.5-5.5-1.5l-.4-.2-3.9 1 1-3.8-.2-.4A10.5 10.5 0 1 1 16 26.5zm5.8-7.9c-.3-.2-1.9-.9-2.2-1-.3-.1-.5-.2-.7.2l-1 1.2c-.2.2-.4.2-.7.1-.3-.2-1.4-.5-2.6-1.6-1-.9-1.6-1.9-1.8-2.2-.2-.3 0-.5.1-.7l.5-.6.3-.5c.1-.2 0-.4 0-.6l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.8s1.2 3.2 1.4 3.5c.2.2 2.4 3.6 5.7 5 .8.4 1.4.6 1.9.7.8.2 1.5.2 2.1.1.6-.1 1.9-.8 2.2-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4z"/></svg>',
+		'phone'   => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>',
+		'pin'     => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>',
+	);
 	?>
 <section class="sc-section sc-buy" id="how-to-buy" aria-labelledby="sc-buy-title">
 	<div class="sc-container">
-		<div class="sc-sechead">
-			<div>
-				<p class="sc-eyebrow sc-eyebrow--home"><?php echo esc_html( sc_setting( 'home_buy_eyebrow', 'How to buy' ) ); ?></p>
-				<h2 id="sc-buy-title" style="margin:0;"><?php echo esc_html( $sc_b_title ); ?></h2>
-				<?php $sc_b_lead = trim( (string) sc_setting( 'home_buy_lead', 'We quote every order directly, from one cable to a complete system, so you get the right model and a current price from our team.' ) ); if ( '' !== $sc_b_lead ) : ?><p class="sc-lead" style="margin:.4rem 0 0;"><?php echo sc_rich_e( $sc_b_lead ); ?></p><?php endif; ?>
-			</div>
+		<div class="sc-buy__head">
+			<p class="sc-eyebrow sc-eyebrow--home"><?php echo esc_html( sc_setting( 'home_buy_eyebrow', 'How to buy' ) ); ?></p>
+			<h2 id="sc-buy-title"><?php echo esc_html( $sc_b_title ); ?></h2>
+			<?php $sc_b_lead = trim( (string) sc_setting( 'home_buy_lead', 'We quote every order directly, from one cable to a complete system, so you get the right model and a current price from our team.' ) ); if ( '' !== $sc_b_lead ) : ?><p class="sc-lead"><?php echo sc_rich_e( $sc_b_lead ); ?></p><?php endif; ?>
 		</div>
 		<div class="sc-buy__grid">
-			<div class="sc-buy__card">
-				<h3><?php echo esc_html( sc_setting( 'home_buy_project_title', 'Plan a project' ) ); ?></h3>
+			<article class="sc-buy__card">
+				<header class="sc-buy__cardhead">
+					<span class="sc-buy__badge"><?php echo $sc_b_ico['project']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG. ?></span>
+					<div>
+						<span class="sc-buy__tag"><?php echo esc_html( sc_setting( 'home_buy_project_tag', 'Full systems' ) ); ?></span>
+						<h3><?php echo esc_html( sc_setting( 'home_buy_project_title', 'Plan a project' ) ); ?></h3>
+					</div>
+				</header>
 				<p><?php echo sc_rich_e( sc_setting( 'home_buy_project_text', 'For churches, mosques, schools, hotels, venues and offices. Tell us about your space and we will arrange a consultation and site visit, then design, supply, install and support the system.' ) ); ?></p>
+				<?php if ( count( $sc_b_psteps ) > 0 ) : ?>
+					<ol class="sc-buy__steps">
+						<?php foreach ( $sc_b_psteps as $sc_b_st ) : ?><li><?php echo esc_html( $sc_b_st ); ?></li><?php endforeach; ?>
+					</ol>
+				<?php endif; ?>
 				<div class="sc-buy__actions">
 					<a class="sc-btn sc-btn--primary" href="<?php echo esc_url( home_url( '/request-a-consultation/' ) ); ?>"><?php echo esc_html( sc_setting( 'home_buy_project_cta', 'Request a Consultation' ) ); ?></a>
 				</div>
-			</div>
-			<div class="sc-buy__card">
-				<h3><?php echo esc_html( sc_setting( 'home_buy_item_title', 'Buy a single item' ) ); ?></h3>
+			</article>
+			<article class="sc-buy__card sc-buy__card--item">
+				<header class="sc-buy__cardhead">
+					<span class="sc-buy__badge"><?php echo $sc_b_ico['item']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG. ?></span>
+					<div>
+						<span class="sc-buy__tag"><?php echo esc_html( sc_setting( 'home_buy_item_tag', 'One item or a few' ) ); ?></span>
+						<h3><?php echo esc_html( sc_setting( 'home_buy_item_title', 'Buy a single item' ) ); ?></h3>
+					</div>
+				</header>
 				<p><?php echo sc_rich_e( sc_setting( 'home_buy_item_text', 'Microphones, speakers, mixers, cables and accessories. Send us the brand and model, or tell us what you need it for, and our team will reply with a price and availability.' ) ); ?></p>
+				<?php if ( count( $sc_b_isteps ) > 0 ) : ?>
+					<ol class="sc-buy__steps">
+						<?php foreach ( $sc_b_isteps as $sc_b_st ) : ?><li><?php echo esc_html( $sc_b_st ); ?></li><?php endforeach; ?>
+					</ol>
+				<?php endif; ?>
 				<div class="sc-buy__actions">
 					<?php if ( '' !== $sc_b_wa ) : ?>
-						<a class="sc-btn sc-btn--primary" href="<?php echo esc_url( $sc_b_wa . '?text=' . rawurlencode( $sc_b_prefil ) ); ?>" target="_blank" rel="noopener noreferrer nofollow"><?php echo esc_html( sc_setting( 'home_buy_wa_label', 'Get a price on WhatsApp' ) ); ?></a>
+						<a class="sc-btn sc-btn--primary sc-buy__btn" href="<?php echo esc_url( $sc_b_wa . '?text=' . rawurlencode( $sc_b_prefil ) ); ?>" target="_blank" rel="noopener noreferrer nofollow"><?php echo $sc_b_ico['wa']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG. ?><span><?php echo esc_html( sc_setting( 'home_buy_wa_label', 'Get a price on WhatsApp' ) ); ?></span></a>
 					<?php endif; ?>
 					<?php if ( '' !== $sc_b_tel ) : ?>
-						<a class="sc-btn sc-btn--ghost" href="<?php echo esc_url( 'tel:' . $sc_b_tel ); ?>"><?php /* translators: %s: phone number. */ printf( esc_html__( 'Call %s', 'soundcreations' ), esc_html( $sc_b_phone ) ); ?></a>
+						<a class="sc-btn sc-btn--ghost sc-buy__btn" href="<?php echo esc_url( 'tel:' . $sc_b_tel ); ?>"><?php echo $sc_b_ico['phone']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG. ?><span><?php /* translators: %s: phone number. */ printf( esc_html__( 'Call %s', 'soundcreations' ), esc_html( $sc_b_phone ) ); ?></span></a>
 					<?php endif; ?>
 				</div>
-				<?php if ( '' !== $sc_b_addr ) : ?>
-					<p class="sc-buy__visit">
-						<strong><?php echo esc_html( sc_setting( 'home_buy_visit_label', 'Or visit our showroom:' ) ); ?></strong>
-						<?php echo esc_html( $sc_b_addr ); ?>
-						<?php if ( count( $sc_b_hours ) > 0 ) : ?><span class="sc-buy__hours"><?php echo esc_html( implode( ' · ', $sc_b_hours ) ); ?></span><?php endif; ?>
-						<?php if ( '' !== $sc_b_map ) : ?><a class="sc-link-arrow" href="<?php echo esc_url( $sc_b_map ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Get directions', 'soundcreations' ); ?> &rarr;</a><?php endif; ?>
-					</p>
-				<?php endif; ?>
-			</div>
+			</article>
 		</div>
+		<?php if ( '' !== $sc_b_addr ) : ?>
+			<div class="sc-buy__visit">
+				<span class="sc-buy__badge sc-buy__badge--sm"><?php echo $sc_b_ico['pin']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG. ?></span>
+				<div class="sc-buy__visit-text">
+					<strong><?php echo esc_html( sc_setting( 'home_buy_visit_label', 'Prefer to see it in person? Visit our showroom' ) ); ?></strong>
+					<span><?php echo esc_html( $sc_b_addr ); ?></span>
+					<?php if ( count( $sc_b_hours ) > 0 ) : ?><span class="sc-buy__hours"><?php echo esc_html( implode( '  ·  ', $sc_b_hours ) ); ?></span><?php endif; ?>
+				</div>
+				<?php if ( '' !== $sc_b_map ) : ?><a class="sc-btn sc-btn--ghost sc-buy__dir" href="<?php echo esc_url( $sc_b_map ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Get directions', 'soundcreations' ); ?> &rarr;</a><?php endif; ?>
+			</div>
+		<?php endif; ?>
 	</div>
 </section>
 	<?php

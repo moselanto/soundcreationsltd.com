@@ -2912,16 +2912,40 @@ h2.sc-home-projects__title { font-size: clamp(1.25rem, 2vw, 1.6rem); line-height
 /* Full-width sections inside Elementor: let .sc-section own its padding. */
 .elementor-widget-container > .sc-section:first-child { margin-top: 0; }
 
-/* How to buy (homepage, 10 Nov 2026): project route vs single-item quote route. */
-.sc-buy__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; margin-top: 1.5rem; }
-.sc-buy__card { background: var(--sc-surface); border: 1px solid var(--sc-border); border-radius: var(--sc-radius-lg); padding: clamp(1.25rem, 1rem + 1vw, 2rem); display: flex; flex-direction: column; gap: .75rem; }
-.sc-buy__card h3 { margin: 0; }
-.sc-buy__card p { color: var(--sc-muted); margin: 0; }
-.sc-buy__actions { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: auto; padding-top: .25rem; }
-.sc-buy__visit { font-size: .92rem; border-top: 1px solid var(--sc-border); padding-top: .75rem; display: flex; flex-wrap: wrap; gap: .25rem .5rem; align-items: baseline; }
-.sc-buy__visit strong { color: var(--sc-text); }
-.sc-buy__hours { flex-basis: 100%; }
-@media (max-width: 782px) {
+/* How to buy (homepage, 10 Nov 2026; UI pass 2): project route vs single-item quote route. */
+.sc-buy__head { max-width: 62rem; }
+.sc-buy__head h2 { margin: 0; text-wrap: balance; }
+.sc-buy__head .sc-lead { margin: .5rem 0 0; max-width: 60ch; }
+.sc-buy__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; margin-top: 1.75rem; }
+.sc-buy__card { position: relative; background: var(--sc-surface); border: 1px solid var(--sc-border); border-radius: var(--sc-radius-lg); padding: clamp(1.35rem, 1rem + 1.2vw, 2.1rem); display: flex; flex-direction: column; gap: 1rem; transition: transform .25s var(--sc-ease), border-color .25s, box-shadow .25s; }
+.sc-buy__card::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 3px; border-radius: var(--sc-radius-lg) var(--sc-radius-lg) 0 0; background: linear-gradient(90deg, var(--sc-red), rgba(98,68,137,.9)); opacity: .85; }
+.sc-buy__card:hover { transform: translateY(-3px); border-color: rgba(186,11,11,.55); box-shadow: 0 14px 34px rgba(0,0,0,.22); }
+.sc-buy__cardhead { display: flex; align-items: center; gap: .85rem; }
+.sc-buy__cardhead h3 { margin: 0; line-height: 1.2; }
+.sc-buy__badge { flex: none; display: inline-grid; place-items: center; width: 2.75rem; height: 2.75rem; border-radius: 12px; background: var(--sc-red); color: #fff; box-shadow: 0 6px 18px rgba(186,11,11,.3); }
+.sc-buy__badge svg { width: 1.35rem; height: 1.35rem; }
+.sc-buy__badge--sm { width: 2.4rem; height: 2.4rem; border-radius: 10px; }
+.sc-buy__tag { display: block; font-size: .72rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--sc-muted); margin-bottom: .15rem; }
+.sc-buy__card > p { color: var(--sc-muted); margin: 0; }
+.sc-buy__steps { list-style: none; counter-reset: scbuy; margin: 0; padding: 0; display: grid; gap: .55rem; }
+.sc-buy__steps li { counter-increment: scbuy; position: relative; padding-left: 2.25rem; min-height: 1.6rem; font-size: .95rem; color: var(--sc-text); line-height: 1.45; display: flex; align-items: center; }
+.sc-buy__steps li::before { content: counter(scbuy); position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 1.6rem; height: 1.6rem; border-radius: 50%; display: grid; place-items: center; font-size: .78rem; font-weight: 700; border: 1px solid var(--sc-border); color: var(--sc-red); background: transparent; }
+.sc-buy__actions { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: auto; padding-top: .35rem; }
+.sc-buy__btn { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; }
+.sc-buy__btn svg { width: 1.1rem; height: 1.1rem; flex: none; }
+.sc-buy__card--item .sc-btn--primary { background: #1f9d55; box-shadow: 0 6px 20px rgba(31,157,85,.28); }
+.sc-buy__card--item .sc-btn--primary:hover { background: #17834a; box-shadow: 0 12px 30px rgba(31,157,85,.4); }
+.sc-buy__visit { margin-top: 1.25rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; padding: 1rem 1.25rem; border: 1px dashed var(--sc-border); border-radius: var(--sc-radius-lg); }
+.sc-buy__visit-text { flex: 1 1 18rem; display: flex; flex-direction: column; gap: .1rem; font-size: .93rem; color: var(--sc-muted); }
+.sc-buy__visit-text strong { color: var(--sc-text); font-size: 1rem; }
+.sc-buy__dir { flex: none; }
+@media (max-width: 900px) {
 	.sc-buy__grid { grid-template-columns: 1fr; }
-	.sc-buy__actions .sc-btn { flex: 1 1 100%; text-align: center; }
+}
+@media (max-width: 782px) {
+	.sc-buy__actions .sc-btn, .sc-buy__dir { flex: 1 1 100%; text-align: center; }
+	.sc-buy__visit { align-items: flex-start; }
+}
+@media (prefers-reduced-motion: reduce) {
+	.sc-buy__card, .sc-buy__card:hover { transition: none; transform: none; }
 }

@@ -89,6 +89,32 @@ Owner contact for decisions: Agnes (website project lead).
 
 ## Log
 
+### 10 Nov 2026 - "How to buy" UI/UX pass 2 - committed, needs upload
+
+From the owner's full-page screenshot of the live homepage: the heading broke
+as "single / item?", the project card was mostly empty space next to a crowded
+single-item card, and the showroom line was squeezed into the second card.
+
+- Heading uses the full width with balanced line breaks (`text-wrap: balance`).
+- Each card now has an icon badge, a small label ("Full systems" / "One item
+  or a few") and three numbered "what happens next" steps, so both cards have
+  the same structure and height. Steps come from Settings (one per line; blank
+  hides them) and describe only the existing process. No prices or delivery promises.
+- The single-item buttons have WhatsApp and phone icons; the WhatsApp button
+  is WhatsApp green so it is easy to spot.
+- The showroom is now its own full-width strip under both cards (pin icon,
+  address, hours, Get directions button).
+- Cards stack from 900px down; buttons go full width on phones; hover lift is
+  turned off for reduced-motion users.
+- New settings: `home_buy_project_tag`, `home_buy_item_tag`,
+  `home_buy_project_steps`, `home_buy_item_steps`; showroom label default is now
+  "Prefer to see it in person? Visit our showroom". Core 0.5.38, theme 0.12.1.
+- **Upload:** theme `inc/sections.php`, `inc/template-tags.php`,
+  `inc/elementor/widgets.php`, `assets/css/main.css`, `style.css`; Core
+  `includes/settings.php`, `sound-creations-core.php`.
+- `php -l` NOT run (no PHP in the agent sandbox); bracket balance matches the
+  previous files. Check at desktop and phone widths in both dark and light themes.
+
 ### 10 Nov 2026 - Single-item FAQ added to /distribution/ (wp-admin, no code) - LIVE
 
 - Added in the page's FAQ meta box (slot 6; the existing FAQs were not changed):
