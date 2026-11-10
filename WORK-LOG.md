@@ -89,6 +89,21 @@ Owner contact for decisions: Agnes (website project lead).
 
 ## Log
 
+### 10 Nov 2026 - Single-item FAQ added to /distribution/ (wp-admin, no code) - LIVE
+
+- Added in the page's FAQ meta box (slot 6; the existing FAQs were not changed):
+  **Q:** Can I buy a single item from Sound Creations?
+  **A:** Yes. We quote single items directly: send the brand and model (or what
+  you need it for) on WhatsApp or call +254 715 754 758, or visit our showroom
+  at Mpaka Plaza, Mpaka Road, Westlands, Nairobi. Our team will reply with a
+  price and availability.
+- No prices given (company decision). The question and answer show on the
+  live /distribution/ page, which is where FAQPage schema should now pick them up.
+- Why: this answers the AI review's verdict in the place AI assistants read
+  answers from. It goes with the homepage "How to buy" section.
+- Next: request indexing for `/distribution/` in Search Console and re-run the
+  Rich Results Test on it.
+
 ### 10 Nov 2026 - Homepage "How to buy" section (answers the AI review verdict) - LIVE (uploaded 10 Nov, text checked on the live homepage)
 
 - Why: Mr Nipul shared an AI assistant review (4.2/5) whose verdict said a
